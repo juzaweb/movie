@@ -1,0 +1,29 @@
+{
+    "name": "juzaweb/movie",
+    "description": "",
+    "authors": [
+        {
+            "name": "Mymo Cms",
+            "email": "dangtheanh16@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+              "Plugins\\Movie\\Providers\\MovieServiceProvider"
+            ]
+        },
+        "juzaweb": {
+          "name": "Movie plugin",
+          "domain": "mymo"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Juzaweb\\Movie\\": "src/"
+        },
+        "files": [
+          "Helpers/helpers.php"
+        ]
+    }
+}
