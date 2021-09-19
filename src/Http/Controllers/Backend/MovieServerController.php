@@ -26,7 +26,7 @@ class MovieServerController extends BackendController
     protected function getDataTable($page_type, $movie_id)
     {
         $dataTable = new VideoServerDatatable();
-        $dataTable->mountData($movie_id);
+        $dataTable->mountData($page_type, $movie_id);
         return $dataTable;
     }
 
