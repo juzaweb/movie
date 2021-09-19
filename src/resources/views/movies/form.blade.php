@@ -80,7 +80,7 @@
                 'value' => $model->poster
             ])
 
-            @do_action('post_type.movies.form.rigth', $model)
+            @do_action('post_type.movies.form.right', $model)
         </div>
     </div>
     @endcomponent

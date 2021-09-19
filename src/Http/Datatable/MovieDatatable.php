@@ -4,15 +4,17 @@ namespace Juzaweb\Movie\Http\Datatable;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Juzaweb\Abstracts\DataTable;
+use Juzaweb\Http\Datatable\PostTypeDataTable;
 use Juzaweb\Movie\Models\Movie\Movie;
 
-class MovieDatatable extends DataTable
+class MovieDatatable extends PostTypeDataTable
 {
     protected $tvSeries;
 
-    public function mount($tvSeries = 0)
+    public function mount($postType, $tvSeries = 0)
     {
+        parent::mount($postType);
+
         $this->tvSeries = $tvSeries;
     }
 
@@ -41,6 +43,27 @@ class MovieDatatable extends DataTable
                 'align' => 'center',
                 'formatter' => function ($value, $row, $index) {
                     return jw_date_format($row->created_at);
+                }
+            ],
+            'actions' => [
+                'label' => trans('mymo::app.actions'),
+                'width' => '15%',
+                'sortable' => false,
+                'formatter' => function ($value, $row, $index) {
+                    $preview = $row->getLink();
+                    $upload = route('admin.movies.servers', ['movies', $row->id]);
+                    $download = route('admin.movies.download', ['movies', $row->id]);
+
+                    return '<div class="dropdown d-inline-block mb-2 mr-2">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          Options
+        </button>
+        <div class="dropdown-menu" role="menu" style="">
+          <a href="'.$upload.'" class="dropdown-item">Upload videos</a>
+          <a href="'.$download.'" class="dropdown-item">Download videos</a>
+          <a href="'.$preview.'" target="_blank" class="dropdown-item">Preview</a>
+        </div>
+    </div>';
                 }
             ]
         ];
@@ -71,7 +94,7 @@ class MovieDatatable extends DataTable
     {
         switch ($action) {
             case 'delete':
-                
+                Movie::destroy($ids);
                 break;
         }
     }

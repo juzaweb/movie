@@ -12,7 +12,7 @@ class TVSerieController extends MovieController
     protected function getDataTable()
     {
         $dataTable = new MovieDatatable();
-        $dataTable->mountData(1);
+        $dataTable->mountData('movies', 1);
         return $dataTable;
     }
 
