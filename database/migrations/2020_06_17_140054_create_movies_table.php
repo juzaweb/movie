@@ -10,13 +10,13 @@ class CreateMoviesTable extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 250);
-            $table->string('other_name', 250)->nullable();
-            $table->string('thumbnail', 250)->nullable();
-            $table->string('poster', 250)->nullable();
+            $table->string('title', 250);
+            $table->string('origin_name', 250)->nullable();
+            $table->string('thumbnail', 150)->nullable();
+            $table->string('poster', 150)->nullable();
             $table->string('slug', 150)->unique()->index();
-            $table->longText('description')->nullable();
-            $table->string('short_description', 300)->nullable();
+            $table->string('description', 300)->nullable();
+            $table->longText('content')->nullable();
             $table->string('rating', 25)->nullable();
             $table->date('release')->nullable();
             $table->integer('year')->nullable();

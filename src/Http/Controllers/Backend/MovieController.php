@@ -2,10 +2,11 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
+use Juzaweb\Movie\Http\Datatable\MovieDatatable;
 use Juzaweb\Traits\PostTypeController;
 use Illuminate\Support\Facades\Validator;
 use Juzaweb\Movie\Models\Movie\Movie;
-use Mymo\Backend\Http\Controllers\BackendController;
+use Juzaweb\Http\Controllers\BackendController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -13,14 +14,19 @@ class MovieController extends BackendController
 {
     use PostTypeController;
 
-    protected $viewPrefix = 'movie::movies';
+    protected $viewPrefix = 'mymo::movies';
 
     protected function getModel()
     {
         return Movie::class;
     }
 
-    public function getDataTable(Request $request)
+    protected function getDataTable()
+    {
+        return new MovieDatatable();
+    }
+
+    protected function getDataTable2(Request $request)
     {
         $search = $request->get('search');
         $status = $request->get('status');
@@ -34,7 +40,7 @@ class MovieController extends BackendController
         
         $query = Movie::query();
         $query->where('tv_series', '=', 0);
-        
+
         if ($search) {
             $query->where(function ($subquery) use ($search) {
                 $subquery->orWhere('name', 'like', '%'. $search .'%');
@@ -79,8 +85,9 @@ class MovieController extends BackendController
     protected function validator(array $attributes)
     {
         $validator = Validator::make($attributes, [
-            'name' => 'required|string|max:250',
+            'title' => 'required|string|max:250',
             'description' => 'nullable',
+            'content' => 'nullable',
             'status' => 'required|in:draft,publish,trash,private',
             'thumbnail' => 'nullable|string|max:250',
             'poster' => 'nullable|string|max:250',

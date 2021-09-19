@@ -1,6 +1,6 @@
-@extends('mymo_core::layouts.backend')
+@extends('juzaweb::layouts.backend')
 
-@section('title', trans('movie::app.movies'))
+@section('title', trans('mymo::app.movies'))
 
 @section('content')
 
@@ -9,21 +9,21 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="mb-0 card-title font-weight-bold">@lang('movie::app.live_tv')</h5>
+                    <h5 class="mb-0 card-title font-weight-bold">@lang('mymo::app.live_tv')</h5>
                 </div>
 
                 <div class="col-md-6">
                     <div class="float-right">
 
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary status-button" data-status="1"><i class="fa fa-check"></i> @lang('movie::app.enabled')</button>
+                            <button type="button" class="btn btn-primary status-button" data-status="1"><i class="fa fa-check"></i> @lang('mymo::app.enabled')</button>
 
-                            <button type="button" class="btn btn-warning status-button" data-status="0"><i class="fa fa-times"></i> @lang('movie::app.disabled')</button>
+                            <button type="button" class="btn btn-warning status-button" data-status="0"><i class="fa fa-times"></i> @lang('mymo::app.disabled')</button>
                         </div>
 
                         <div class="btn-group">
-                            <a href="{{ route('admin.live-tv.create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> @lang('movie::app.add_new')</a>
-                            <button type="button" class="btn btn-danger" id="delete-item"><i class="fa fa-trash"></i> @lang('movie::app.delete')</button>
+                            <a href="{{ route('admin.live-tv.create') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> @lang('mymo::app.add_new')</a>
+                            <button type="button" class="btn btn-danger" id="delete-item"><i class="fa fa-trash"></i> @lang('mymo::app.delete')</button>
                         </div>
                     </div>
                 </div>
@@ -37,25 +37,25 @@
                     <form action="" method="get" class="form-inline" id="form-search">
 
                         <div class="form-group mb-2 mr-1">
-                            <label for="search" class="sr-only">@lang('movie::app.search')</label>
-                            <input name="search" type="text" id="search" class="form-control" placeholder="@lang('movie::app.search')" autocomplete="off">
+                            <label for="search" class="sr-only">@lang('mymo::app.search')</label>
+                            <input name="search" type="text" id="search" class="form-control" placeholder="@lang('mymo::app.search')" autocomplete="off">
                         </div>
 
                         <div class="form-group mb-2 mr-1">
-                            <label for="category" class="sr-only">@lang('movie::app.category')</label>
-                            <select name="category" id="category" class="form-control load-live-tv-category" data-placeholder="--- @lang('movie::app.category') ---"></select>
+                            <label for="category" class="sr-only">@lang('mymo::app.category')</label>
+                            <select name="category" id="category" class="form-control load-live-tv-category" data-placeholder="--- @lang('mymo::app.category') ---"></select>
                         </div>
 
                         <div class="form-group mb-2 mr-1">
-                            <label for="status" class="sr-only">@lang('movie::app.status')</label>
+                            <label for="status" class="sr-only">@lang('mymo::app.status')</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="">--- @lang('movie::app.status') ---</option>
-                                <option value="1">@lang('movie::app.enabled')</option>
-                                <option value="0">@lang('movie::app.disabled')</option>
+                                <option value="">--- @lang('mymo::app.status') ---</option>
+                                <option value="1">@lang('mymo::app.enabled')</option>
+                                <option value="0">@lang('mymo::app.disabled')</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('movie::app.search')</button>
+                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('mymo::app.search')</button>
                     </form>
                 </div>
 
@@ -66,10 +66,10 @@
                     <thead>
                         <tr>
                             <th data-width="3%" data-field="state" data-checkbox="true"></th>
-                            <th data-width="10%" data-field="thumbnail" data-formatter="thumbnail_formatter">@lang('movie::app.thumbnail')</th>
-                            <th data-field="name" data-formatter="name_formatter">@lang('movie::app.name')</th>
-                            <th data-width="15%" data-field="status" data-align="center" data-formatter="status_formatter">@lang('movie::app.status')</th>
-                            <th data-width="15%" data-field="options" data-align="center" data-formatter="options_formatter">@lang('movie::app.options')</th>
+                            <th data-width="10%" data-field="thumbnail" data-formatter="thumbnail_formatter">@lang('mymo::app.thumbnail')</th>
+                            <th data-field="name" data-formatter="name_formatter">@lang('mymo::app.name')</th>
+                            <th data-width="15%" data-field="status" data-align="center" data-formatter="status_formatter">@lang('mymo::app.status')</th>
+                            <th data-width="15%" data-field="options" data-align="center" data-formatter="options_formatter">@lang('mymo::app.options')</th>
                         </tr>
                     </thead>
                 </table>

@@ -11,7 +11,7 @@ class LiveTvStreamController extends BackendController
 {
     public function index($live_tv_id) {
         $live_tv = LiveTv::findOrFail($live_tv_id);
-        return view('movie::live-tv-stream.index', [
+        return view('mymo::live-tv-stream.index', [
             'live_tv' => $live_tv
         ]);
     }
@@ -19,8 +19,8 @@ class LiveTvStreamController extends BackendController
     public function form($live_tv_id, $id = null) {
         $live_tv = LiveTv::findOrFail($live_tv_id);
         $model = LiveTvStream::firstOrNew(['id' => $id]);
-        return view('movie::live-tv-stream.form', [
-            'title' => $model->label ?? trans('movie::app.add_new'),
+        return view('mymo::live-tv-stream.form', [
+            'title' => $model->label ?? trans('mymo::app.add_new'),
             'model' => $model,
             'live_tv' => $live_tv
         ]);
@@ -69,8 +69,8 @@ class LiveTvStreamController extends BackendController
             'label' => 'required|string|max:250|unique:live_tv_streams,label,' . $request->post('id'),
             'status' => 'required|in:0,1',
         ], $request, [
-            'label' => trans('movie::app.label'),
-            'status' => trans('movie::app.status'),
+            'label' => trans('mymo::app.label'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $model = LiveTvStream::firstOrNew(['id' => $request->post('id')]);
@@ -80,7 +80,7 @@ class LiveTvStreamController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.live-tv.stream', [$live_tv_id]),
         ]);
     }
@@ -89,7 +89,7 @@ class LiveTvStreamController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.genres')
+            'ids' => trans('mymo::app.genres')
         ]);
     
         LiveTv::findOrFail($live_tv_id);
@@ -98,7 +98,7 @@ class LiveTvStreamController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.deleted_successfully'),
+            'message' => trans('mymo::app.deleted_successfully'),
         ]);
     }
 }

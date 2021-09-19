@@ -13,8 +13,8 @@ class MovieUploadController extends BackendController
     public function index($page_type, $server_id) {
         $server = VideoServer::where('id', '=', $server_id)->firstOrFail();
         
-        return view('movie::movie_upload.index', [
-            'title' => trans('movie::app.upload'),
+        return view('mymo::movie_upload.index', [
+            'title' => trans('mymo::app.upload'),
             'server' => $server,
             'movie' => $server->movie,
             'page_type' => $page_type,
@@ -26,8 +26,8 @@ class MovieUploadController extends BackendController
         $movie = Movie::where('id', '=', $server->movie_id)->firstOrFail();
         $model = VideoFiles::firstOrNew(['id' => $id]);
         
-        return view('movie::movie_upload.form', [
-            'title' => $model->label ? $model->label : trans('movie::app.add_new'),
+        return view('mymo::movie_upload.form', [
+            'title' => $model->label ? $model->label : trans('mymo::app.add_new'),
             'server' => $server,
             'movie' => $movie,
             'model' => $model,
@@ -83,18 +83,18 @@ class MovieUploadController extends BackendController
             //'url_upload' => 'required_if:source,upload|max:250',
             'order' => 'required|numeric',
         ], $request, [
-            'label' => trans('movie::app.label'),
-            'source' => trans('movie::app.source'),
-            'url' => trans('movie::app.video_url'),
-            'url_upload' => trans('movie::app.video_url'),
-            'order' => trans('movie::app.order'),
+            'label' => trans('mymo::app.label'),
+            'source' => trans('mymo::app.source'),
+            'url' => trans('mymo::app.video_url'),
+            'url_upload' => trans('mymo::app.video_url'),
+            'order' => trans('mymo::app.order'),
         ]);
         
         if ($request->post('source') == 'gdrive') {
             if (!get_google_drive_id($request->post('url'))) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => trans('movie::app.cannot_get_google_drive_id'),
+                    'message' => trans('mymo::app.cannot_get_google_drive_id'),
                 ]);
             }
         }
@@ -111,7 +111,7 @@ class MovieUploadController extends BackendController
         $model->save();
         
         return $this->success([
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.movies.servers.upload', [$page_type, $server_id]),
         ]);
     }
@@ -120,13 +120,13 @@ class MovieUploadController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.servers'),
+            'ids' => trans('mymo::app.servers'),
         ]);
     
         VideoFiles::destroy($request->post('ids', []));
         
         return $this->success([
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.movies.servers.upload', [
                 $page_type,
                 $server_id

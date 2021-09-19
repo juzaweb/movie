@@ -2,7 +2,8 @@
 
 namespace Juzaweb\Movie\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Juzaweb\Movie\Actions\MenuAction;
+use Juzaweb\Support\ServiceProvider;
 
 class MovieServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,9 @@ class MovieServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->registerAction([
+            MenuAction::class
+        ]);
     }
 
     /**

@@ -1,11 +1,11 @@
-@extends('mymo_core::layouts.backend')
+@extends('juzaweb::layouts.backend')
 
-@section('title', trans('mymo_core::app.banner_ads'))
+@section('title', trans('juzaweb::app.banner_ads'))
 
 @section('content')
 
 {{ Breadcrumbs::render('manager', [
-        'name' => trans('mymo_core::app.banner_ads'),
+        'name' => trans('juzaweb::app.banner_ads'),
         'url' => route('admin.setting.ads')
     ]) }}
 
@@ -14,7 +14,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="mb-0 card-title font-weight-bold">@lang('mymo_core::app.banner_ads')</h5>
+                    <h5 class="mb-0 card-title font-weight-bold">@lang('juzaweb::app.banner_ads')</h5>
                 </div>
 
                 <div class="col-md-6">
@@ -30,19 +30,19 @@
                     <form method="get" class="form-inline" id="form-search">
 
                         <div class="form-group mb-2 mr-1">
-                            <label for="search" class="sr-only">@lang('mymo_core::app.search')</label>
-                            <input name="search" type="text" id="search" class="form-control" placeholder="@lang('mymo_core::app.search')" autocomplete="off">
+                            <label for="search" class="sr-only">@lang('juzaweb::app.search')</label>
+                            <input name="search" type="text" id="search" class="form-control" placeholder="@lang('juzaweb::app.search')" autocomplete="off">
                         </div>
 
                         <div class="form-group mb-2 mr-1">
-                            <label for="status" class="sr-only">@lang('mymo_core::app.status')</label>
+                            <label for="status" class="sr-only">@lang('juzaweb::app.status')</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="1">@lang('mymo_core::app.enabled')</option>
-                                <option value="0">@lang('mymo_core::app.disabled')</option>
+                                <option value="1">@lang('juzaweb::app.enabled')</option>
+                                <option value="0">@lang('juzaweb::app.disabled')</option>
                             </select>
                         </div>
 
-                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('mymo_core::app.search')</button>
+                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('juzaweb::app.search')</button>
                     </form>
                 </div>
 
@@ -53,9 +53,9 @@
                     <thead>
                         <tr>
                             <th  data-field="state" data-width="3%" data-checkbox="true"></th>
-                            <th data-field="key" data-width="10%">@lang('mymo_core::app.code')</th>
-                            <th data-field="name" data-formatter="name_formatter">@lang('mymo_core::app.name')</th>
-                            <th data-field="status" data-width="15%" data-align="center" data-formatter="status_formatter">@lang('mymo_core::app.status')</th>
+                            <th data-field="key" data-width="10%">@lang('juzaweb::app.code')</th>
+                            <th data-field="name" data-formatter="name_formatter">@lang('juzaweb::app.name')</th>
+                            <th data-field="status" data-width="15%" data-align="center" data-formatter="status_formatter">@lang('juzaweb::app.status')</th>
                         </tr>
                     </thead>
                 </table>
@@ -72,9 +72,9 @@
 
         function status_formatter(value, row, index) {
             if (value == 1) {
-                return '<span class="text-success">@lang('mymo_core::app.enabled')</span>';
+                return '<span class="text-success">@lang('juzaweb::app.enabled')</span>';
             }
-            return '<span class="text-danger">@lang('mymo_core::app.disabled')</span>';
+            return '<span class="text-danger">@lang('juzaweb::app.disabled')</span>';
         }
 
         var table = new JuzawebTable({

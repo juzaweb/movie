@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Validator;
 use Juzaweb\Traits\ResourceController;
 use Juzaweb\Movie\Models\Slider;
 use Illuminate\Http\Request;
-use Mymo\Backend\Http\Controllers\BackendController;
+use Juzaweb\Http\Controllers\BackendController;
 
 class SliderController extends BackendController
 {
     use ResourceController;
 
-    protected $viewPrefix = 'movie::slider';
+    protected $viewPrefix = 'mymo::slider';
 
     protected function validator(array $attributes)
     {
@@ -88,6 +88,6 @@ class SliderController extends BackendController
 
     protected function getTitle()
     {
-        return trans('movie::app.sliders');
+        return trans('mymo::app.sliders');
     }
 }

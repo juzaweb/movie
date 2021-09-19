@@ -9,14 +9,14 @@ use Juzaweb\Movie\Models\LiveTV\LiveTvCategory;
 class LiveTvCategoryController extends BackendController
 {
     public function index() {
-        return view('movie::live-tv-category.index');
+        return view('mymo::live-tv-category.index');
     }
     
     public function form($id = null) {
         $model = LiveTvCategory::firstOrNew(['id' => $id]);
-        return view('movie::live-tv-category.form', [
+        return view('mymo::live-tv-category.form', [
             'model' => $model,
-            'title' => $model->name ?: trans('movie::app.add_new')
+            'title' => $model->name ?: trans('mymo::app.add_new')
         ]);
     }
     
@@ -67,10 +67,10 @@ class LiveTvCategoryController extends BackendController
             'status' => 'required|in:0,1',
             'thumbnail' => 'nullable|string|max:250',
         ], $request, [
-            'name' => trans('movie::app.name'),
-            'description' => trans('movie::app.description'),
-            'status' => trans('movie::app.status'),
-            'thumbnail' => trans('movie::app.thumbnail'),
+            'name' => trans('mymo::app.name'),
+            'description' => trans('mymo::app.description'),
+            'status' => trans('mymo::app.status'),
+            'thumbnail' => trans('mymo::app.thumbnail'),
         ]);
     
         $id = $request->post('id');
@@ -86,7 +86,7 @@ class LiveTvCategoryController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.live-tv.category'),
         ]);
     }
@@ -96,8 +96,8 @@ class LiveTvCategoryController extends BackendController
             'ids' => 'required',
             'status' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.live_tv_categories'),
-            'status' => trans('movie::app.status'),
+            'ids' => trans('mymo::app.live_tv_categories'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $ids = $request->post('ids');
@@ -110,7 +110,7 @@ class LiveTvCategoryController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.updated_successfully'),
+            'message' => trans('mymo::app.updated_successfully'),
         ]);
     }
     
@@ -118,7 +118,7 @@ class LiveTvCategoryController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.live_tv_categories')
+            'ids' => trans('mymo::app.live_tv_categories')
         ]);
     
         $ids = $request->post('ids');
@@ -126,7 +126,7 @@ class LiveTvCategoryController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.deleted_successfully'),
+            'message' => trans('mymo::app.deleted_successfully'),
         ]);
     }
 }

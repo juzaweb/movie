@@ -9,7 +9,7 @@ use Juzaweb\Http\Controllers\BackendController;
 class MovieCommentsController extends BackendController
 {
     public function index() {
-        return view('movie::movie_comments.index');
+        return view('mymo::movie_comments.index');
     }
     
     public function getData(Request $request) {
@@ -69,14 +69,14 @@ class MovieCommentsController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.movie_comments')
+            'ids' => trans('mymo::app.movie_comments')
         ]);
     
         MovieComments::destroy($request->post('ids'));
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.deleted_successfully'),
+            'message' => trans('mymo::app.deleted_successfully'),
         ]);
     }
     
@@ -85,8 +85,8 @@ class MovieCommentsController extends BackendController
             'ids' => 'required',
             'status' => 'required|in:0,1,2,3',
         ], $request, [
-            'ids' => trans('movie::app.movie_comments'),
-            'status' => trans('movie::app.status'),
+            'ids' => trans('mymo::app.movie_comments'),
+            'status' => trans('mymo::app.status'),
         ]);
     
         $status = $request->post('status');
@@ -107,7 +107,7 @@ class MovieCommentsController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.updated_status_successfully'),
+            'message' => trans('mymo::app.updated_status_successfully'),
         ]);
     }
 }

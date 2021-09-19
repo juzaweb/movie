@@ -12,7 +12,7 @@ class TVSerieController extends MovieController
 {
     use PostTypeController;
 
-    protected $viewPrefix = 'movie::tv_series';
+    protected $viewPrefix = 'mymo::tv_series';
 
     public function getDataTable(Request $request)
     {
@@ -72,7 +72,7 @@ class TVSerieController extends MovieController
 
     protected function getTitle()
     {
-        return trans('movie::app.tv_series');
+        return trans('mymo::app.tv_series');
     }
 
     protected function validator(array $attributes)

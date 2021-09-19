@@ -3,8 +3,8 @@
         <form action="{{ route('admin.tmdb.add_movie') }}" method="post" class="form-ajax">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tmdbModalLabel">@lang('movie::app.add_from_tmdb')</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="@lang('movie::app.close')">
+                    <h5 class="modal-title" id="tmdbModalLabel">@lang('mymo::app.add_from_tmdb')</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="@lang('mymo::app.close')">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -17,8 +17,8 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> @lang('movie::app.add_movie')</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> @lang('movie::app.close')</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus-circle"></i> @lang('mymo::app.add_movie')</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-close"></i> @lang('mymo::app.close')</button>
                 </div>
             </div>
         </form>

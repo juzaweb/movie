@@ -11,9 +11,9 @@ class MovieServesController extends BackendController
 {
     public function index($page_type, $movie_id) {
         $movie = Movie::where('id', '=', $movie_id)->firstOrFail();
-        return view('movie::movie_servers.index', [
+        return view('mymo::movie_servers.index', [
             'movie' => $movie,
-            'title' => trans('movie::app.servers_video'),
+            'title' => trans('mymo::app.servers_video'),
             'page_type' => $page_type,
         ]);
     }
@@ -21,8 +21,8 @@ class MovieServesController extends BackendController
     public function form($page_type, $movie_id, $server_id = null) {
         $movie = Movie::where('id', '=', $movie_id)->firstOrFail();
         $model = VideoServer::firstOrNew(['id' => $server_id]);
-        return view('movie::movie_servers.form', [
-            'title' => $model->name ? $model->name : trans('movie::app.add_new'),
+        return view('mymo::movie_servers.form', [
+            'title' => $model->name ? $model->name : trans('mymo::app.add_new'),
             'movie' => $movie,
             'model' => $model,
             'page_type' => $page_type,
@@ -72,8 +72,8 @@ class MovieServesController extends BackendController
             'name' => 'required|string|max:100',
             'order' => 'required|numeric',
         ], $request, [
-            'name' => trans('movie::app.name'),
-            'order' => trans('movie::app.order'),
+            'name' => trans('mymo::app.name'),
+            'order' => trans('mymo::app.order'),
         ]);
         
         $model = VideoServer::firstOrNew(['id' => $request->post('id')]);
@@ -91,7 +91,7 @@ class MovieServesController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.servers'),
+            'ids' => trans('mymo::app.servers'),
         ]);
         
         $movie_ids = VideoServer::where('movie_id', '=', $movie_id)
@@ -103,7 +103,7 @@ class MovieServesController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.movies.servers', [$page_type, $movie_id]),
         ]);
     }

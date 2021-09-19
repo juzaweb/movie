@@ -1,11 +1,11 @@
-@extends('mymo_core::layouts.backend')
+@extends('juzaweb::layouts.backend')
 
 @section('title', $title)
 
 @section('content')
 
 {{ Breadcrumbs::render('manager', [
-        'name' => trans('mymo_core::app.banner_ads'),
+        'name' => trans('juzaweb::app.banner_ads'),
         'url' => route('admin.setting.ads')
     ], $model) }}
 
@@ -20,8 +20,8 @@
 
                     <div class="col-md-6">
                         <div class="btn-group float-right">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('mymo_core::app.save')</button>
-                            <a href="{{ route('admin.setting.ads') }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('mymo_core::app.cancel')</a>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('juzaweb::app.save')</button>
+                            <a href="{{ route('admin.setting.ads') }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('juzaweb::app.cancel')</a>
                         </div>
                     </div>
                 </div>
@@ -33,25 +33,25 @@
                     <div class="col-md-12">
 
                         <div class="form-group">
-                            <label class="col-form-label" for="key">@lang('mymo_core::app.code')</label>
+                            <label class="col-form-label" for="key">@lang('juzaweb::app.code')</label>
                             <input type="text" class="form-control" id="key" value="{{ $model->key }}" disabled>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label" for="name">@lang('mymo_core::app.name')</label>
+                            <label class="col-form-label" for="name">@lang('juzaweb::app.name')</label>
                             <input type="text" class="form-control" id="name" value="{{ $model->name }}" autocomplete="off" disabled>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label" for="body">@lang('mymo_core::app.content')</label>
+                            <label class="col-form-label" for="body">@lang('juzaweb::app.content')</label>
                             <textarea class="form-control" name="body" id="body" rows="6">{{ $model->body }}</textarea>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label" for="status">@lang('mymo_core::app.status')</label>
+                            <label class="col-form-label" for="status">@lang('juzaweb::app.status')</label>
                             <select name="status" id="status" class="form-control">
-                                <option value="1" @if($model->status == 1) selected @endif>@lang('mymo_core::app.enabled')</option>
-                                <option value="0" @if($model->status == 0 && !is_null($model->status)) selected @endif>@lang('mymo_core::app.disabled')</option>
+                                <option value="1" @if($model->status == 1) selected @endif>@lang('juzaweb::app.enabled')</option>
+                                <option value="0" @if($model->status == 0 && !is_null($model->status)) selected @endif>@lang('juzaweb::app.disabled')</option>
                             </select>
                         </div>
 

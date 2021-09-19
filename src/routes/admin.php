@@ -7,7 +7,6 @@
  * @link       https://juzaweb.com/cms
  * @license    MIT
  */
-
 Route::group(['prefix' => '{type}/servers'], function () {
     Route::get('/{movie_id}',
         'Backend\MovieServesController@index')->name('admin.movies.servers')->where('movie_id', '[0-9]+');
@@ -102,8 +101,8 @@ Route::group(['prefix' => '{type}/download/{movie_id}'], function () {
 
 Route::postTypeResource('movies', 'Backend\MovieController');
 
-Route::mymoResource('tv-series', 'Backend\TVSerieController');
+//Route::mymoResource('tv-series', 'Backend\TVSerieController');
 
-Route::mymoResource('sliders', 'Backend\SliderController');
+//Route::mymoResource('sliders', 'Backend\SliderController');
 
-require_once __DIR__ . '/backend/components/tmdb.route.php';
+//require_once __DIR__ . '/backend/components/tmdb.route.php';

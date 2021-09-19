@@ -1,4 +1,4 @@
-@extends('mymo_core::layouts.backend')
+@extends('juzaweb::layouts.backend')
 
 @section('content')
 
@@ -13,8 +13,8 @@
 
                     <div class="col-md-6">
                         <div class="btn-group float-right">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('mymo_core::app.save')</button>
-                            <a href="{{ route('admin.package') }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('mymo_core::app.cancel')</a>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('juzaweb::app.save')</button>
+                            <a href="{{ route('admin.package') }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('juzaweb::app.cancel')</a>
                         </div>
                     </div>
                 </div>
@@ -26,26 +26,26 @@
                     <div class="col-md-12">
 
                         <div class="form-group">
-                            <label class="col-form-label" for="name">@lang('mymo_core::app.name')</label>
+                            <label class="col-form-label" for="name">@lang('juzaweb::app.name')</label>
 
                             <input type="text" name="name" class="form-control" id="name" value="{{ $model->name }}" autocomplete="off" required>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label" for="days">@lang('mymo_core::app.days')</label>
+                            <label class="col-form-label" for="days">@lang('juzaweb::app.days')</label>
                             <select name="days" id="days" class="form-control"></select>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label" for="price">@lang('mymo_core::app.price')</label>
+                            <label class="col-form-label" for="price">@lang('juzaweb::app.price')</label>
                             <input type="text" name="price" class="form-control" id="price" value="{{ $model->days }}" autocomplete="off" required>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-form-label" for="baseStatus">@lang('mymo_core::app.status')</label>
+                            <label class="col-form-label" for="baseStatus">@lang('juzaweb::app.status')</label>
                             <select name="status" id="baseStatus" class="form-control">
-                                <option value="1" @if($model->status == 1) selected @endif>@lang('mymo_core::app.enabled')</option>
-                                <option value="0" @if($model->status == 0 && !is_null($model->status)) selected @endif>@lang('mymo_core::app.disabled')</option>
+                                <option value="1" @if($model->status == 1) selected @endif>@lang('juzaweb::app.enabled')</option>
+                                <option value="0" @if($model->status == 0 && !is_null($model->status)) selected @endif>@lang('juzaweb::app.disabled')</option>
                             </select>
                         </div>
 

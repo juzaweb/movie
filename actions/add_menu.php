@@ -11,7 +11,7 @@
 use Juzaweb\Facades\HookAction;
 
 HookAction::registerPostType('movies', [
-    'label' => trans('movie::app.movies'),
+    'label' => trans('mymo::app.movies'),
     'model' => \Juzaweb\Movie\Models\Movie\Movie::class,
     'menu_icon' => 'fa fa-film',
     'menu_position' => 10,
@@ -19,7 +19,7 @@ HookAction::registerPostType('movies', [
 ]);
 
 HookAction::registerTaxonomy('genres', 'movies', [
-    'label' => trans('movie::app.genres'),
+    'label' => trans('mymo::app.genres'),
     'menu_icon' => 'fa fa-edit',
     'menu_position' => 6,
     'supports' => [
@@ -28,7 +28,7 @@ HookAction::registerTaxonomy('genres', 'movies', [
 ]);
 
 HookAction::registerTaxonomy('countries', 'movies', [
-    'label' => trans('movie::app.countries'),
+    'label' => trans('mymo::app.countries'),
     'menu_icon' => 'fa fa-edit',
     'menu_position' => 7,
     'supports' => [
@@ -37,7 +37,7 @@ HookAction::registerTaxonomy('countries', 'movies', [
 ]);
 
 HookAction::addAdminMenu(
-    trans('movie::app.tv_series'),
+    trans('mymo::app.tv_series'),
     'tv-series',
     [
         'icon' => 'fa fa-film',
@@ -47,7 +47,7 @@ HookAction::addAdminMenu(
 );
 
 HookAction::addAdminMenu(
-    trans('movie::app.sliders'),
+    trans('mymo::app.sliders'),
     'sliders',
     [
         'icon' => 'fa fa-film',

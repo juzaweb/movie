@@ -12,11 +12,11 @@ class MovieDownloadController extends BackendController
     public function index($page_type, $movie_id) {
         $movie = Movie::findOrFail($movie_id);
         
-        return view('movie::download.index', [
+        return view('mymo::download.index', [
             'movie_id' => $movie_id,
             'movie' => $movie,
             'page_type' => $page_type,
-            'title' => trans('movie::app.download_videos')
+            'title' => trans('mymo::app.download_videos')
         ]);
     }
     
@@ -24,12 +24,12 @@ class MovieDownloadController extends BackendController
         $movie = Movie::findOrFail($movie_id);
         $model = DownloadLink::firstOrNew(['id' => $id]);
         
-        return view('movie::download.form', [
+        return view('mymo::download.form', [
             'movie_id' => $movie_id,
             'movie' => $movie,
             'page_type' => $page_type,
             'model' => $model,
-            'title' => $model->lable ? $model->lable : trans('movie::app.add_new'),
+            'title' => $model->lable ? $model->lable : trans('mymo::app.add_new'),
         ]);
     }
     
@@ -83,10 +83,10 @@ class MovieDownloadController extends BackendController
             'order' => 'required|numeric|max:300',
             'status' => 'required|in:0,1',
         ], $request, [
-            'label' => trans('movie::app.label'),
-            'url' => trans('movie::app.url'),
-            'order' => trans('movie::app.order'),
-            'status' => trans('movie::app.status'),
+            'label' => trans('mymo::app.label'),
+            'url' => trans('mymo::app.url'),
+            'order' => trans('mymo::app.order'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $model = DownloadLink::firstOrNew(['id' => $request->post('id')]);
@@ -96,7 +96,7 @@ class MovieDownloadController extends BackendController
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.movies.download', [$page_type, $movie_id]),
         ]);
     }
@@ -106,14 +106,14 @@ class MovieDownloadController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.subtitle')
+            'ids' => trans('mymo::app.subtitle')
         ]);
         
         DownloadLink::destroy($request->post('ids'));
         
         return response()->json([
             'status' => 'success',
-            'message' => trans('movie::app.deleted_successfully'),
+            'message' => trans('mymo::app.deleted_successfully'),
         ]);
     }
 }

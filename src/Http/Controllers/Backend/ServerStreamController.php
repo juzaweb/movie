@@ -9,14 +9,14 @@ use Juzaweb\Movie\Models\ServerStream;
 class ServerStreamController extends BackendController
 {
     public function index() {
-        return view('movie::server-stream.index');
+        return view('mymo::server-stream.index');
     }
     
     public function form($id = null) {
         $model = ServerStream::firstOrNew(['id' => $id]);
-        return view('movie::server-stream.form', [
+        return view('mymo::server-stream.form', [
             'model' => $model,
-            'title' => $model->name ?: trans('movie::app.add_new')
+            'title' => $model->name ?: trans('mymo::app.add_new')
         ]);
     }
     
@@ -68,11 +68,11 @@ class ServerStreamController extends BackendController
             'priority' => 'required|integer',
             'status' => 'required|in:0,1',
         ], $request, [
-            'key' => trans('movie::app.key'),
-            'name' => trans('movie::app.name'),
-            'base_url' => trans('movie::app.base_url'),
-            'priority' => trans('movie::app.priority'),
-            'status' => trans('movie::app.status'),
+            'key' => trans('mymo::app.key'),
+            'name' => trans('mymo::app.name'),
+            'base_url' => trans('mymo::app.base_url'),
+            'priority' => trans('mymo::app.priority'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $id = $request->post('id');
@@ -82,7 +82,7 @@ class ServerStreamController extends BackendController
         $model->save();
         
         return $this->success([
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.server-stream'),
         ]);
     }
@@ -92,8 +92,8 @@ class ServerStreamController extends BackendController
             'ids' => 'required',
             'status' => 'required|in:0,1',
         ], $request, [
-            'ids' => trans('movie::app.server_stream'),
-            'status' => trans('movie::app.status'),
+            'ids' => trans('mymo::app.server_stream'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $ids = $request->post('ids');
@@ -105,7 +105,7 @@ class ServerStreamController extends BackendController
             ]);
         
         return $this->success([
-            'message' => trans('movie::app.updated_successfully'),
+            'message' => trans('mymo::app.updated_successfully'),
         ]);
     }
     
@@ -113,14 +113,14 @@ class ServerStreamController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.server_stream')
+            'ids' => trans('mymo::app.server_stream')
         ]);
         
         $ids = $request->post('ids');
         ServerStream::destroy($ids);
         
         return $this->success([
-            'message' => trans('movie::app.deleted_successfully'),
+            'message' => trans('mymo::app.deleted_successfully'),
         ]);
     }
 }

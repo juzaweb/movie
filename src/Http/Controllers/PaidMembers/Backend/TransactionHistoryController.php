@@ -8,12 +8,12 @@ use Juzaweb\Http\Controllers\BackendController;
 class TransactionHistoryController extends BackendController
 {
     public function index() {
-        return view('paid-members.movie::package.index');
+        return view('paid-members.mymo::package.index');
     }
     
     public function form($id = null) {
         $model = Package::firstOrNew(['id' => $id]);
-        return view('paid-members.movie::package.form', [
+        return view('paid-members.mymo::package.form', [
             'model' => $model,
             'title' => $model->name ?: trans('app.add_new')
         ]);

@@ -14,12 +14,12 @@ class SubtitleController extends BackendController
         $file = VideoFiles::findOrFail($file_id);
         $movie = Movie::findOrFail($file->server->movie_id);
         
-        return view('movie::movie_upload.subtitle.index', [
+        return view('mymo::movie_upload.subtitle.index', [
             'page_type' => $page_type,
             'file' => $file,
             'file_id' => $file_id,
             'movie' => $movie,
-            'title' => trans('movie::app.subtitle')
+            'title' => trans('mymo::app.subtitle')
         ]);
     }
     
@@ -28,13 +28,13 @@ class SubtitleController extends BackendController
         $movie = Movie::findOrFail($file->server->movie_id);
         
         $model = Subtitle::firstOrNew(['id' => $id]);
-        return view('movie::movie_upload.subtitle.form', [
+        return view('mymo::movie_upload.subtitle.form', [
             'model' => $model,
             'page_type' => $page_type,
             'file' => $file,
             'file_id' => $file_id,
             'movie' => $movie,
-            'title' => $model->label ? $model->label : trans('movie::app.add_new')
+            'title' => $model->label ? $model->label : trans('mymo::app.add_new')
         ]);
     }
     
@@ -88,10 +88,10 @@ class SubtitleController extends BackendController
             'order' => 'required|numeric|max:300',
             'status' => 'required|in:0,1',
         ], $request, [
-            'label' => trans('movie::app.label'),
-            'url' => trans('movie::app.url'),
-            'order' => trans('movie::app.order'),
-            'status' => trans('movie::app.status'),
+            'label' => trans('mymo::app.label'),
+            'url' => trans('mymo::app.url'),
+            'order' => trans('mymo::app.order'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $model = Subtitle::firstOrNew(['id' => $request->post('id')]);
@@ -101,7 +101,7 @@ class SubtitleController extends BackendController
         $model->save();
         
         return $this->success([
-            'message' => trans('movie::app.saved_successfully'),
+            'message' => trans('mymo::app.saved_successfully'),
             'redirect' => route('admin.movies.servers.upload.subtitle', [$page_type, $file_id]),
         ]);
     }
@@ -111,13 +111,13 @@ class SubtitleController extends BackendController
         $this->validateRequest([
             'ids' => 'required',
         ], $request, [
-            'ids' => trans('movie::app.subtitle')
+            'ids' => trans('mymo::app.subtitle')
         ]);
         
         Subtitle::destroy($request->post('ids'));
         
         return $this->success([
-            'message' => trans('movie::app.deleted_successfully'),
+            'message' => trans('mymo::app.deleted_successfully'),
         ]);
     }
 }
