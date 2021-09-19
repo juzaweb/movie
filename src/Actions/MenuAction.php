@@ -24,8 +24,30 @@ class MenuAction extends Action
         HookAction::registerPostType('movies', [
             'label' => trans('mymo::app.movies'),
             'model' => Movie::class,
-            'menu_icon' => 'fa fa-edit',
+            'menu_position' => 11,
+            'menu_icon' => 'fa fa-film',
+            'supports' => ['tag'],
         ]);
+
+        HookAction::addAdminMenu(
+            trans('mymo::app.tv_series'),
+            'tv-series',
+            [
+                'icon' => 'fa fa-film',
+                'position' => 3,
+                'parent' => 'movies',
+            ]
+        );
+
+        HookAction::addAdminMenu(
+            trans('mymo::app.sliders'),
+            'sliders',
+            [
+                'icon' => 'fa fa-film',
+                'position' => 6,
+                'parent' => 'appearance',
+            ]
+        );
     }
 
     public function registerTaxonomies()
@@ -40,7 +62,6 @@ class MenuAction extends Action
 
         HookAction::registerTaxonomy('countries', 'movies', [
             'label' => trans('mymo::app.countries'),
-            'menu_icon' => 'fa fa-edit',
             'menu_position' => 7,
             'supports' => [
                 'thumbnail'

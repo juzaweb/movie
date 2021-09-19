@@ -11,7 +11,7 @@ class CreateMoviesTable extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title', 250);
-            $table->string('origin_name', 250)->nullable();
+            $table->string('origin_title', 250)->nullable();
             $table->string('thumbnail', 150)->nullable();
             $table->string('poster', 150)->nullable();
             $table->string('slug', 150)->unique()->index();

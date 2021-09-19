@@ -9,6 +9,13 @@ use Juzaweb\Movie\Models\Movie\Movie;
 
 class MovieDatatable extends DataTable
 {
+    protected $tvSeries;
+
+    public function mount($tvSeries = 0)
+    {
+        $this->tvSeries = $tvSeries;
+    }
+
     /**
      * Columns datatable
      *
@@ -17,7 +24,17 @@ class MovieDatatable extends DataTable
     public function columns()
     {
         return [
-            
+            'thumbnail' => [
+                'label' => trans('mymo::app.thumbnail'),
+                'width' => '10%',
+                'formatter' => function ($value, $row, $index) {
+                    return '<img src="'. $row->getThumbnail() .'" class="w-100" />';
+                }
+            ],
+            'title' => [
+                'label' => trans('mymo::app.name'),
+                'formatter' => [$this, 'rowActionsFormatter']
+            ],
             'created_at' => [
                 'label' => trans('juzaweb::app.created_at'),
                 'width' => '15%',
@@ -38,7 +55,7 @@ class MovieDatatable extends DataTable
     public function query($data)
     {
         $query = Movie::query();
-        $query->where('tv_series', '=', 0);
+        $query->where('tv_series', '=', $this->tvSeries);
 
         if ($keyword = Arr::get($data, 'keyword')) {
             $query->where(function (Builder $q) use ($keyword) {

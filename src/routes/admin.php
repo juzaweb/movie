@@ -101,8 +101,8 @@ Route::group(['prefix' => '{type}/download/{movie_id}'], function () {
 
 Route::postTypeResource('movies', 'Backend\MovieController');
 
-//Route::mymoResource('tv-series', 'Backend\TVSerieController');
+Route::jwResource('tv-series', 'Backend\TVSerieController');
 
-//Route::mymoResource('sliders', 'Backend\SliderController');
+Route::jwResource('sliders', 'Backend\SliderController');
 
-//require_once __DIR__ . '/backend/components/tmdb.route.php';
+require_once __DIR__ . '/backend/components/tmdb.route.php';

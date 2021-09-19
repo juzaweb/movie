@@ -6,20 +6,18 @@ use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Juzaweb\Traits\PostTypeModel;
 use Juzaweb\Movie\Models\DownloadLink;
+use Illuminate\Database\Eloquent\Builder;
 
 class Movie extends Model
 {
     use PostTypeModel;
 
-    protected $fieldName = 'name';
-    protected $thumbnailSize = '185x250';
     protected $fillable = [
-        'name',
+        'title',
         'thumbnail',
-        'other_name',
+        'origin_title',
         'description',
-        'short_description',
-        'type_id',
+        'content',
         'poster',
         'rating',
         'release',
@@ -34,8 +32,8 @@ class Movie extends Model
     ];
 
     protected $searchAttributes = [
-        'name',
-        'other_name'
+        'title',
+        'origin_title'
     ];
 
     public function fill(array $attributes)
@@ -151,7 +149,7 @@ class Movie extends Model
             ->toArray();
 
         if ($genres) {
-            $query->whereHas('genres', function ($q) use ($genres) {
+            $query->whereHas('genres', function (Builder $q) use ($genres) {
                 $q->whereIn('id', $genres);
             });
         } else {

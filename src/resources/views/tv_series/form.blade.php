@@ -8,31 +8,27 @@
     @endif
 
     @component('juzaweb::components.form_resource', [
-        'method' => $model->id ? 'put' : 'post',
-        'action' =>  $model->id ?
-            route('admin.movies.update', [$model->id]) :
-            route('admin.movies.store')
+        'model' => $model
     ])
 
     <div class="row">
         <div class="col-md-8">
 
             <div class="form-group">
-                <label class="col-form-label" for="name">@lang('mymo::app.name')</label>
-
-                <input type="text" name="name" class="form-control" id="name" value="{{ $model->name }}" autocomplete="off" required>
+                <label class="col-form-label" for="title">@lang('mymo::app.name')</label>
+                <input type="text" name="title" class="form-control" id="title" value="{{ $model->title }}" autocomplete="off" required>
             </div>
 
             <div class="form-group">
-                <label class="col-form-label" for="other_name">@lang('mymo::app.other_name')</label>
-
-                <input type="text" name="other_name" class="form-control" id="other_name" value="{{ $model->other_name }}" autocomplete="off">
+                <label class="col-form-label" for="origin_title">@lang('mymo::app.other_name')</label>
+                <input type="text" name="origin_title" class="form-control" id="origin_title" value="{{ $model->other_title }}" autocomplete="off">
             </div>
 
-            <div class="form-group">
-                <label class="col-form-label" for="baseDescription">@lang('mymo::app.description')</label>
-                <textarea class="form-control" name="description" id="baseDescription" rows="6">{{ $model->description }}</textarea>
-            </div>
+            @include('juzaweb::components.form_ckeditor', [
+               'label' => trans('mymo::app.content'),
+               'name' => 'content',
+               'value' => $model->content
+           ])
 
             <div class="form-group">
                 <label class="col-form-label" for="rating">@lang('mymo::app.rating')</label>

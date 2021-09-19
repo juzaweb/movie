@@ -3,71 +3,17 @@
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Juzaweb\Traits\PostTypeController;
-use Juzaweb\Movie\Models\Movie\Movie;
-use Illuminate\Support\Str;
+use Juzaweb\Movie\Http\Datatable\MovieDatatable;
 
 class TVSerieController extends MovieController
 {
-    use PostTypeController;
-
     protected $viewPrefix = 'mymo::tv_series';
 
-    public function getDataTable(Request $request)
+    protected function getDataTable()
     {
-        $search = $request->get('search');
-        $status = $request->get('status');
-        $genre = $request->get('genre');
-        $country = $request->get('country');
-        
-        $sort = $request->get('sort', 'id');
-        $order = $request->get('order', 'desc');
-        $offset = $request->get('offset', 0);
-        $limit = $request->get('limit', 20);
-        
-        $query = Movie::query();
-        $query->where('tv_series', '=', 1);
-        
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->orWhere('name', 'like', '%'. $search .'%');
-                $q->orWhere('description', 'like', '%'. $search .'%');
-            });
-        }
-        
-        if ($genre) {
-            $query->whereRaw('find_in_set(?, genres)', [$genre]);
-        }
-    
-        if ($country) {
-            $query->whereRaw('find_in_set(?, countries)', [$country]);
-        }
-        
-        if (!is_null($status)) {
-            $query->where('status', '=', $status);
-        }
-        
-        $count = $query->count();
-        $query->orderBy($sort, $order);
-        $query->offset($offset);
-        $query->limit($limit);
-        $rows = $query->get();
-        
-        foreach ($rows as $row) {
-            $row->thumb_url = $row->getThumbnail();
-            $row->created = $row->created_at->format('H:i Y-m-d');
-            $row->description = Str::words(strip_tags($row->description), 15);
-            $row->edit_url = route('admin.tv-series.edit', [$row->id]);
-            $row->preview_url = route('watch', [$row->slug]);
-            $row->upload_url = route('admin.movies.servers', ['tv-series', $row->id]);
-            $row->download_url = route('admin.movies.download', ['tv-series', $row->id]);
-        }
-        
-        return response()->json([
-            'total' => $count,
-            'rows' => $rows
-        ]);
+        $dataTable = new MovieDatatable();
+        $dataTable->mountData(1);
+        return $dataTable;
     }
 
     protected function getTitle()
