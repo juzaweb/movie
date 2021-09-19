@@ -2,31 +2,20 @@
 
 @section('content')
 
-    <form method="post" action="{{ route('admin.movies.servers.upload.save', [$page_type, $server->id]) }}" class="form-ajax">
+    @component('juzaweb::components.form_resource', [
+        'model' => $model
+    ])
 
         <div class="row">
             <div class="col-md-12">
-                <div class="btn-group float-right">
-                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('mymo::app.save')</button>
-                    <a href="{{ route('admin.movies.servers.upload', [$page_type, $server->id]) }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('mymo::app.cancel')</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-
-                <input type="hidden" name="id" id="id" value="{{ $model->id }}">
 
                 <div class="form-group">
                     <label class="col-form-label" for="label">@lang('mymo::app.label')</label>
-
                     <input type="text" name="label" class="form-control" id="label" autocomplete="off" required value="{{ $model->label }}">
                 </div>
 
                 <div class="form-group">
                     <label class="col-form-label" for="order">@lang('mymo::app.order')</label>
-
                     <input type="text" name="order" class="form-control" id="order" autocomplete="off" required value="{{ $model->order ? $model->order : 1 }}">
                 </div>
 
@@ -53,18 +42,16 @@
                         </div>
 
                         <div class="col-md-2">
-                            <a href="javascript:void(0)" class="btn btn-primary lfm-file" data-input="url"><i class="fa fa-upload"></i> @lang('mymo::app.upload')</a>
+                            <a href="javascript:void(0)" class="btn btn-primary file-manager" data-input="url"><i class="fa fa-upload"></i> @lang('mymo::app.upload')</a>
                         </div>
                     </div>
-
                 </div>
-
-
             </div>
+
+            <input type="hidden" name="server_id" value="{{ $server_id }}">
+            <input type="hidden" name="movie_id" value="{{ $server->movie_id }}">
+
         </div>
-
-        <input type="hidden" name="id" value="{{ $model->id }}">
-
-    </form>
+    @endcomponent
 
 @endsection

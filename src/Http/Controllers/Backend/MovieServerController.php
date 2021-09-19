@@ -2,7 +2,6 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
-use Illuminate\Support\Facades\Validator;
 use Juzaweb\Http\Controllers\BackendController;
 use Juzaweb\Movie\Http\Datatable\VideoServerDatatable;
 use Juzaweb\Movie\Models\Movie\Movie;
@@ -18,11 +17,6 @@ class MovieServerController extends BackendController
 
     protected $viewPrefix = 'mymo::movie_server';
 
-    /**
-     * Get data table resource
-     *
-     * @return \Juzaweb\Abstracts\DataTable
-     */
     protected function getDataTable($page_type, $movie_id)
     {
         $dataTable = new VideoServerDatatable();
@@ -30,12 +24,6 @@ class MovieServerController extends BackendController
         return $dataTable;
     }
 
-    /**
-     * Validator for store and update
-     *
-     * @param array $attributes
-     * @return Validator|array
-     */
     protected function validator(array $attributes, $page_type, $movie_id)
     {
         return [
@@ -43,21 +31,11 @@ class MovieServerController extends BackendController
         ];
     }
 
-    /**
-     * Get model resource
-     *
-     * @return string // namespace model
-     */
     protected function getModel($page_type, $movie_id)
     {
         return VideoServer::class;
     }
 
-    /**
-     * Get title resource
-     *
-     * @return string
-     **/
     protected function getTitle($page_type, $movie_id)
     {
         return trans('mymo::app.servers');

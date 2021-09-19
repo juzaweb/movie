@@ -48,7 +48,7 @@ class VideoServerDatatable extends DataTable
                 'label' => trans('mymo::content.order'),
                 'width' => '10%',
                 'formatter' => function ($value, $row, $index) {
-                    $upload = route('admin.movies.servers.upload', [
+                    $upload = route('admin.movies.servers.upload.index', [
                         $this->type, $row->id
                     ]);
 

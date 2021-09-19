@@ -12,32 +12,9 @@ Route::jwResource('{type}/servers/{movie_id}', 'Backend\MovieServerController', 
     'name' => 'movies.servers'
 ]);
 
-Route::group(['prefix' => '{type}/servers/upload'], function () {
-    Route::get('/{server_id}',
-        'Backend\MovieUploadController@index')->name('admin.movies.servers.upload')->where('server_id',
-        '[0-9]+');
-
-    Route::get('/{server_id}/create',
-        'Backend\MovieUploadController@form')->name('admin.movies.servers.upload.create')->where('server_id',
-        '[0-9]+');
-
-    Route::get('/{server_id}/edit/{id}',
-        'Backend\MovieUploadController@form')->name('admin.movies.servers.upload.edit')->where('server_id',
-        '[0-9]+')->where('id', '[0-9]+');
-
-    Route::get('/{server_id}/getdata',
-        'Backend\MovieUploadController@getData')->name('admin.movies.servers.upload.getdata')->where('server_id',
-        '[0-9]+');
-
-    Route::post('/{server_id}/save',
-        'Backend\MovieUploadController@save')->name('admin.movies.servers.upload.save')->where('server_id',
-        '[0-9]+');
-
-    Route::post('/{server_id}/remove',
-        'Backend\MovieUploadController@remove')->name('admin.movies.servers.upload.remove')->where('server_id',
-        '[0-9]+');
-
-});
+Route::jwResource('{type}/servers/upload/{server_id}', 'Backend\MovieUploadController', [
+    'name' => 'movies.servers.upload'
+]);
 
 Route::group(['prefix' => '{type}/servers/upload/subtitle/{file_id}'], function () {
     Route::get('/',

@@ -2,12 +2,12 @@
 
 namespace Juzaweb\Movie\Models\Video;
 
-use App\Core\Helpers\GoogleDrive;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
+use Juzaweb\Traits\ResourceModel;
 
 /**
- * Juzaweb\Movie\Models\Video\VideoFiles
+ * Juzaweb\Movie\Models\Video\VideoFile
  *
  * @property int $id
  * @property int $server_id
@@ -27,36 +27,39 @@ use Illuminate\Support\Facades\Crypt;
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles query()
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereConverted($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereLabel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereMovieId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereServerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereSource($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo1080p($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo2048p($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo240p($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo360p($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo4096p($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo480p($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFiles whereVideo720p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereConverted($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereLabel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereMovieId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereServerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo1080p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo2048p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo240p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo360p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo4096p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo480p($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoFile whereVideo720p($value)
  * @mixin \Eloquent
  * @property int $enable_remote
- * @method static \Illuminate\Database\Eloquent\Builder|VideoFiles whereEnableRemote($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|VideoFile whereEnableRemote($value)
  * @property-read \Juzaweb\Movie\Models\Video\VideoServer|null $server
  * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Movie\Models\Subtitle[] $subtitles
  * @property-read int|null $subtitles_count
  */
-class VideoFiles extends Model
+class VideoFile extends Model
 {
+    use ResourceModel;
+
+    protected $fieldName = 'label';
     protected $table = 'video_files';
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -65,6 +68,8 @@ class VideoFiles extends Model
         'source',
         'url',
         'status',
+        'server_id',
+        'movie_id'
     ];
     
     public function server() {
