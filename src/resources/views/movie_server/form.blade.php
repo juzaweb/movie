@@ -1,15 +1,9 @@
 @extends('juzaweb::layouts.backend')
 
 @section('content')
-    <form method="post" action="{{ route('admin.movies.servers.save', [$page_type, $movie->id]) }}" class="form-ajax">
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group float-right">
-                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('mymo::app.save')</button>
-                </div>
-            </div>
-        </div>
+    @component('juzaweb::components.form_resource', [
+        'model' => $model
+    ])
 
         <div class="row">
 
@@ -36,6 +30,7 @@
             </div>
         </div>
 
-        <input type="hidden" name="id" value="{{ $model->id }}">
-    </form>
+        <input type="hidden" name="movie_id" value="{{ $movie_id }}">
+
+    @endcomponent
 @endsection

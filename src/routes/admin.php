@@ -7,29 +7,10 @@
  * @link       https://juzaweb.com/cms
  * @license    MIT
  */
-Route::group(['prefix' => '{type}/servers'], function () {
-    Route::get('/{movie_id}',
-        'Backend\MovieServesController@index')->name('admin.movies.servers')->where('movie_id', '[0-9]+');
 
-    Route::get('/{movie_id}/getdata',
-        'Backend\MovieServesController@getData')->name('admin.movies.servers.getdata')->where('movie_id',
-        '[0-9]+');
-
-    Route::get('/{movie_id}/create',
-        'Backend\MovieServesController@form')->name('admin.movies.servers.create')->where('movie_id',
-        '[0-9]+');
-
-    Route::get('/{movie_id}/edit/{server_id}',
-        'Backend\MovieServesController@form')->name('admin.movies.servers.edit')->where('movie_id',
-        '[0-9]+')->where('server_id', '[0-9]+');
-
-    Route::post('/{movie_id}/save',
-        'Backend\MovieServesController@save')->name('admin.movies.servers.save')->where('movie_id', '[0-9]+');
-
-    Route::post('/{movie_id}/remove',
-        'Backend\MovieServesController@remove')->name('admin.movies.servers.remove')->where('movie_id',
-        '[0-9]+');
-});
+Route::jwResource('{type}/servers/{movie_id}', 'Backend\MovieServerController', [
+    'name' => 'movies.servers'
+]);
 
 Route::group(['prefix' => '{type}/servers/upload'], function () {
     Route::get('/{server_id}',
@@ -103,6 +84,6 @@ Route::postTypeResource('movies', 'Backend\MovieController');
 
 Route::jwResource('tv-series', 'Backend\TVSerieController');
 
-Route::jwResource('sliders', 'Backend\SliderController');
+
 
 require_once __DIR__ . '/backend/components/tmdb.route.php';

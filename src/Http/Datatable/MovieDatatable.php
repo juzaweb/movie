@@ -51,7 +51,7 @@ class MovieDatatable extends PostTypeDataTable
                 'sortable' => false,
                 'formatter' => function ($value, $row, $index) {
                     $preview = $row->getLink();
-                    $upload = route('admin.movies.servers', ['movies', $row->id]);
+                    $upload = route('admin.movies.servers.index', ['movies', $row->id]);
                     $download = route('admin.movies.download', ['movies', $row->id]);
 
                     return '<div class="dropdown d-inline-block mb-2 mr-2">

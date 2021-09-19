@@ -3,6 +3,7 @@
 namespace Juzaweb\Movie\Models\Video;
 
 use Illuminate\Database\Eloquent\Model;
+use Juzaweb\Traits\ResourceModel;
 
 /**
  * Juzaweb\Movie\Models\Video\VideoServer
@@ -31,11 +32,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class VideoServer extends Model
 {
+    use ResourceModel;
+
     protected $table = 'servers';
     protected $fillable = [
         'name',
         'order',
-        'status'
+        'status',
+        'movie_id'
     ];
     
     public function movie() {
