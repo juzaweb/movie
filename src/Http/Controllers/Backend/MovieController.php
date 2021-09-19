@@ -7,8 +7,6 @@ use Juzaweb\Traits\PostTypeController;
 use Illuminate\Support\Facades\Validator;
 use Juzaweb\Movie\Models\Movie\Movie;
 use Juzaweb\Http\Controllers\BackendController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class MovieController extends BackendController
 {

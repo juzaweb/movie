@@ -29,11 +29,11 @@ class VideoServerDatatable extends DataTable
     {
         return [
 			'name' => [
-                'label' => trans('mymo::content.name'),
+                'label' => trans('mymo::app.name'),
                 'formatter' => [$this, 'rowActionsFormatter'],
             ],
             'order' => [
-                'label' => trans('mymo::content.order'),
+                'label' => trans('mymo::app.order'),
                 'width' => '10%',
             ],
             'created_at' => [
@@ -45,14 +45,16 @@ class VideoServerDatatable extends DataTable
                 }
             ],
             'options' => [
-                'label' => trans('mymo::content.order'),
-                'width' => '10%',
+                'label' => trans('mymo::app.actions'),
+                'width' => '15%',
+                'align' => 'center',
+                'sortable' => false,
                 'formatter' => function ($value, $row, $index) {
                     $upload = route('admin.movies.servers.upload.index', [
                         $this->type, $row->id
                     ]);
 
-                    return '<a href="'. $upload .'" class="btn btn-success btn-sm"><i class="fa fa-upload"></i> '. trans('mymo::app.upload_videos') .'</a>';
+                    return '<a href="'. $upload .'" class="btn btn-success px-2 btn-sm"><i class="fa fa-upload"></i> '. trans('mymo::app.upload_videos') .'</a>';
                 }
             ]
         ];

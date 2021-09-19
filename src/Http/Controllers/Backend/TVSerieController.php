@@ -24,7 +24,7 @@ class TVSerieController extends MovieController
     protected function validator(array $attributes)
     {
         $validator = Validator::make($attributes, [
-            'name' => 'required|string|max:250',
+            'title' => 'required|string|max:250',
             'description' => 'nullable',
             'status' => 'required|in:draft,publish,trash,private',
             'thumbnail' => 'nullable|string|max:250',

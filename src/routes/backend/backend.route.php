@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/components/tmdb.route.php';
 require_once __DIR__ . '/components/live-tv.route.php';
 //require_once __DIR__ . '/components/server-stream.route.php';
 

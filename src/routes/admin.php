@@ -61,6 +61,4 @@ Route::postTypeResource('movies', 'Backend\MovieController');
 
 Route::jwResource('tv-series', 'Backend\TVSerieController');
 
-
-
-require_once __DIR__ . '/backend/components/tmdb.route.php';
+Route::post('/add-movie', 'Backend\TmdbController@addMovie')->name('admin.tmdb.add_movie');
