@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|DownloadLink whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DownloadLink whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DownloadLink whereUrl($value)
+ * @property-read \Juzaweb\Movie\Models\Movie\Movie|null $movie
  */
 class DownloadLink extends Model
 {

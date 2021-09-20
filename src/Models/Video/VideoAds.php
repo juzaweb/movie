@@ -32,6 +32,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoAds whereCreatedBy($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\Juzaweb\Movie\Models\Video\VideoAds whereUpdatedBy($value)
+ * @property-read \Juzaweb\Models\User $createdBy
+ * @property-read \Juzaweb\Models\User $updatedBy
  */
 class VideoAds extends Model
 {

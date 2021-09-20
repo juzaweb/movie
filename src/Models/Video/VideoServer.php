@@ -29,6 +29,7 @@ use Juzaweb\Traits\ResourceModel;
  * @property-read \Juzaweb\Movie\Models\Movie\Movie $movie
  * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Movie\Models\Video\VideoFiles[] $video_files
  * @property-read int|null $video_files_count
+ * @method static \Illuminate\Database\Eloquent\Builder|VideoServer whereFilter($params = [])
  */
 class VideoServer extends Model
 {

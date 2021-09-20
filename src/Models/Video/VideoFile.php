@@ -54,6 +54,7 @@ use Juzaweb\Traits\ResourceModel;
  * @property-read \Juzaweb\Movie\Models\Video\VideoServer|null $server
  * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Movie\Models\Subtitle[] $subtitles
  * @property-read int|null $subtitles_count
+ * @method static \Illuminate\Database\Eloquent\Builder|VideoFile whereFilter($params = [])
  */
 class VideoFile extends Model
 {

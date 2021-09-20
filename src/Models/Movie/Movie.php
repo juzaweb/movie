@@ -8,6 +8,74 @@ use Juzaweb\Traits\PostTypeModel;
 use Juzaweb\Movie\Models\DownloadLink;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Juzaweb\Movie\Models\Movie\Movie
+ *
+ * @property int $id
+ * @property string $title
+ * @property string|null $origin_title
+ * @property string|null $thumbnail
+ * @property string|null $poster
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $content
+ * @property string|null $rating
+ * @property string|null $release
+ * @property int|null $year
+ * @property string|null $runtime
+ * @property string|null $video_quality
+ * @property string|null $trailer_link
+ * @property int|null $current_episode
+ * @property int|null $max_episode
+ * @property int $tv_series
+ * @property int $is_paid
+ * @property string $status
+ * @property int $views
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \Juzaweb\Models\User $createdBy
+ * @property-read \Illuminate\Database\Eloquent\Collection|DownloadLink[] $downloadLinks
+ * @property-read int|null $download_links_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Movie\Models\Movie\MovieRating[] $movieRating
+ * @property-read int|null $movie_rating_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Movie\Models\Video\VideoServer[] $servers
+ * @property-read int|null $servers_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Juzaweb\Models\Taxonomy[] $taxonomies
+ * @property-read int|null $taxonomies_count
+ * @property-read \Juzaweb\Models\User $updatedBy
+ * @method static Builder|Movie newModelQuery()
+ * @method static Builder|Movie newQuery()
+ * @method static Builder|Movie query()
+ * @method static Builder|Movie whereContent($value)
+ * @method static Builder|Movie whereCreatedAt($value)
+ * @method static Builder|Movie whereCurrentEpisode($value)
+ * @method static Builder|Movie whereDescription($value)
+ * @method static Builder|Movie whereFilter($params = [])
+ * @method static Builder|Movie whereId($value)
+ * @method static Builder|Movie whereIsPaid($value)
+ * @method static Builder|Movie whereMaxEpisode($value)
+ * @method static Builder|Movie whereOriginTitle($value)
+ * @method static Builder|Movie wherePoster($value)
+ * @method static Builder|Movie wherePublish()
+ * @method static Builder|Movie whereRating($value)
+ * @method static Builder|Movie whereRelease($value)
+ * @method static Builder|Movie whereRuntime($value)
+ * @method static Builder|Movie whereSlug($value)
+ * @method static Builder|Movie whereStatus($value)
+ * @method static Builder|Movie whereTaxonomy($taxonomy)
+ * @method static Builder|Movie whereTaxonomyIn($taxonomies)
+ * @method static Builder|Movie whereThumbnail($value)
+ * @method static Builder|Movie whereTitle($value)
+ * @method static Builder|Movie whereTrailerLink($value)
+ * @method static Builder|Movie whereTvSeries($value)
+ * @method static Builder|Movie whereUpdatedAt($value)
+ * @method static Builder|Movie whereVideoQuality($value)
+ * @method static Builder|Movie whereViews($value)
+ * @method static Builder|Movie whereYear($value)
+ * @mixin \Eloquent
+ */
 class Movie extends Model
 {
     use PostTypeModel;

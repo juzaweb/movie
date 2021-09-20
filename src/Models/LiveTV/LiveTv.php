@@ -46,6 +46,8 @@ use Juzaweb\Traits\UseThumbnail;
  * @mixin \Eloquent
  * @property string|null $tags
  * @method static \Illuminate\Database\Eloquent\Builder|LiveTv whereTags($value)
+ * @property-read \Juzaweb\Models\User $createdBy
+ * @property-read \Juzaweb\Models\User $updatedBy
  */
 class LiveTv extends Model
 {

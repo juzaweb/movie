@@ -91,5 +91,13 @@ class MenuAction extends Action
                 'thumbnail'
             ],
         ]);
+
+        HookAction::registerTaxonomy('years', 'movies', [
+            'label' => trans('mymo::app.years'),
+            'menu_position' => 8,
+            'supports' => [
+                'thumbnail'
+            ],
+        ]);
     }
 }
