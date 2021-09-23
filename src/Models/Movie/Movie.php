@@ -3,7 +3,8 @@
 namespace Juzaweb\Movie\Models\Movie;
 
 use Illuminate\Support\Arr;
-use Illuminate\Database\Eloquent\Model;
+use Juzaweb\Models\Model;
+use Juzaweb\Movie\Models\Video\VideoServer;
 use Juzaweb\Traits\PostTypeModel;
 use Juzaweb\Movie\Models\DownloadLink;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,7 +97,8 @@ class Movie extends Model
         'max_episode',
         'year',
         'status',
-        'tv_series'
+        'tv_series',
+        'slug'
     ];
 
     protected $searchAttributes = [
@@ -136,12 +138,12 @@ class Movie extends Model
 
     public function movieRating()
     {
-        return $this->hasMany('Juzaweb\Movie\Models\Movie\MovieRating', 'movie_id', 'id');
+        return $this->hasMany(MovieRating::class, 'movie_id', 'id');
     }
     
     public function servers()
     {
-        return $this->hasMany('Juzaweb\Movie\Models\Video\VideoServer', 'movie_id', 'id');
+        return $this->hasMany(VideoServer::class, 'movie_id', 'id');
     }
     
     public function getViews()

@@ -141,4 +141,6 @@ return [
     'actions' => 'Actions',
     'are_you_sure_you_want_to_delete_this_banner' => 'Are you sure you want to delete this banner?',
     'sliders' => 'Sliders',
+    'year' => 'Year',
+    'years' => 'Years',
 ];

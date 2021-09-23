@@ -2,25 +2,23 @@
 
 namespace Juzaweb\Movie\Helpers;
 
-use Juzaweb\Movie\Models\Category\Countries;
-use Juzaweb\Movie\Models\Files;
-use Juzaweb\Movie\Models\Category\Genres;
+use Juzaweb\Models\Taxonomy;
 use Juzaweb\Movie\Models\Movie\Movie;
-use Juzaweb\Movie\Models\Category\Stars;
-use Juzaweb\Movie\Models\Category\Tags;
 use Illuminate\Support\Str;
+use Juzaweb\Support\FileManager;
 
 class ImportMovie
 {
     public $data;
     public $errors = [];
     
-    public function __construct(array $data) {
-        $fill_data = [
+    public function __construct(array $data)
+    {
+        $fillData = [
             'name',
             'other_name',
             'description',
-            'short_description',
+            'content',
             'type_id',
             'poster',
             'rating',
@@ -36,7 +34,7 @@ class ImportMovie
             'tv_series',
         ];
         
-        $array_data = [
+        $arrayData = [
             'genres',
             'countries',
             'actors',
@@ -45,7 +43,7 @@ class ImportMovie
             'tags'
         ];
         
-        foreach ($fill_data as $item) {
+        foreach ($fillData as $item) {
             if (!isset($data[$item])) {
                 $data[$item] = null;
             }
@@ -54,7 +52,7 @@ class ImportMovie
             }
         }
     
-        foreach ($array_data as $item) {
+        foreach ($arrayData as $item) {
             if (!isset($data[$item])) {
                 $data[$item] = [];
             }
@@ -66,44 +64,37 @@ class ImportMovie
     /**
      * Save import movie.
      *
-     * @return Movies|false
+     * @return Movie|false
      */
-    public function save() {
+    public function save()
+    {
         if (!$this->validate()) {
             return false;
         }
         
-        $model = new Movies();
-        $model->fill($this->data);
-        $model->thumbnail = $this->downloadImage($this->data['thumbnail'], $this->data['name']);
-        $model->poster = $this->downloadImage($this->data['poster'], $this->data['name']);
-        $model->genres = $this->getGenreIds($this->data['genres']);
-        $model->countries = $this->getCounrtyIds($this->data['countries']);
-    
-        $model->actors = $this->getStarIds($this->data['actors'], 'actor');
-        $model->writers = $this->getStarIds($this->data['writers'], 'writer');
-        $model->directors = $this->getStarIds($this->data['directors'], 'director');
-        $model->tags = $this->getTagsIds($this->data['tags']);
-        $model->tv_series = $this->data['tv_series'] ? 1 : 0;
-        $model->status = 1;
+        $model = Movie::create(array_merge($this->data, [
+            'thumbnail' => FileManager::addFile($this->data['thumbnail']),
+            'poster' => FileManager::addFile($this->data['poster']),
+            'tv_series' => $this->data['tv_series'] ? 1 : 0,
+            'video_quality' => $this->data['video_quality'] ?? 'HD',
+            'year' => explode('-', $this->data['release'] ?? '')[0],
+            'status' => 'publish',
+        ]));
 
-        if ($model->release && empty($model->year)) {
-            $model->year = explode('-', $model->release)[0];
-        }
-        
-        if (empty($model->video_quality)) {
-            $model->video_quality = 'HD';
-        }
-        
-        if ($model->description && empty($model->short_description)) {
-            $model->short_description = sub_words(strip_tags($model->description), 15);
-        }
-        
-        $model->save();
+        $model->syncTaxonomies([
+            'genres' => $this->getTaxonomyIds($this->data['genres'], 'genres'),
+            'countries' => $this->getTaxonomyIds($this->data['countries'], 'countries'),
+            'actors' => $this->getTaxonomyIds($this->data['actors'], 'actors'),
+            'writers' => $this->getTaxonomyIds($this->data['writers'], 'writers'),
+            'directors' => $this->getTaxonomyIds($this->data['directors'], 'directors'),
+            'tags' => $this->getTaxonomyIds($this->data['tags'], 'tags'),
+        ]);
+
         return $model;
     }
 
-    public function validate() {
+    public function validate()
+    {
         if (empty($this->data['name'])) {
             $this->errors[] = 'Name is required.';
         }
@@ -139,40 +130,8 @@ class ImportMovie
         return true;
     }
     
-    protected function downloadImage($image, $name) {
-        if (empty($image)) {
-            return null;
-        }
-        
-        $data = [];
-        $data['name'] = basename($image);
-        $slip = explode('.', $data['name']);
-        $data['extension'] = $slip[count($slip) - 1];
-        $new_file = Str::slug($name) . '-' . Str::random(10) . '-'. time() .'.' . $data['extension'];
-        
-        $new_dir = \Storage::disk('public')->path(date('Y/m/d'));
-        if (!is_dir($new_dir)) {
-            \File::makeDirectory($new_dir, 0775, true);
-        }
-        
-        $get_file = file_put_contents($new_dir . '/' . $new_file, file_get_contents($image));
-        if ($get_file) {
-            $data['path'] = date('Y/m/d') .'/'. $new_file;
-            $model = new Files();
-            $model->fill($data);
-            $model->type = 1;
-            $model->mime_type = \Storage::disk('public')
-                ->mimeType($data['path']);
-            $model->user_id = \Auth::check() ? \Auth::id() : 1;
-            $model->save();
-            
-            return $data['path'];
-        }
-        
-        return null;
-    }
-    
-    protected function getGenreIds($genres) {
+    protected function getTaxonomyIds($genres, $type)
+    {
         if (is_string($genres)) {
             return $genres;
         }
@@ -180,117 +139,25 @@ class ImportMovie
         $result = [];
         foreach ($genres as $genre) {
             if ($genre['name']) {
-                $result[] = $this->addOrGetGenre($genre['name']);
+                $result[] = $this->addOrGetTaxonomy($genre['name'], $type);
             }
         }
-        return implode(',', $result);
+
+        return $result;
     }
-    
-    protected function getCounrtyIds($countries) {
-        if (empty($countries)) {
-            return null;
-        }
-        
-        if (is_string($countries)) {
-            return $countries;
-        }
-        
-        $result = [];
-        foreach ($countries as $country) {
-            if ($country['name']) {
-                $result[] = $this->addOrGetCountry($country['name']);
-            }
-        }
-        return implode(',', $result);
-    }
-    
-    protected function getStarIds($stars, $type = 'actor') {
-        if (is_string($stars)) {
-            return $stars;
-        }
-        
-        $result = [];
-        foreach ($stars as $star) {
-            if ($star['name']) {
-                $result[] = $this->addOrGetStar($star['name'], $type);
-            }
-        }
-        return implode(',', $result);
-    }
-    
-    protected function getTagsIds($tags) {
-        if (is_string($tags)) {
-            return $tags;
-        }
-        
-        $result = [];
-        foreach ($tags as $tag) {
-            if ($tag['name']) {
-                $result[] = $this->addOrGetTag($tag['name']);
-            }
-        }
-        
-        return implode(',', $result);
-    }
-    
-    protected function addOrGetGenre($name) {
+
+    protected function addOrGetTaxonomy($name, $type)
+    {
         $name = trim($name);
         $slug = Str::slug($name);
-        $genre = Genres::where('slug', $slug)->first(['id']);
-        if ($genre) {
-            return $genre->id;
-        }
-        
-        $model = new Genres();
-        $model->name = $name;
-        $model->slug = $slug;
-        $model->save();
-        return $model->id;
-    }
-    
-    protected function addOrGetCountry($name) {
-        $name = trim($name);
-        $slug = Str::slug($name);
-        $genre = Countries::where('slug', $slug)->first(['id']);
-        if ($genre) {
-            return $genre->id;
-        }
-        
-        $model = new Countries();
-        $model->name = $name;
-        $model->slug = $slug;
-        $model->save();
-        return $model->id;
-    }
-    
-    protected function addOrGetStar($name, $type = 'actor') {
-        $name = trim($name);
-        $slug = Str::slug($name);
-        $genre = Stars::where('slug', $slug)->first(['id']);
-        if ($genre) {
-            return $genre->id;
-        }
-        
-        $model = new Stars();
-        $model->name = $name;
-        $model->slug = $slug;
-        $model->type = $type;
-        $model->save();
-        return $model->id;
-    }
-    
-    protected function addOrGetTag($name) {
-        $name = trim($name);
-        $slug = Str::slug($name);
-        $tag = Tags::where('slug', $slug)->first(['id']);
-        if ($tag) {
-            return $tag->id;
-        }
-        
-        $model = new Tags();
-        $model->name = $name;
-        $model->slug = $slug;
-        $model->save();
+
+        $model = Taxonomy::firstOrCreate([
+            'taxonomy' => $type,
+            'slug' => $slug
+        ], [
+            'name' => $name
+        ]);
+
         return $model->id;
     }
 }

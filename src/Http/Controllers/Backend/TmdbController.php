@@ -4,7 +4,6 @@ namespace Juzaweb\Movie\Http\Controllers\Backend;
 
 use Juzaweb\Models\Taxonomy;
 use Juzaweb\Movie\Helpers\TmdbApi;
-use Juzaweb\Movie\Models\Files;
 use Juzaweb\Movie\Models\Movie\Movie;
 use Illuminate\Http\Request;
 use Juzaweb\Http\Controllers\BackendController;
@@ -13,9 +12,9 @@ use Illuminate\Support\Str;
 class TmdbController extends BackendController
 {
     public function addMovie(Request $request) {
-        $this->validateRequest([
+        $this->validate($request, [
             'tmdb' => 'required',
-        ], $request);
+        ]);
         
         if (empty(get_config('tmdb_api_key'))) {
             return response()->json([
