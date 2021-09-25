@@ -50,7 +50,10 @@
                 <input type="text" name="trailer_link" class="form-control" id="trailer_link" value="{{ $model->trailer_link }}" autocomplete="off">
             </div>
 
-            {{--qualities--}}
+            <div class="form-group">
+                <label class="col-form-label" for="quality">@lang('mymo::app.quality')</label>
+                <input type="text" name="quality" class="form-control" id="quality" value="{{ $model->quality ? $model->quality : 'HD' }}" autocomplete="off">
+            </div>
 
             @do_action('post_type.movies.form.left')
         </div>

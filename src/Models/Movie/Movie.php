@@ -4,6 +4,7 @@ namespace Juzaweb\Movie\Models\Movie;
 
 use Illuminate\Support\Arr;
 use Juzaweb\Models\Model;
+use Juzaweb\Models\Taxonomy;
 use Juzaweb\Movie\Models\Video\VideoServer;
 use Juzaweb\Traits\PostTypeModel;
 use Juzaweb\Movie\Models\DownloadLink;
@@ -81,6 +82,7 @@ class Movie extends Model
 {
     use PostTypeModel;
 
+    protected $postType = 'movies';
     protected $fillable = [
         'title',
         'thumbnail',
@@ -98,7 +100,8 @@ class Movie extends Model
         'year',
         'status',
         'tv_series',
-        'slug'
+        'slug',
+        'quality'
     ];
 
     protected $searchAttributes = [
@@ -106,12 +109,35 @@ class Movie extends Model
         'origin_title'
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            /**
+             * @var Movie $model
+             */
+            if ($model->year) {
+                $year = Taxonomy::firstOrCreate([
+                    'slug' => $model->year,
+                    'taxonomy' => 'years',
+                    'name' => $model->year,
+                    'post_type' => 'movies',
+                ]);
+
+                $model->syncTaxonomy('years', [
+                    'years' => [$year->id]
+                ], 'movies');
+            } else {
+                $model->syncTaxonomy('years', [
+                    'years' => []
+                ], 'movies');
+            }
+        });
+    }
+
     public function fill(array $attributes)
     {
-        if ($description = Arr::get($attributes, 'description')) {
-            $attributes['short_description'] = sub_words(strip_tags($description), 15);
-        }
-
         if ($release = Arr::get($attributes, 'release')) {
             $attributes['year'] = explode('-', $release)[0];
         }
@@ -201,7 +227,7 @@ class Movie extends Model
         $query->select([
             'id',
             'name',
-            'other_name',
+            'origin_title',
             'short_description',
             'thumbnail',
             'slug',

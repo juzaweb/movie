@@ -50,6 +50,6 @@
         }
     </script>
 
-{{--@include('mymo::movies.form_tmdb')--}}
+@include('mymo::movies.form_tmdb')
 
 @endsection

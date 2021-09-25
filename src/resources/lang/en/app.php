@@ -143,4 +143,5 @@ return [
     'sliders' => 'Sliders',
     'year' => 'Year',
     'years' => 'Years',
+    'mymo_setting' => 'Mymo Setting',
 ];

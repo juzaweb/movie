@@ -31,10 +31,6 @@ class CreateMoviesTable extends Migration
             $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
-        
-        //$prefix = DB::getTablePrefix();
-        //DB::statement('ALTER TABLE `'. $prefix .'movies` ADD FULLTEXT index_name(name);');
-        //DB::statement('ALTER TABLE `'. $prefix .'movies` ADD FULLTEXT index_other_name(other_name);');
     }
     
     public function down()

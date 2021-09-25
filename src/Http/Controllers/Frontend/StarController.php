@@ -16,7 +16,7 @@ class StarController extends FrontendController
         $items = Movie::select([
             'id',
             'name',
-            'other_name',
+            'origin_title',
             'short_description',
             'thumbnail',
             'slug',

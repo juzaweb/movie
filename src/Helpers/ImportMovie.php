@@ -6,6 +6,7 @@ use Juzaweb\Models\Taxonomy;
 use Juzaweb\Movie\Models\Movie\Movie;
 use Illuminate\Support\Str;
 use Juzaweb\Support\FileManager;
+use Illuminate\Support\Facades\DB;
 
 class ImportMovie
 {
@@ -15,8 +16,8 @@ class ImportMovie
     public function __construct(array $data)
     {
         $fillData = [
-            'name',
-            'other_name',
+            'title',
+            'origin_title',
             'description',
             'content',
             'type_id',
@@ -71,36 +72,46 @@ class ImportMovie
         if (!$this->validate()) {
             return false;
         }
-        
-        $model = Movie::create(array_merge($this->data, [
-            'thumbnail' => FileManager::addFile($this->data['thumbnail']),
-            'poster' => FileManager::addFile($this->data['poster']),
-            'tv_series' => $this->data['tv_series'] ? 1 : 0,
-            'video_quality' => $this->data['video_quality'] ?? 'HD',
-            'year' => explode('-', $this->data['release'] ?? '')[0],
-            'status' => 'publish',
-        ]));
 
-        $model->syncTaxonomies([
-            'genres' => $this->getTaxonomyIds($this->data['genres'], 'genres'),
-            'countries' => $this->getTaxonomyIds($this->data['countries'], 'countries'),
-            'actors' => $this->getTaxonomyIds($this->data['actors'], 'actors'),
-            'writers' => $this->getTaxonomyIds($this->data['writers'], 'writers'),
-            'directors' => $this->getTaxonomyIds($this->data['directors'], 'directors'),
-            'tags' => $this->getTaxonomyIds($this->data['tags'], 'tags'),
-        ]);
+        DB::beginTransaction();
+
+        try {
+            $model = Movie::create(array_merge($this->data, [
+                'thumbnail' => FileManager::addFile($this->data['thumbnail'])->path,
+                'poster' => FileManager::addFile($this->data['poster'])->path,
+                'tv_series' => $this->data['tv_series'] ? 1 : 0,
+                'video_quality' => $this->data['video_quality'] ?? 'HD',
+                'year' => explode('-', $this->data['release'] ?? '')[0],
+                'status' => 'publish',
+            ]));
+
+            $model->syncTaxonomies([
+                'genres' => $this->getTaxonomyIds($this->data['genres'], 'genres'),
+                'countries' => $this->getTaxonomyIds($this->data['countries'], 'countries'),
+                'actors' => $this->getTaxonomyIds($this->data['actors'], 'actors'),
+                'writers' => $this->getTaxonomyIds($this->data['writers'], 'writers'),
+                'directors' => $this->getTaxonomyIds($this->data['directors'], 'directors'),
+                'tags' => $this->getTaxonomyIds($this->data['tags'], 'tags'),
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
 
         return $model;
     }
 
     public function validate()
     {
-        if (empty($this->data['name'])) {
-            $this->errors[] = 'Name is required.';
+        if (empty($this->data['title'])) {
+            $this->errors[] = 'Title is required.';
         }
     
-        if (empty($this->data['description'])) {
-            $this->errors[] = 'Description is required.';
+        if (empty($this->data['content'])) {
+            $this->errors[] = 'Content is required.';
         }
     
         if (empty($this->data['thumbnail'])) {
@@ -111,13 +122,13 @@ class ImportMovie
             $this->errors[] = 'Genres is required.';
         }
         
-        if ($this->data['tv_series'] === null) {
+        if (is_null($this->data['tv_series'])) {
             $this->errors[] = 'TV Series is required.';
         }
-        
-        if (Movie::where('other_name', '=', $this->data['other_name'])
+
+        if (Movie::where('origin_title', '=', $this->data['origin_title'])
             ->where('year', '=', $this->data['year'])
-            ->whereNotNull('other_name')
+            ->whereNotNull('origin_title')
             ->whereNotNull('year')
             ->exists()) {
             $this->errors[] = 'Movie is exists.';
@@ -149,13 +160,11 @@ class ImportMovie
     protected function addOrGetTaxonomy($name, $type)
     {
         $name = trim($name);
-        $slug = Str::slug($name);
 
         $model = Taxonomy::firstOrCreate([
             'taxonomy' => $type,
-            'slug' => $slug
-        ], [
-            'name' => $name
+            'name' => $name,
+            'post_type' => 'movies'
         ]);
 
         return $model->id;

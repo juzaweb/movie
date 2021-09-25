@@ -17,6 +17,7 @@ class MenuAction extends Action
     {
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'registerMovie']);
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'registerTaxonomies']);
+        $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'addSettingForm']);
     }
 
     public function registerMovie()
@@ -95,9 +96,17 @@ class MenuAction extends Action
         HookAction::registerTaxonomy('years', 'movies', [
             'label' => trans('mymo::app.years'),
             'menu_position' => 8,
-            'supports' => [
-                'thumbnail'
-            ],
+            'show_in_menu' => false,
+            'supports' => [],
+        ]);
+    }
+
+    public function addSettingForm()
+    {
+        HookAction::addSettingForm('mymo', [
+            'name' => trans('mymo::app.mymo_setting'),
+            'view' => view('mymo::setting.tmdb'),
+            'priority' => 20
         ]);
     }
 }

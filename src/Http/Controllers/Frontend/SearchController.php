@@ -24,7 +24,7 @@ class SearchController extends FrontendController
         $query = Movie::select([
             'id',
             'name',
-            'other_name',
+            'origin_title',
             'short_description',
             'thumbnail',
             'slug',
