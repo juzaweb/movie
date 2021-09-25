@@ -8,7 +8,6 @@
 
         <div class="row">
             <div class="col-md-12">
-
                 <div class="form-group">
                     <label class="col-form-label" for="label">@lang('mymo::app.label')</label>
                     <input type="text" name="label" class="form-control" id="label" autocomplete="off" required value="{{ $model->label }}">
@@ -50,8 +49,8 @@
 
             <input type="hidden" name="server_id" value="{{ $server_id }}">
             <input type="hidden" name="movie_id" value="{{ $server->movie_id }}">
-
         </div>
+
     @endcomponent
 
 @endsection

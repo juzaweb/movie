@@ -2,16 +2,9 @@
 
 @section('content')
 
-    <form method="post" action="{{ route('admin.movies.servers.upload.subtitle.save', [$page_type, $file_id]) }}" class="form-ajax">
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-group float-right">
-                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('mymo::app.save')</button>
-                    <a href="{{ route('admin.movies.servers.upload.subtitle', [$page_type, $file_id]) }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('mymo::app.cancel')</a>
-                </div>
-            </div>
-        </div>
+    @component('juzaweb::components.form_resource', [
+        'model' => $model
+    ])
 
         <div class="row">
             <div class="col-md-12">
@@ -39,11 +32,13 @@
                         <option value="0" @if($model->status == 0 && !is_null($model->status)) selected @endif>@lang('mymo::app.disabled')</option>
                     </select>
                 </div>
+
+                <input type="hidden" name="file_id" value="{{ $file_id }}">
+                <input type="hidden" name="movie_id" value="{{ $file->server->movie_id }}">
+
             </div>
         </div>
 
-        <input type="hidden" name="id" value="{{ $model->id }}">
-
-    </form>
+    @endcomponent
 
 @endsection

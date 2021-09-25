@@ -9,6 +9,13 @@ use Juzaweb\Movie\Models\Video\VideoFile;
 
 class VideoFileDatatable extends DataTable
 {
+    public $type;
+
+    public function mount($type)
+    {
+        $this->type = $type;
+    }
+
     /**
      * Columns datatable
      *
@@ -56,7 +63,7 @@ class VideoFileDatatable extends DataTable
                 'width' => '10%',
                 'align' => 'center',
                 'formatter' => function ($value, $row, $index) {
-                    return '<a href="" class="btn btn-success btn-sm px-2"><i class="fa fa-plus"></i> '. trans('mymo::app.add_subtitle') .'</a>';
+                    return '<a href="'. route('admin.movies.servers.upload.subtitle.index', [$this->type, $row->id]) .'" class="btn btn-success btn-sm px-2"><i class="fa fa-plus"></i> '. trans('mymo::app.add_subtitle') .'</a>';
                 }
             ]
         ];
@@ -86,7 +93,7 @@ class VideoFileDatatable extends DataTable
     {
         switch ($action) {
             case 'delete':
-                
+                VideoFile::destroy($ids);
                 break;
         }
     }

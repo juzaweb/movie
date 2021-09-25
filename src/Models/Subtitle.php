@@ -3,6 +3,7 @@
 namespace Juzaweb\Movie\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Juzaweb\Traits\ResourceModel;
 
 /**
  * Juzaweb\Movie\Models\Subtitle
@@ -32,11 +33,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Subtitle extends Model
 {
+    use ResourceModel;
+
     protected $table = 'subtitles';
+    protected $fieldName = 'label';
     protected $fillable = [
         'label',
         'url',
         'order',
-        'status'
+        'status',
+        'file_id',
+        'movie_id'
     ];
 }

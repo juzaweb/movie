@@ -101,7 +101,6 @@ class Movie extends Model
         'status',
         'tv_series',
         'slug',
-        'quality'
     ];
 
     protected $searchAttributes = [

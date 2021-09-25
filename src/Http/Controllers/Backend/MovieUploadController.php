@@ -26,6 +26,7 @@ class MovieUploadController extends BackendController
     protected function getDataTable($page_type, $server_id)
     {
         $dataTable = new VideoFileDatatable();
+        $dataTable->mountData($page_type);
         return $dataTable;
     }
 

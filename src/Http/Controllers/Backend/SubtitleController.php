@@ -2,122 +2,79 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
-use Juzaweb\Movie\Models\Movie\Movie;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Juzaweb\Movie\Http\Datatable\SubtitleDatatable;
 use Juzaweb\Http\Controllers\BackendController;
-use Juzaweb\Movie\Models\Video\VideoFiles;
+use Juzaweb\Movie\Models\Movie\Movie;
 use Juzaweb\Movie\Models\Subtitle;
+use Juzaweb\Movie\Models\Video\VideoFile;
+use Juzaweb\Traits\ResourceController;
 
 class SubtitleController extends BackendController
 {
-    public function index($page_type, $file_id) {
-        $file = VideoFiles::findOrFail($file_id);
-        $movie = Movie::findOrFail($file->server->movie_id);
-        
-        return view('mymo::movie_upload.subtitle.index', [
-            'page_type' => $page_type,
-            'file' => $file,
-            'file_id' => $file_id,
-            'movie' => $movie,
-            'title' => trans('mymo::app.subtitle')
-        ]);
+    use ResourceController {
+        getDataForForm as DataForForm;
     }
-    
-    public function form($page_type, $file_id, $id = null) {
-        $file = VideoFiles::findOrFail($file_id);
-        $movie = Movie::findOrFail($file->server->movie_id);
-        
-        $model = Subtitle::firstOrNew(['id' => $id]);
-        return view('mymo::movie_upload.subtitle.form', [
-            'model' => $model,
-            'page_type' => $page_type,
-            'file' => $file,
-            'file_id' => $file_id,
-            'movie' => $movie,
-            'title' => $model->label ? $model->label : trans('mymo::app.add_new')
-        ]);
+
+    protected $viewPrefix = 'mymo::movie_upload.subtitle';
+
+    /**
+     * Get data table resource
+     *
+     * @return \Juzaweb\Abstracts\DataTable
+     */
+    protected function getDataTable($page_type, $file_id)
+    {
+        $dataTable = new SubtitleDatatable();
+        $dataTable->mountData($page_type, $file_id);
+        return $dataTable;
     }
-    
-    public function getData($page_type, $file_id, Request $request) {
-        VideoFiles::findOrFail($file_id);
-        $search = $request->get('search');
-        $status = $request->get('status');
-        
-        $sort = $request->get('sort', 'id');
-        $order = $request->get('order', 'desc');
-        $offset = $request->get('offset', 0);
-        $limit = $request->get('limit', 20);
-        
-        $query = Subtitle::query();
-        $query->where('file_id', '=', $file_id);
-        
-        if ($search) {
-            $query->where(function ($subquery) use ($search) {
-                $subquery->orWhere('label', 'like', '%'. $search .'%');
-                $subquery->orWhere('url', 'like', '%'. $search .'%');
-            });
-        }
-        
-        if (!is_null($status)) {
-            $query->where('status', '=', $status);
-        }
-        
-        $count = $query->count();
-        $query->orderBy($sort, $order);
-        $query->offset($offset);
-        $query->limit($limit);
-        $rows = $query->get();
-        
-        foreach ($rows as $row) {
-            $row->created = $row->created_at->format('H:i Y-m-d');
-            $row->edit_url = route('admin.movies.servers.upload.subtitle.edit', [$page_type, $file_id, $row->id]);
-        }
-        
-        return response()->json([
-            'total' => $count,
-            'rows' => $rows
-        ]);
-    }
-    
-    public function save($page_type, $file_id, Request $request) {
-        $file = VideoFiles::findOrFail($file_id);
-        
-        $this->validateRequest([
+
+    /**
+     * Validator for store and update
+     *
+     * @param array $attributes
+     * @return Validator|array
+     */
+    protected function validator(array $attributes, $page_type, $file_id)
+    {
+        return [
             'label' => 'required|string|max:250',
             'url' => 'required|string|max:300',
             'order' => 'required|numeric|max:300',
             'status' => 'required|in:0,1',
-        ], $request, [
-            'label' => trans('mymo::app.label'),
-            'url' => trans('mymo::app.url'),
-            'order' => trans('mymo::app.order'),
-            'status' => trans('mymo::app.status'),
-        ]);
-        
-        $model = Subtitle::firstOrNew(['id' => $request->post('id')]);
-        $model->fill($request->all());
-        $model->file_id = $file_id;
-        $model->movie_id = $file->movie_id;
-        $model->save();
-        
-        return $this->success([
-            'message' => trans('mymo::app.saved_successfully'),
-            'redirect' => route('admin.movies.servers.upload.subtitle', [$page_type, $file_id]),
-        ]);
+        ];
     }
-    
-    public function remove($page_type, $file_id, Request $request) {
-        VideoFiles::findOrFail($file_id);
-        $this->validateRequest([
-            'ids' => 'required',
-        ], $request, [
-            'ids' => trans('mymo::app.subtitle')
-        ]);
-        
-        Subtitle::destroy($request->post('ids'));
-        
-        return $this->success([
-            'message' => trans('mymo::app.deleted_successfully'),
-        ]);
+
+    /**
+     * Get model resource
+     *
+     * @param array $params
+     * @return string // namespace model
+     */
+    protected function getModel($page_type, $file_id)
+    {
+        return Subtitle::class;
+    }
+
+    /**
+     * Get title resource
+     *
+     * @param array $params
+     * @return string
+     */
+    protected function getTitle($page_type, $file_id)
+    {
+        return trans('mymo::app.subtitle');
+    }
+
+    protected function getDataForForm($model, $page_type, $file_id)
+    {
+        $data = $this->DataForForm($model, $page_type, $file_id);
+        $file = VideoFile::findOrFail($file_id);
+        $data['page_type'] = $page_type;
+        $data['file_id'] = $file_id;
+        $data['file'] = $file;
+        return $data;
     }
 }

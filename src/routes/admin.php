@@ -16,31 +16,9 @@ Route::jwResource('{type}/servers/upload/{server_id}', 'Backend\MovieUploadContr
     'name' => 'movies.servers.upload'
 ]);
 
-Route::group(['prefix' => '{type}/servers/upload/subtitle/{file_id}'], function () {
-    Route::get('/',
-        'Backend\SubtitleController@index')->name('admin.movies.servers.upload.subtitle')->where('file_id',
-        '[0-9]+');
-
-    Route::get('create',
-        'Backend\SubtitleController@form')->name('admin.movies.servers.upload.subtitle.create')->where('file_id',
-        '[0-9]+');
-
-    Route::get('edit/{id}',
-        'Backend\SubtitleController@form')->name('admin.movies.servers.upload.subtitle.edit')->where('file_id',
-        '[0-9]+')->where('id', '[0-9]+');
-
-    Route::get('getdata',
-        'Backend\SubtitleController@getData')->name('admin.movies.servers.upload.subtitle.getdata')->where('file_id',
-        '[0-9]+');
-
-    Route::post('save',
-        'Backend\SubtitleController@save')->name('admin.movies.servers.upload.subtitle.save')->where('file_id',
-        '[0-9]+');
-
-    Route::post('remove',
-        'Backend\SubtitleController@remove')->name('admin.movies.servers.upload.subtitle.remove')->where('file_id',
-        '[0-9]+');
-});
+Route::jwResource('{type}/servers/upload/subtitle/{file_id}', 'Backend\SubtitleController', [
+    'name' => 'movies.servers.upload.subtitle',
+]);
 
 Route::group(['prefix' => '{type}/download/{movie_id}'], function () {
     Route::get('/', 'Backend\MovieDownloadController@index')->name('admin.movies.download');

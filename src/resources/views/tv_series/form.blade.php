@@ -3,7 +3,7 @@
 @section('content')
     @if($model->id)
         <div class="btn-group mr-5">
-            <a href="{{ route('admin.movies.servers', ['tv-series', $model->id]) }}" class="btn btn-success"><i class="fa fa-upload"></i> @lang('mymo::app.upload_videos')</a>
+            <a href="{{ route('admin.movies.servers.index', ['tv-series', $model->id]) }}" class="btn btn-success"><i class="fa fa-upload"></i> @lang('mymo::app.upload_videos')</a>
         </div>
     @endif
 
@@ -68,7 +68,10 @@
                 <input type="text" name="trailer_link" class="form-control" id="trailer_link" value="{{ $model->trailer_link }}" autocomplete="off">
             </div>
 
-            {{--qualities--}}
+            <div class="form-group">
+                <label class="col-form-label" for="quality">@lang('mymo::app.quality')</label>
+                <input type="text" name="video_quality" class="form-control" id="video_quality" value="{{ $model->video_quality ? $model->video_quality : 'HD' }}" autocomplete="off">
+            </div>
 
             <input type="hidden" name="tv_series" value="1">
 
