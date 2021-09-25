@@ -2,6 +2,7 @@
 
 namespace Juzaweb\Movie\Models\Video;
 
+use Juzaweb\Traits\ResourceModel;
 use Juzaweb\Traits\UseChangeBy;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,7 +38,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class VideoAds extends Model
 {
-    use UseChangeBy;
+    use ResourceModel, UseChangeBy;
+
     protected $table = 'video_ads';
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -49,7 +51,8 @@ class VideoAds extends Model
         'status'
     ];
     
-    public function getVideoUrl() {
+    public function getVideoUrl()
+    {
         if (is_url($this->video_url)) {
             return $this->video_url;
         }
@@ -60,6 +63,7 @@ class VideoAds extends Model
         ]);
     
         $file = \Crypt::encryptString($file);
+
         return route('stream.video', [base64_encode($token), base64_encode($file), basename($this->video_url)]);
     }
 }

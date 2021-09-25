@@ -144,4 +144,5 @@ return [
     'year' => 'Year',
     'years' => 'Years',
     'mymo_setting' => 'Mymo Setting',
+    'title' => 'Title',
 ];

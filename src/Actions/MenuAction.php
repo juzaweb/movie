@@ -18,6 +18,7 @@ class MenuAction extends Action
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'registerMovie']);
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'registerTaxonomies']);
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'addSettingForm']);
+        $this->addAction(self::BACKEND_CALL_ACTION, [$this, 'addAdminMenus']);
     }
 
     public function registerMovie()
@@ -108,5 +109,18 @@ class MenuAction extends Action
             'view' => view('mymo::setting.tmdb'),
             'priority' => 20
         ]);
+    }
+
+    public function addAdminMenus()
+    {
+        HookAction::addAdminMenu(
+            trans('mymo::app.video_ads'),
+            'video-ads',
+            [
+                'icon' => 'fa fa-video-camera',
+                'position' => 30,
+                'parent' => 'setting',
+            ]
+        );
     }
 }

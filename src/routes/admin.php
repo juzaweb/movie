@@ -39,4 +39,6 @@ Route::postTypeResource('movies', 'Backend\MovieController');
 
 Route::jwResource('tv-series', 'Backend\TVSerieController');
 
+Route::jwResource('video-ads', 'Backend\VideoAdsController');
+
 Route::post('/add-movie', 'Backend\TmdbController@addMovie')->name('admin.tmdb.add_movie');

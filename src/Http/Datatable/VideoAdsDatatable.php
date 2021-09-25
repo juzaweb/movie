@@ -5,18 +5,10 @@ namespace Juzaweb\Movie\Http\Datatable;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Juzaweb\Abstracts\DataTable;
-use Juzaweb\Movie\Models\Subtitle;
+use Juzaweb\Movie\Models\Video\VideoAds;
 
-class SubtitleDatatable extends DataTable
+class VideoAdsDatatable extends DataTable
 {
-    public $page_type, $file_id;
-
-    public function mount($page_type, $file_id)
-    {
-        $this->page_type = $page_type;
-        $this->file_id = $file_id;
-    }
-
     /**
      * Columns datatable
      *
@@ -25,9 +17,13 @@ class SubtitleDatatable extends DataTable
     public function columns()
     {
         return [
-            'label' => [
-                'label' => trans('mymo::app.label'),
+            'name' => [
+                'label' => trans('mymo::app.name'),
                 'formatter' => [$this, 'rowActionsFormatter']
+            ],
+            'title' => [
+                'label' => trans('mymo::app.title'),
+                'width' => '25%',
             ],
             'created_at' => [
                 'label' => trans('juzaweb::app.created_at'),
@@ -48,14 +44,15 @@ class SubtitleDatatable extends DataTable
      */
     public function query($data)
     {
-        $query = Subtitle::query();
-        $query->where('file_id', '=', $this->file_id);
+        $query = VideoAds::query();
         $status = $data['status'] ?? null;
 
         if ($keyword = Arr::get($data, 'keyword')) {
             $query->where(function (Builder $q) use ($keyword) {
-                $q->where('label', 'like', '%'. $keyword .'%');
+                $q->where('name', 'like', '%'. $keyword .'%');
+                $q->orWhere('title', 'like', '%'. $keyword .'%');
                 $q->orWhere('url', 'like', '%'. $keyword .'%');
+                $q->orWhere('description', 'like', '%'. $keyword .'%');
             });
         }
 
@@ -70,7 +67,7 @@ class SubtitleDatatable extends DataTable
     {
         switch ($action) {
             case 'delete':
-                Subtitle::destroy($ids);
+                VideoAds::destroy($ids);
                 break;
         }
     }
