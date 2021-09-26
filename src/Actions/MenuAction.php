@@ -2,6 +2,7 @@
 
 namespace Juzaweb\Movie\Actions;
 
+use Illuminate\Support\Arr;
 use Juzaweb\Abstracts\Action;
 use Juzaweb\Facades\HookAction;
 use Juzaweb\Movie\Models\Movie\Movie;
@@ -19,6 +20,7 @@ class MenuAction extends Action
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'registerTaxonomies']);
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'addSettingForm']);
         $this->addAction(self::BACKEND_CALL_ACTION, [$this, 'addAdminMenus']);
+        $this->addFilter(Action::FRONTEND_SEARCH_QUERY, [$this, 'applySearch'], 20, 2);
     }
 
     public function registerMovie()
@@ -122,5 +124,29 @@ class MenuAction extends Action
                 'parent' => 'setting',
             ]
         );
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param array $params
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function applySearch($builder, $params)
+    {
+        if ($formality = Arr::get($params, 'formality')) {
+            $formality = $formality - 1;
+
+            $builder->whereExists(function ($q) use ($formality) {
+                $table = app(Movie::class)->getTable();
+
+                $q->select(['id'])
+                    ->from($table)
+                    ->whereColumn("{$table}.id", '=', 'post_id')
+                    ->where('tv_series', '=', $formality);
+            });
+        }
+
+        return $builder;
     }
 }

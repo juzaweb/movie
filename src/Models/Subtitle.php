@@ -30,6 +30,7 @@ use Juzaweb\Traits\ResourceModel;
  * @method static \Illuminate\Database\Eloquent\Builder|Subtitle whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subtitle whereUrl($value)
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Eloquent\Builder|Subtitle whereFilter($params = [])
  */
 class Subtitle extends Model
 {
