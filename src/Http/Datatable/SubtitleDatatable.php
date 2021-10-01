@@ -29,6 +29,15 @@ class SubtitleDatatable extends DataTable
                 'label' => trans('mymo::app.label'),
                 'formatter' => [$this, 'rowActionsFormatter']
             ],
+            'order' => [
+                'label' => trans('mymo::app.order'),
+                'width' => '10%',
+                'align' => 'center',
+            ],
+            'url' => [
+                'label' => trans('mymo::app.url'),
+                'width' => '20%',
+            ],
             'created_at' => [
                 'label' => trans('juzaweb::app.created_at'),
                 'width' => '15%',

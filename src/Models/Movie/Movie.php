@@ -135,6 +135,31 @@ class Movie extends Model
         });
     }
 
+    /**
+     * Create Builder for frontend
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function selectFrontendBuilder()
+    {
+        $builder = self::createFrontendBuilder()
+            ->select([
+                'id',
+                'title',
+                'origin_title',
+                'tv_series',
+                'description',
+                'thumbnail',
+                'slug',
+                'views',
+                'year',
+                'status',
+                'video_quality',
+            ]);
+
+        return $builder;
+    }
+
     public function fill(array $attributes)
     {
         if ($release = Arr::get($attributes, 'release')) {

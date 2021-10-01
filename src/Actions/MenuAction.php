@@ -5,6 +5,7 @@ namespace Juzaweb\Movie\Actions;
 use Illuminate\Support\Arr;
 use Juzaweb\Abstracts\Action;
 use Juzaweb\Facades\HookAction;
+use Juzaweb\Movie\Http\Controllers\AjaxController;
 use Juzaweb\Movie\Models\Movie\Movie;
 
 class MenuAction extends Action
@@ -21,6 +22,7 @@ class MenuAction extends Action
         $this->addAction(self::JUZAWEB_INIT_ACTION, [$this, 'addSettingForm']);
         $this->addAction(self::BACKEND_CALL_ACTION, [$this, 'addAdminMenus']);
         $this->addFilter(Action::FRONTEND_SEARCH_QUERY, [$this, 'applySearch'], 20, 2);
+        $this->addAction(Action::FRONTEND_CALL_ACTION, [$this, 'addAjaxTheme']);
     }
 
     public function registerMovie()
@@ -128,6 +130,21 @@ class MenuAction extends Action
                 'parent' => 'setting',
             ]
         );
+    }
+
+    public function addAjaxTheme()
+    {
+        HookAction::registerFrontendAjax('movie-rating', [
+            'callback' => [app(AjaxController::class), 'setRating']
+        ]);
+
+        HookAction::registerFrontendAjax('movie-download', [
+            'callback' => [app(AjaxController::class), 'download']
+        ]);
+
+        HookAction::registerFrontendAjax('get-player', [
+            'callback' => [app(AjaxController::class), 'getPlayer']
+        ]);
     }
 
     /**
