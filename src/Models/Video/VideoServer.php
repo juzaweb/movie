@@ -3,6 +3,7 @@
 namespace Juzaweb\Movie\Models\Video;
 
 use Illuminate\Database\Eloquent\Model;
+use Juzaweb\Movie\Models\Movie\Movie;
 use Juzaweb\Traits\ResourceModel;
 
 /**
@@ -42,12 +43,24 @@ class VideoServer extends Model
         'status',
         'movie_id'
     ];
-    
-    public function movie() {
-        return $this->hasOne('Juzaweb\Movie\Models\Movie\Movie', 'id', 'movie_id');
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereEnabled($builder)
+    {
+        return $builder->where('status', '=', 1);
     }
     
-    public function video_files() {
-        return $this->hasMany('Juzaweb\Movie\Models\Video\VideoFiles', 'server_id', 'id');
+    public function movie()
+    {
+        return $this->hasOne(Movie::class, 'id', 'movie_id');
+    }
+    
+    public function videoFiles()
+    {
+        return $this->hasMany(VideoFile::class, 'server_id', 'id');
     }
 }

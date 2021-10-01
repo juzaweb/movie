@@ -17,7 +17,16 @@
 
                 <div class="form-group">
                     <label class="col-form-label" for="url">@lang('mymo::app.url')</label>
-                    <input type="text" name="url" class="form-control" id="url" value="{{ $model->url }}" autocomplete="off" required>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <input type="text" name="url" class="form-control" id="url" value="{{ $model->url }}" autocomplete="off" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <a href="javascript:void(0)" class="btn btn-primary file-manager" data-input="url"><i class="fa fa-upload"></i> @lang('mymo::app.upload')</a>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="form-group">

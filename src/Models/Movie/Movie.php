@@ -171,15 +171,6 @@ class Movie extends Model
         return $this->hasMany(VideoServer::class, 'movie_id', 'id');
     }
     
-    public function getViews()
-    {
-        if ($this->views < 1000) {
-            return $this->views;
-        }
-        
-        return round($this->views / 1000, 1) . 'K';
-    }
-    
     public function getPoster()
     {
         if ($this->poster) {

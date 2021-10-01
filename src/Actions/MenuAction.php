@@ -74,6 +74,7 @@ class MenuAction extends Action
 
         HookAction::registerTaxonomy('actors', 'movies', [
             'label' => trans('mymo::app.actors'),
+            'menu_box' => false,
             'menu_position' => 7,
             'supports' => [
                 'thumbnail'
@@ -83,6 +84,7 @@ class MenuAction extends Action
         HookAction::registerTaxonomy('directors', 'movies', [
             'label' => trans('mymo::app.directors'),
             'menu_position' => 7,
+            'menu_box' => false,
             'supports' => [
                 'thumbnail'
             ],
@@ -91,6 +93,7 @@ class MenuAction extends Action
         HookAction::registerTaxonomy('writers', 'movies', [
             'label' => trans('mymo::app.writers'),
             'menu_position' => 7,
+            'menu_box' => false,
             'supports' => [
                 'thumbnail'
             ],
@@ -100,6 +103,7 @@ class MenuAction extends Action
             'label' => trans('mymo::app.years'),
             'menu_position' => 8,
             'show_in_menu' => false,
+            'menu_box' => false,
             'supports' => [],
         ]);
     }

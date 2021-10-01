@@ -73,8 +73,9 @@ class VideoFile extends Model
         'movie_id'
     ];
     
-    public function server() {
-        return $this->hasOne('Juzaweb\Movie\Models\Video\VideoServer', 'id', 'server_id');
+    public function server()
+    {
+        return $this->belongsTo(VideoServer::class, 'server_id', 'id');
     }
     
     public function getFiles() {
@@ -102,10 +103,21 @@ class VideoFile extends Model
         return [];
     }
     
-    public function subtitles() {
+    public function subtitles()
+    {
         return $this->hasMany('Juzaweb\Movie\Models\Subtitle', 'file_id', 'id');
     }
-    
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWhereEnabled($builder)
+    {
+        return $builder->where('status', '=', 1);
+    }
+
     public function isSourceEmbed() {
         $embed_source = ['embed', 'youtube', 'vimeo'];
         if (!get_config('stream3s_use') || get_config('stream3s_link') != 'direct') {

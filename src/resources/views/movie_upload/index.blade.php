@@ -41,11 +41,11 @@
                         <div class="form-group form-url">
                             <label class="col-form-label" for="url">@lang('mymo::app.video_url')</label>
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-9">
                                     <input type="text" name="url" id="url" class="form-control" autocomplete="off" value="">
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <a href="javascript:void(0)" class="btn btn-primary file-manager" data-input="url"><i class="fa fa-upload"></i> @lang('mymo::app.upload')</a>
                                 </div>
                             </div>

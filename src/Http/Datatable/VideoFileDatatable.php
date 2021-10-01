@@ -9,11 +9,12 @@ use Juzaweb\Movie\Models\Video\VideoFile;
 
 class VideoFileDatatable extends DataTable
 {
-    public $type;
+    public $type, $server_id;
 
-    public function mount($type)
+    public function mount($type, $server_id)
     {
         $this->type = $type;
+        $this->server_id = $server_id;
     }
 
     /**
@@ -78,6 +79,8 @@ class VideoFileDatatable extends DataTable
     public function query($data)
     {
         $query = VideoFile::query();
+
+        $query->where('server_id', '=', $this->server_id);
 
         if ($keyword = Arr::get($data, 'keyword')) {
             $query->where(function (Builder $q) use ($keyword) {
