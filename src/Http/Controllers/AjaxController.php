@@ -10,6 +10,7 @@
 
 namespace Juzaweb\Movie\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Juzaweb\Http\Controllers\Controller;
 use Juzaweb\Movie\Models\DownloadLink;
 use Juzaweb\Movie\Models\Movie\Movie;
@@ -77,14 +78,17 @@ class AjaxController extends Controller
         ]);
     }
 
-    public function getPlayer($slug, $vid)
+    public function getPlayer()
     {
+        $slug = request()->post('slug');
+        $vid = request()->post('vid');
+
         $movie = Movie::createFrontendBuilder()
             ->where('slug', '=', $slug)
             ->firstOrFail();
 
         if (get_config('only_member_view') == 1) {
-            if (!\Auth::check()) {
+            if (!Auth::check()) {
                 $file = new VideoFile();
                 $file->source = 'embed';
                 $files[] = (object) ['file' => route('watch.no-view')];
@@ -92,7 +96,7 @@ class AjaxController extends Controller
                 return response()->json([
                     'data' => [
                         'status' => true,
-                        'sources' => view('data.player_script', [
+                        'sources' => view('theme::components.player_script', [
                             'movie' => $movie,
                             'file' => $file,
                             'files' => $files,
@@ -103,13 +107,15 @@ class AjaxController extends Controller
         }
 
         $file = VideoFile::find($vid);
+
         if ($file) {
             $files = $file->getFiles();
+
             $ads_exists = VideoAds::where('status', 1)->exists();
             return response()->json([
                 'data' => [
                     'status' => true,
-                    'sources' => view('data.player_script', [
+                    'sources' => view('theme::components.player_script', [
                         'movie' => $movie,
                         'file' => $file,
                         'files' => $files,

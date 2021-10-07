@@ -1,6 +1,6 @@
 <?php
 
-namespace Juzaweb\Movie\Http\Datatable;
+namespace Juzaweb\Movie\Http\Datatables;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;

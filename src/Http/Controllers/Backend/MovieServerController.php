@@ -3,7 +3,7 @@
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
 use Juzaweb\Http\Controllers\BackendController;
-use Juzaweb\Movie\Http\Datatable\VideoServerDatatable;
+use Juzaweb\Movie\Http\Datatables\VideoServerDatatable;
 use Juzaweb\Movie\Models\Movie\Movie;
 use Juzaweb\Movie\Models\Video\VideoServer;
 use Juzaweb\Traits\ResourceController;

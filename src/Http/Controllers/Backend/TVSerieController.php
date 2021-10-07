@@ -3,7 +3,7 @@
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
 use Illuminate\Support\Facades\Validator;
-use Juzaweb\Movie\Http\Datatable\MovieDatatable;
+use Juzaweb\Movie\Http\Datatables\MovieDatatable;
 
 class TVSerieController extends MovieController
 {

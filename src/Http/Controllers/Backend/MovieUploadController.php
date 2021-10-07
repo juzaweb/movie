@@ -4,7 +4,7 @@ namespace Juzaweb\Movie\Http\Controllers\Backend;
 
 use Illuminate\Support\Facades\Validator;
 use Juzaweb\Http\Controllers\BackendController;
-use Juzaweb\Movie\Http\Datatable\VideoFileDatatable;
+use Juzaweb\Movie\Http\Datatables\VideoFileDatatable;
 use Juzaweb\Movie\Models\Video\VideoFile;
 use Juzaweb\Movie\Models\Video\VideoServer;
 use Juzaweb\Traits\ResourceController;

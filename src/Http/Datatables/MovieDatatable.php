@@ -1,10 +1,10 @@
 <?php
 
-namespace Juzaweb\Movie\Http\Datatable;
+namespace Juzaweb\Movie\Http\Datatables;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Juzaweb\Http\Datatable\PostTypeDataTable;
+use Juzaweb\Http\Datatables\PostTypeDataTable;
 use Juzaweb\Movie\Models\Movie\Movie;
 
 class MovieDatatable extends PostTypeDataTable

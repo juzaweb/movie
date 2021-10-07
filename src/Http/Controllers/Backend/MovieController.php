@@ -2,7 +2,7 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
-use Juzaweb\Movie\Http\Datatable\MovieDatatable;
+use Juzaweb\Movie\Http\Datatables\MovieDatatable;
 use Juzaweb\Traits\PostTypeController;
 use Illuminate\Support\Facades\Validator;
 use Juzaweb\Movie\Models\Movie\Movie;
