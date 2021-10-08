@@ -40,16 +40,16 @@ class AjaxController extends Controller
         ]);
     }
 
-    public function getMoviesByGenre(Request $request)
+    public function getMoviesByGenre()
     {
-        $genre = $request->get('cat_id');
-        $showpost = $request->get('showpost', 12);
+        $genre = request()->get('cat_id');
+        $showpost = request()->get('showpost', 12);
 
         $query = Movie::select([
             'id',
-            'name',
-            'other_name',
-            'short_description',
+            'title',
+            'origin_title',
+            'description',
             'thumbnail',
             'slug',
             'views',
@@ -61,7 +61,7 @@ class AjaxController extends Controller
         ]);
 
         $query->wherePublish();
-        $query->whereRaw('find_in_set(?, genres)', [$genre]);
+        $query->whereTaxonomy($genre);
         $query->limit($showpost);
 
         return view('data.movies_by_genre', [
@@ -69,11 +69,21 @@ class AjaxController extends Controller
         ]);
     }
 
-    public function getPopularMovies(Request $request)
+    public function getPopularMovies()
     {
-        $type = $request->get('type');
+        $type = request()->get('type');
         $items = $this->getPopular($type);
-        return view('data.popular_movies', [
+
+        foreach ($items as $item) {
+            $item->url = $item->getLink();
+            $item->thumbnail = $item->getThumbnail();
+            $item->views = $item->views .' '. trans('juzaweb::app.views');
+            if (empty($item->origin_title)) {
+                $item->origin_title = '';
+            }
+        }
+
+        return response()->json([
             'items' => $items
         ]);
     }
@@ -132,8 +142,9 @@ class AjaxController extends Controller
         ]);
     }
 
-    public function setMovieView($slug)
+    public function setMovieView()
     {
+        $slug = request()->post('slug');
         $movie = Movie::createFrontendBuilder()
             ->where('slug', '=', $slug)
             ->firstOrFail(['id', 'views']);
@@ -184,9 +195,9 @@ class AjaxController extends Controller
 
     public function setRating()
     {
-        $slug = request()->post('slug');
+        $movie = request()->post('movie');
         $movie = Movie::createFrontendBuilder()
-            ->where('slug', '=', $slug)
+            ->where('id', '=', $movie)
             ->firstOrFail(['id']);
 
         $start = request()->post('value');
@@ -271,9 +282,9 @@ class AjaxController extends Controller
     {
         $query = Movie::select([
             'id',
-            'name',
-            'other_name',
-            'short_description',
+            'title',
+            'origin_title',
+            'description',
             'thumbnail',
             'slug',
             'views',

@@ -60,7 +60,8 @@ class AdsSettingController extends BackendController
         ]);
     }
     
-    public function save(Request $request) {
+    public function save(Request $request)
+    {
         $this->validate($request, [
             'body' => 'nullable',
             'status' => 'required|in:0,1',

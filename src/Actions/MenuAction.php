@@ -155,6 +155,18 @@ class MenuAction extends Action
         HookAction::registerFrontendAjax('get-player', [
             'callback' => [app(AjaxController::class), 'getPlayer']
         ]);
+
+        HookAction::registerFrontendAjax('set-view', [
+            'callback' => [app(AjaxController::class), 'setMovieView']
+        ]);
+
+        HookAction::registerFrontendAjax('popular-movies', [
+            'callback' => [app(AjaxController::class), 'getPopularMovies']
+        ]);
+
+        HookAction::registerFrontendAjax('movies-genre', [
+            'callback' => [app(AjaxController::class), 'getMoviesByGenre']
+        ]);
     }
 
     /**
