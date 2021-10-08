@@ -1,55 +1,26 @@
 @extends('juzaweb::layouts.backend')
 
-@section('title', trans('juzaweb::app.banner_ads'))
-
 @section('content')
 
-{{ Breadcrumbs::render('manager', [
-        'name' => trans('juzaweb::app.banner_ads'),
-        'url' => route('admin.setting.ads')
-    ]) }}
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <form method="get" class="form-inline" id="form-search">
 
-<div class="mymo__utils__content">
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5 class="mb-0 card-title font-weight-bold">@lang('juzaweb::app.banner_ads')</h5>
+                <div class="form-group mb-2 mr-1">
+                    <label for="search" class="sr-only">@lang('juzaweb::app.search')</label>
+                    <input name="search" type="text" id="search" class="form-control" placeholder="{{ trans('juzaweb::app.search') }}" autocomplete="off">
                 </div>
 
-                <div class="col-md-6">
-
-                </div>
-            </div>
+                <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('juzaweb::app.search')</button>
+            </form>
         </div>
 
-        <div class="card-body">
+    </div>
 
-            <div class="row mb-3">
-                <div class="col-md-12">
-                    <form method="get" class="form-inline" id="form-search">
-
-                        <div class="form-group mb-2 mr-1">
-                            <label for="search" class="sr-only">@lang('juzaweb::app.search')</label>
-                            <input name="search" type="text" id="search" class="form-control" placeholder="@lang('juzaweb::app.search')" autocomplete="off">
-                        </div>
-
-                        <div class="form-group mb-2 mr-1">
-                            <label for="status" class="sr-only">@lang('juzaweb::app.status')</label>
-                            <select name="status" id="status" class="form-control">
-                                <option value="1">@lang('juzaweb::app.enabled')</option>
-                                <option value="0">@lang('juzaweb::app.disabled')</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('juzaweb::app.search')</button>
-                    </form>
-                </div>
-
-            </div>
-
+    <div class="row">
+        <div class="col-md-12">
             <div class="table-responsive mb-5">
-                <table class="table mymo-table">
+                <table class="table juzaweb-table">
                     <thead>
                         <tr>
                             <th  data-field="state" data-width="3%" data-checkbox="true"></th>
@@ -62,7 +33,6 @@
             </div>
         </div>
     </div>
-</div>
 
     <script type="text/javascript">
 
@@ -78,7 +48,7 @@
         }
 
         var table = new JuzawebTable({
-            url: '{{ route('admin.setting.ads.getdata') }}',
+            url: '{{ route('admin.setting.ads.get-data') }}',
         });
     </script>
 @endsection

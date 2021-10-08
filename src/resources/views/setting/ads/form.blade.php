@@ -1,15 +1,7 @@
 @extends('juzaweb::layouts.backend')
 
-@section('title', $title)
-
 @section('content')
 
-{{ Breadcrumbs::render('manager', [
-        'name' => trans('juzaweb::app.banner_ads'),
-        'url' => route('admin.setting.ads')
-    ], $model) }}
-
-<div class="mymo__utils__content">
     <form method="post" action="{{ route('admin.setting.ads.save') }}" class="form-ajax">
         <div class="card">
             <div class="card-header">
@@ -21,7 +13,7 @@
                     <div class="col-md-6">
                         <div class="btn-group float-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> @lang('juzaweb::app.save')</button>
-                            <a href="{{ route('admin.setting.ads') }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('juzaweb::app.cancel')</a>
+                            <a href="{{ route('admin.setting.ads.index') }}" class="btn btn-warning"><i class="fa fa-times-circle"></i> @lang('juzaweb::app.cancel')</a>
                         </div>
                     </div>
                 </div>
@@ -63,7 +55,6 @@
             </div>
         </div>
     </form>
-</div>
 
 <script type="text/javascript">
     var editor = CodeMirror.fromTextArea(document.getElementById("body"), {

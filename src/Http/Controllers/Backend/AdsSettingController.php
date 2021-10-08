@@ -1,20 +1,24 @@
 <?php
 
-namespace Juzaweb\Http\Controllers\Backend\Setting;
+namespace Juzaweb\Movie\Http\Controllers\Backend;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Juzaweb\Http\Controllers\BackendController;
 use Juzaweb\Movie\Models\Ads;
 
 class AdsSettingController extends BackendController
 {
-    public function index() {
-        return view('mymo_core::mymo::setting.ads.index');
+    public function index()
+    {
+        return view('mymo::setting.ads.index', [
+            'title' => trans('mymo::app.banner_ads')
+        ]);
     }
     
-    public function getData(Request $request) {
+    public function getData(Request $request)
+    {
         $search = $request->get('search');
-        
         $sort = $request->get('sort', 'id');
         $order = $request->get('order', 'desc');
         $offset = $request->get('offset', 0);
@@ -23,9 +27,9 @@ class AdsSettingController extends BackendController
         $query = Ads::query();
         
         if ($search) {
-            $query->where(function ($subquery) use ($search) {
-                $subquery->orWhere('key', 'like', '%'. $search .'%');
-                $subquery->orWhere('name', 'like', '%'. $search .'%');
+            $query->where(function (Builder $q) use ($search) {
+                $q->orWhere('key', 'like', '%'. $search .'%');
+                $q->orWhere('name', 'like', '%'. $search .'%');
             });
         }
         
@@ -36,7 +40,9 @@ class AdsSettingController extends BackendController
         $rows = $query->get();
         
         foreach ($rows as $row) {
-            $row->edit_url = route('admin.setting.ads.edit', ['id' => $row->id]);
+            $row->edit_url = route('admin.setting.ads.edit', [
+                'id' => $row->id
+            ]);
         }
         
         return response()->json([
@@ -45,31 +51,31 @@ class AdsSettingController extends BackendController
         ]);
     }
     
-    public function form($id = null) {
+    public function form($id = null)
+    {
         $model = Ads::firstOrNew(['id' => $id]);
-        return view('mymo_core::mymo::setting.ads.form', [
+        return view('mymo::setting.ads.form', [
             'model' => $model,
             'title' => $model->name ?: trans('mymo_core::app.add_new')
         ]);
     }
     
     public function save(Request $request) {
-        $this->validateRequest([
+        $this->validate($request, [
             'body' => 'nullable',
             'status' => 'required|in:0,1',
-        ], $request, [
-            'body' => trans('mymo_core::app.content'),
-            'status' => trans('mymo_core::app.status'),
+        ], [
+            'body' => trans('mymo::app.content'),
+            'status' => trans('mymo::app.status'),
         ]);
         
         $model = Ads::firstOrNew(['id' => $request->post('id')]);
         $model->fill($request->all());
         $model->save();
         
-        return response()->json([
-            'status' => 'success',
-            'message' => trans('mymo_core::app.saved_successfully'),
-            'redirect' => route('admin.setting.ads'),
+        return $this->success([
+            'message' => trans('juzaweb::app.saved_successfully'),
+            'redirect' => route('admin.setting.ads.index'),
         ]);
     }
 }

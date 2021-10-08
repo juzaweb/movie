@@ -122,11 +122,21 @@ class MenuAction extends Action
     public function addAdminMenus()
     {
         HookAction::addAdminMenu(
+            trans('mymo::app.banner_ads'),
+            'banner-ads',
+            [
+                'icon' => 'fa fa-file',
+                'position' => 30,
+                'parent' => 'setting',
+            ]
+        );
+
+        HookAction::addAdminMenu(
             trans('mymo::app.video_ads'),
             'video-ads',
             [
                 'icon' => 'fa fa-video-camera',
-                'position' => 30,
+                'position' => 31,
                 'parent' => 'setting',
             ]
         );

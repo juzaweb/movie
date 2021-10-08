@@ -41,4 +41,12 @@ Route::jwResource('tv-series', 'Backend\TVSerieController');
 
 Route::jwResource('video-ads', 'Backend\VideoAdsController');
 
+Route::group(['prefix' => 'banner-ads'], function () {
+    Route::get('/', 'Backend\AdsSettingController@index')->name('admin.setting.ads.index');
+    Route::get('/create', 'Backend\AdsSettingController@form')->name('admin.setting.ads.create');
+    Route::get('/get-data', 'Backend\AdsSettingController@getData')->name('admin.setting.ads.get-data');
+    Route::get('/edit/{id}', 'Backend\AdsSettingController@form')->name('admin.setting.ads.edit');
+    Route::post('/save', 'Backend\AdsSettingController@save')->name('admin.setting.ads.save');
+});
+
 Route::post('/add-movie', 'Backend\TmdbController@addMovie')->name('admin.tmdb.add_movie');
