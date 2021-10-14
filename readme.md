@@ -5,6 +5,7 @@ The Movie plugin compliments your content by adding information about the movies
 - Download cms: [https://juzaweb.com/download/](https://juzaweb.com/download/)
 - Go to Admin -> Plugins -> Add new
 - Search and add movie plugin
+- Mymo theme: [https://juzaweb.com/theme/mymo](https://juzaweb.com/theme/mymo)
 
-## Document
+## Documentation
 [https://juzaweb.com/plugin/movie/docs](https://juzaweb.com/plugin/movie/docs)
