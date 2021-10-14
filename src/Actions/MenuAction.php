@@ -167,6 +167,10 @@ class MenuAction extends Action
         HookAction::registerFrontendAjax('movies-genre', [
             'callback' => [app(AjaxController::class), 'getMoviesByGenre']
         ]);
+
+        HookAction::registerFrontendAjax('mymo_filter_form', [
+            'callback' => [app(AjaxController::class), 'getFilterForm'],
+        ]);
     }
 
     /**

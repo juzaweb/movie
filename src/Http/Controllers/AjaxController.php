@@ -222,7 +222,8 @@ class AjaxController extends Controller
         return $movie->getStarRating();
     }
 
-    public function ads() {
+    public function ads()
+    {
         $video_ads = VideoAds::where('status', '=', 1)
             ->inRandomOrder()
             ->first();

@@ -5,7 +5,6 @@
     <div class="row mb-3">
         <div class="col-md-12">
             <form method="get" class="form-inline" id="form-search">
-
                 <div class="form-group mb-2 mr-1">
                     <label for="search" class="sr-only">@lang('juzaweb::app.search')</label>
                     <input name="search" type="text" id="search" class="form-control" placeholder="{{ trans('juzaweb::app.search') }}" autocomplete="off">
@@ -14,7 +13,6 @@
                 <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> @lang('juzaweb::app.search')</button>
             </form>
         </div>
-
     </div>
 
     <div class="row">
