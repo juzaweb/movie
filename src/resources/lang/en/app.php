@@ -139,4 +139,6 @@ return [
     'years' => 'Years',
     'mymo_setting' => 'Mymo Setting',
     'title' => 'Title',
+    'player_watermark' => 'Player watermark',
+    'player_watermark_logo' => 'Player watermark logo',
 ];

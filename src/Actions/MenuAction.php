@@ -44,16 +44,6 @@ class MenuAction extends Action
                 'parent' => 'movies',
             ]
         );
-
-        HookAction::addAdminMenu(
-            trans('mymo::app.sliders'),
-            'sliders',
-            [
-                'icon' => 'fa fa-film',
-                'position' => 6,
-                'parent' => 'appearance',
-            ]
-        );
     }
 
     public function registerTaxonomies()
