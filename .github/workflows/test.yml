@@ -44,7 +44,7 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        working-directory: cms  
+        working-directory: cms
       - name: Install plugin
         run: php artisan plugin:install juzaweb/movie
         working-directory: cms
