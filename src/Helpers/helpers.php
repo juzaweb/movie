@@ -3,7 +3,7 @@
 use Juzaweb\Movie\Models\Ads;
 use Juzaweb\Models\Taxonomy;
 
-function get_ads(string $key) {
+function mymo_get_ads(string $key) {
     $ads = Ads::where('key', '=', $key)
         ->where('status', '=', 1)
         ->first(['body']);
