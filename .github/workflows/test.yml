@@ -10,6 +10,8 @@ jobs:
         php: [7.4, 7.3, 7.2]
         cms: [1.*]
         version: [
+          1.*,
+          dev-develop,
           dev-master
         ]
     name: PHP ${{ matrix.php }} - CMS ${{ matrix.cms }} - PACKAGE ${{ matrix.version }} - ${{ matrix.os }}
