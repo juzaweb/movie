@@ -48,6 +48,7 @@ jobs:
         working-directory: cms
       - name: Activate plugin
         run: php artisan plugin:enable juzaweb/movie
+        working-directory: cms
       - name: Config database and Execute tests
         run: |
           vendor/bin/phpunit vendor/juzaweb/cms/tests/Install
