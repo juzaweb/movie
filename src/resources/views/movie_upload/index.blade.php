@@ -1,10 +1,10 @@
-@extends('juzaweb::layouts.backend')
+@extends('cms::layouts.backend')
 
 @section('content')
 
     <div class="row">
         <div class="col-md-4">
-            @component('juzaweb::components.form', [
+            @component('cms::components.form', [
                 'action' => route('admin.movies.servers.upload.store', [
                     $page_type,
                     $server_id
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-success px-5"><i class="fa fa-save"></i> {{ trans('juzaweb::app.save') }}</button>
+                        <button type="submit" class="btn btn-success px-5"><i class="fa fa-save"></i> {{ trans('cms::app.save') }}</button>
                     </div>
 
                     <input type="hidden" name="server_id" value="{{ $server_id }}">

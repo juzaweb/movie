@@ -2,11 +2,11 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Frontend;
 
-use Juzaweb\Http\Controllers\FrontendController;
+use Juzaweb\CMS\Http\Controllers\FrontendController;
 use Illuminate\Support\Facades\Cookie;
-use Juzaweb\Models\Taxonomy;
+use Juzaweb\Backend\Models\Taxonomy;
 use Juzaweb\Movie\Models\Movie\Movie;
-use Juzaweb\Movie\Models\Movie\MovieViews;
+use Juzaweb\Movie\Models\Movie\PostView;
 use Juzaweb\Movie\Models\Video\VideoAds;
 use Juzaweb\Movie\Models\Video\VideoFiles;
 
@@ -121,7 +121,7 @@ class PlayController extends FrontendController
     }
     
     protected function setView($movie_id) {
-        $model = MovieViews::firstOrNew([
+        $model = PostView::firstOrNew([
             'movie_id' => $movie_id,
             'day' => date('Y-m-d'),
         ]);

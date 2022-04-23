@@ -2,8 +2,9 @@
 
 namespace Juzaweb\Movie\Providers;
 
-use Juzaweb\Movie\Actions\MenuAction;
-use Juzaweb\Support\ServiceProvider;
+use Juzaweb\CMS\Facades\ActionRegister;
+use Juzaweb\Movie\MovieAction;
+use Juzaweb\CMS\Support\ServiceProvider;
 
 class MovieServiceProvider extends ServiceProvider
 {
@@ -14,9 +15,7 @@ class MovieServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerAction([
-            MenuAction::class
-        ]);
+        ActionRegister::register(MovieAction::class);
     }
 
     /**
@@ -26,6 +25,6 @@ class MovieServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        //
     }
 }

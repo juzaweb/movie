@@ -4,7 +4,7 @@ namespace Juzaweb\Movie\Http\Datatables;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
-use Juzaweb\Abstracts\DataTable;
+use Juzaweb\CMS\Abstracts\DataTable;
 use Juzaweb\Movie\Models\Video\VideoFile;
 
 class VideoFileDatatable extends DataTable
@@ -52,7 +52,7 @@ class VideoFileDatatable extends DataTable
                 }
             ],
             'created_at' => [
-                'label' => trans('juzaweb::app.created_at'),
+                'label' => trans('cms::app.created_at'),
                 'width' => '10%',
                 'align' => 'center',
                 'formatter' => function ($value, $row, $index) {

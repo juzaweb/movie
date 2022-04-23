@@ -2,10 +2,10 @@
 
 namespace Juzaweb\Movie\Helpers;
 
-use Juzaweb\Models\Taxonomy;
-use Juzaweb\Movie\Models\Movie\Movie;
-use Illuminate\Support\Str;
-use Juzaweb\Support\FileManager;
+use Illuminate\Support\Arr;
+use Juzaweb\Backend\Models\Post;
+use Juzaweb\Backend\Models\Taxonomy;
+use Juzaweb\CMS\Support\FileManager;
 use Illuminate\Support\Facades\DB;
 
 class ImportMovie
@@ -47,8 +47,7 @@ class ImportMovie
         foreach ($fillData as $item) {
             if (!isset($data[$item])) {
                 $data[$item] = null;
-            }
-            else {
+            } else {
                 $data[$item] = trim($data[$item]);
             }
         }
@@ -61,11 +60,12 @@ class ImportMovie
         
         $this->data = $data;
     }
-    
+
     /**
      * Save import movie.
      *
-     * @return Movie|false
+     * @return Post|false
+     * @throws \Throwable
      */
     public function save()
     {
@@ -76,22 +76,56 @@ class ImportMovie
         DB::beginTransaction();
 
         try {
-            $model = Movie::create(array_merge($this->data, [
+            $model = Post::create(array_merge($this->data, [
                 'thumbnail' => FileManager::addFile($this->data['thumbnail'])->path,
-                'poster' => FileManager::addFile($this->data['poster'])->path,
-                'tv_series' => $this->data['tv_series'] ? 1 : 0,
-                'video_quality' => $this->data['video_quality'] ?? 'HD',
-                'year' => explode('-', $this->data['release'] ?? '')[0],
-                'status' => 'publish',
+                'status' => Post::STATUS_PUBLISH,
+                'type' => 'movies'
             ]));
 
+            $year = explode('-', $this->data['release'] ?? '')[0];
+
+            $model->syncMetas([
+                'tv_series' => $this->data['tv_series'] ? 1 : 0,
+                'video_quality' => $this->data['video_quality'] ?? 'HD',
+                'release' => $this->data['release'] ?? null,
+                'year' => $year,
+                'trailer_link' => Arr::get($this->data, 'trailer_link'),
+                'poster' => FileManager::addFile($this->data['poster'])->path,
+            ]);
+
             $model->syncTaxonomies([
-                'genres' => $this->getTaxonomyIds($this->data['genres'], 'genres'),
-                'countries' => $this->getTaxonomyIds($this->data['countries'], 'countries'),
-                'actors' => $this->getTaxonomyIds($this->data['actors'], 'actors'),
-                'writers' => $this->getTaxonomyIds($this->data['writers'], 'writers'),
-                'directors' => $this->getTaxonomyIds($this->data['directors'], 'directors'),
-                'tags' => $this->getTaxonomyIds($this->data['tags'], 'tags'),
+                'genres' => $this->getTaxonomyIds(
+                    $this->data['genres'],
+                    'genres'
+                ),
+                'countries' => $this->getTaxonomyIds(
+                    $this->data['countries'],
+                    'countries'
+                ),
+                'actors' => $this->getTaxonomyIds(
+                    $this->data['actors'],
+                    'actors'
+                ),
+                'writers' => $this->getTaxonomyIds(
+                    $this->data['writers'],
+                    'writers'
+                ),
+                'directors' => $this->getTaxonomyIds(
+                    $this->data['directors'],
+                    'directors'
+                ),
+                'tags' => $this->getTaxonomyIds(
+                    $this->data['tags'],
+                    'tags'
+                ),
+                'years' => $this->getTaxonomyIds(
+                    [
+                        [
+                            'name' => $year
+                        ]
+                    ],
+                    'years'
+                )
             ]);
 
             DB::commit();
@@ -99,7 +133,6 @@ class ImportMovie
             DB::rollBack();
             throw $e;
         }
-
 
         return $model;
     }
@@ -126,14 +159,6 @@ class ImportMovie
             $this->errors[] = 'TV Series is required.';
         }
 
-        if (Movie::where('origin_title', '=', $this->data['origin_title'])
-            ->where('year', '=', $this->data['year'])
-            ->whereNotNull('origin_title')
-            ->whereNotNull('year')
-            ->exists()) {
-            $this->errors[] = 'Movie is exists.';
-        }
-        
         if (count($this->errors) > 0) {
             return false;
         }
@@ -146,7 +171,8 @@ class ImportMovie
         if (is_string($genres)) {
             return $genres;
         }
-        
+
+        $genres = collect($genres)->take(5)->toArray();
         $result = [];
         foreach ($genres as $genre) {
             if ($genre['name']) {

@@ -5,7 +5,7 @@ namespace Juzaweb\Movie\Http\Controllers\Backend;
 use Juzaweb\Movie\Helpers\ImportMovie;
 use Juzaweb\Movie\Helpers\TmdbApi;
 use Illuminate\Http\Request;
-use Juzaweb\Http\Controllers\BackendController;
+use Juzaweb\CMS\Http\Controllers\BackendController;
 
 class TmdbController extends BackendController
 {
@@ -13,15 +13,20 @@ class TmdbController extends BackendController
     {
         $this->validate($request, [
             'tmdb' => 'required',
+            'type' => 'required|in:1,2',
         ]);
-        
+
         if (empty(get_config('tmdb_api_key'))) {
             return $this->error([
                 'message' => trans('mymo::app.tmdb_api_key_not_found'),
             ]);
         }
         
-        $data = $this->getMovieById($request->post('tmdb'));
+        $data = $this->getMovieById(
+            $request->post('tmdb'),
+            $request->post('type')
+        );
+
         if (empty($data)) {
             return $this->error([
                 'message' => trans('mymo::app.movie_not_found'),
@@ -39,7 +44,7 @@ class TmdbController extends BackendController
         $model = $import->save();
 
         return $this->success([
-            'redirect' => route('admin.'. ($model->tv_series ? 'tv_series' : 'movies') .'.edit', [$model->id]),
+            'redirect' => route('admin.posts.edit', ['movies', $model->id]),
         ]);
     }
     
@@ -52,9 +57,9 @@ class TmdbController extends BackendController
         return 0;
     }
     
-    protected function getMovieById($tmdb_id)
+    protected function getMovieById($tmdb_id, $type)
     {
-        if ($this->isTvSeries()) {
+        if ($type == 2) {
             return $this->getTVShow($tmdb_id);
         }
         
@@ -76,15 +81,21 @@ class TmdbController extends BackendController
         $writers = $data['credits']['crew'];
         $countries = $data['production_countries'] ?? [];
         $genres = $data['genres'] ?? [];
-    
+        $trailer = $data['trailers']['youtube'][0]['source'] ?? '';
+        if ($trailer) {
+            $trailer = 'https://www.youtube.com/watch?v=' . $trailer;
+        }
+
         return [
-            'title' => $data['original_title'],
+            'title' => $data['title'],
+            'origin_title' => $data['original_title'],
             'tv_series' => 0,
             'content' => $data['overview'],
             'thumbnail' => 'https://image.tmdb.org/t/p/w185/'.$data['poster_path'],
             'poster' => 'https://image.tmdb.org/t/p/w780/'.$data['backdrop_path'],
             'rating' => $data['vote_average'],
             'release' => $data['release_date'],
+            'trailer_link' => $trailer,
             'runtime' => @$data['runtime'] . ' ' . trans('mymo::app.min'),
             'actors' => $actors,
             'directors' => $directors,

@@ -1,8 +1,8 @@
-@extends('juzaweb::layouts.backend')
+@extends('cms::layouts.backend')
 
 @section('content')
 
-    @component('juzaweb::components.form_resource', [
+    @component('cms::components.form_resource', [
         'model' => $model
     ])
 

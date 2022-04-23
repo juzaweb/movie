@@ -3,10 +3,10 @@
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
 use Illuminate\Support\Facades\Validator;
-use Juzaweb\Http\Controllers\BackendController;
+use Juzaweb\CMS\Http\Controllers\BackendController;
 use Juzaweb\Movie\Http\Datatables\VideoAdsDatatable;
 use Juzaweb\Movie\Models\Video\VideoAds;
-use Juzaweb\Traits\ResourceController;
+use Juzaweb\CMS\Traits\ResourceController;
 
 class VideoAdsController extends BackendController
 {
@@ -17,9 +17,9 @@ class VideoAdsController extends BackendController
     /**
      * Get data table resource
      *
-     * @return \Juzaweb\Abstracts\DataTable
+     * @return \Juzaweb\CMS\Abstracts\DataTable
      */
-    protected function getDataTable()
+    protected function getDataTable(...$params)
     {
         return new VideoAdsDatatable();
     }
@@ -30,7 +30,7 @@ class VideoAdsController extends BackendController
      * @param array $attributes
      * @return Validator|array
      */
-    protected function validator(array $attributes)
+    protected function validator(array $attributes, ...$params)
     {
         return [
             'name' => 'required|string|max:250',
@@ -48,7 +48,7 @@ class VideoAdsController extends BackendController
      * @param array $params
      * @return string // namespace model
      */
-    protected function getModel()
+    protected function getModel(...$params)
     {
         return VideoAds::class;
     }
@@ -59,7 +59,7 @@ class VideoAdsController extends BackendController
      * @param array $params
      * @return string
      */
-    protected function getTitle()
+    protected function getTitle(...$params)
     {
         return trans('mymo::app.video_ads');
     }

@@ -2,9 +2,9 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Frontend;
 
-use App\Core\Helpers\VideoStream;
-use App\Core\Helpers\UrlVideoStream;
-use Juzaweb\Http\Controllers\FrontendController;
+use Juzaweb\Multisite\Core\Helpers\VideoStream;
+use Juzaweb\Multisite\Core\Helpers\UrlVideoStream;
+use Juzaweb\CMS\Http\Controllers\FrontendController;
 
 class StreamController extends FrontendController
 {

@@ -4,7 +4,7 @@ namespace Juzaweb\Movie\Http\Datatables;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
-use Juzaweb\Abstracts\DataTable;
+use Juzaweb\CMS\Abstracts\DataTable;
 use Juzaweb\Movie\Models\Video\VideoServer;
 
 class VideoServerDatatable extends DataTable
@@ -37,7 +37,7 @@ class VideoServerDatatable extends DataTable
                 'width' => '10%',
             ],
             'created_at' => [
-                'label' => trans('juzaweb::app.created_at'),
+                'label' => trans('cms::app.created_at'),
                 'width' => '15%',
                 'align' => 'center',
                 'formatter' => function ($value, $row, $index) {
@@ -95,12 +95,12 @@ class VideoServerDatatable extends DataTable
         return [
             'keyword' => [
                 'type' => 'text',
-                'label' => trans('juzaweb::app.keyword'),
-                'placeholder' => trans('juzaweb::app.keyword'),
+                'label' => trans('cms::app.keyword'),
+                'placeholder' => trans('cms::app.keyword'),
             ],
             'status' => [
                 'type' => 'select',
-                'label' => trans('juzaweb::app.status'),
+                'label' => trans('cms::app.status'),
                 'options' => [
                     1 => trans('mymo::app.enabled'),
                     0 => trans('mymo::app.disabled'),

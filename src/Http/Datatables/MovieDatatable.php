@@ -4,8 +4,8 @@ namespace Juzaweb\Movie\Http\Datatables;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
-use Juzaweb\Http\Datatables\PostTypeDataTable;
-use Juzaweb\Movie\Models\Movie\Movie;
+use Juzaweb\Backend\Http\Datatables\PostTypeDataTable;
+use Juzaweb\Backend\Models\Post;
 
 class MovieDatatable extends PostTypeDataTable
 {
@@ -38,7 +38,7 @@ class MovieDatatable extends PostTypeDataTable
                 'formatter' => [$this, 'rowActionsFormatter']
             ],
             'created_at' => [
-                'label' => trans('juzaweb::app.created_at'),
+                'label' => trans('cms::app.created_at'),
                 'width' => '15%',
                 'align' => 'center',
                 'formatter' => function ($value, $row, $index) {
@@ -83,8 +83,8 @@ class MovieDatatable extends PostTypeDataTable
      */
     public function query($data)
     {
-        $query = Movie::query();
-        $query->where('tv_series', '=', $this->tvSeries);
+        $query = Post::query();
+        $query->whereMeta('tv_series', $this->tvSeries);
 
         if ($keyword = Arr::get($data, 'keyword')) {
             $query->where(function (Builder $q) use ($keyword) {

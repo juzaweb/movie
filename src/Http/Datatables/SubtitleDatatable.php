@@ -4,7 +4,7 @@ namespace Juzaweb\Movie\Http\Datatables;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
-use Juzaweb\Abstracts\DataTable;
+use Juzaweb\CMS\Abstracts\DataTable;
 use Juzaweb\Movie\Models\Subtitle;
 
 class SubtitleDatatable extends DataTable
@@ -39,7 +39,7 @@ class SubtitleDatatable extends DataTable
                 'width' => '20%',
             ],
             'created_at' => [
-                'label' => trans('juzaweb::app.created_at'),
+                'label' => trans('cms::app.created_at'),
                 'width' => '15%',
                 'align' => 'center',
                 'formatter' => function ($value, $row, $index) {
