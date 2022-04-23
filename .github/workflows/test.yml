@@ -7,14 +7,9 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [7.4, 7.3, 7.2]
-        cms: [1.*]
-        version: [
-          1.*,
-          dev-develop,
-          dev-master
-        ]
-    name: PHP ${{ matrix.php }} - CMS ${{ matrix.cms }} - PACKAGE ${{ matrix.version }} - ${{ matrix.os }}
+        php: [8.0, 8.1]
+        cms: [3.*]
+    name: PHP ${{ matrix.php }} - CMS ${{ matrix.cms }} - ${{ matrix.os }}
 
     steps:
       - name: Checkout Code
@@ -28,9 +23,7 @@ jobs:
           coverage: none
 
       - name: Install composer
-        run: composer create-project juzaweb/laravel-cms cms
-      - name: Update package
-        run: composer require "juzaweb/cms:${{ matrix.version }}"
+        run: composer create-project juzaweb/juzacms cms "${{ matrix.cms }}"
         working-directory: cms
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
@@ -47,7 +40,4 @@ jobs:
         run: |
           php artisan plugin:install juzaweb/movie
           php artisan plugin:enable juzaweb/movie
-          vendor/bin/phpunit vendor/juzaweb/cms/tests/Install
-          vendor/bin/phpunit vendor/juzaweb/cms/tests/Unit
-          vendor/bin/phpunit vendor/juzaweb/cms/tests/Feature
         working-directory: cms
