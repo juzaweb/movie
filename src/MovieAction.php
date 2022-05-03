@@ -47,113 +47,140 @@ class MovieAction extends Action
 
     public function registerMovie()
     {
-        HookAction::registerPostType('movies', [
-            'label' => trans('mymo::app.movies'),
-            'menu_position' => 11,
-            'menu_icon' => 'fa fa-film',
-            'supports' => ['tag'],
-            'metas' => [
-                'origin_title' => [
-                    'label' => trans('mymo::app.other_name')
-                ],
-                'tv_series' => [
-                    'label' => trans('mymo::app.type'),
-                    'type' => 'select',
-                    'sidebar' => true,
-                    'data' => [
-                        'options' => [
-                            '0' => trans('mymo::app.movie'),
-                            '1' => trans('mymo::app.tv_series'),
+        HookAction::registerPostType(
+            'movies',
+            [
+                'label' => trans('mymo::app.movies'),
+                'menu_position' => 11,
+                'menu_icon' => 'fa fa-film',
+                'supports' => ['tag'],
+                'metas' => [
+                    'origin_title' => [
+                        'label' => trans('mymo::app.other_name')
+                    ],
+                    'tv_series' => [
+                        'label' => trans('mymo::app.type'),
+                        'type' => 'select',
+                        'sidebar' => true,
+                        'data' => [
+                            'options' => [
+                                '0' => trans('mymo::app.movie'),
+                                '1' => trans('mymo::app.tv_series'),
+                            ]
+                        ],
+                    ],
+                    'poster' => [
+                        'label' => trans('mymo::app.poster'),
+                        'type' => 'image',
+                        'sidebar' => true,
+                    ],
+                    'rating' => [
+                        'label' => trans('mymo::app.rating')
+                    ],
+                    'release' => [
+                        'label' => trans('mymo::app.release'),
+                        'data' => [
+                            'class' => 'datepicker',
                         ]
                     ],
-                ],
-                'poster' => [
-                    'label' => trans('mymo::app.poster'),
-                    'type' => 'image',
-                    'sidebar' => true,
-                ],
-                'rating' => [
-                    'label' => trans('mymo::app.rating')
-                ],
-                'release' => [
-                    'label' => trans('mymo::app.release'),
-                    'data' => [
-                        'class' => 'datepicker',
+                    'year' => [
+                        'label' => trans('mymo::app.year')
+                    ],
+                    'runtime' => [
+                        'label' => trans('mymo::app.runtime')
+                    ],
+                    'video_quality' => [
+                        'label' => trans('mymo::app.video_quality')
+                    ],
+                    'trailer_link' => [
+                        'label' => trans('mymo::app.trailer')
+                    ],
+                    'current_episode' => [
+                        'label' => trans('mymo::app.current_episode')
+                    ],
+                    'max_episode' => [
+                        'label' => trans('mymo::app.max_episode')
                     ]
                 ],
-                'year' => [
-                    'label' => trans('mymo::app.year')
-                ],
-                'runtime' => [
-                    'label' => trans('mymo::app.runtime')
-                ],
-                'video_quality' => [
-                    'label' => trans('mymo::app.video_quality')
-                ],
-                'trailer_link' => [
-                    'label' => trans('mymo::app.trailer')
-                ],
-                'current_episode' => [
-                    'label' => trans('mymo::app.current_episode')
-                ],
-                'max_episode' => [
-                    'label' => trans('mymo::app.max_episode')
-                ]
-            ],
-        ]);
+            ]
+        );
     }
 
     public function registerTaxonomies()
     {
-        HookAction::registerTaxonomy('genres', 'movies', [
-            'label' => trans('mymo::app.genres'),
-            'menu_position' => 6,
-            'supports' => [
-                'thumbnail'
-            ],
-        ]);
+        HookAction::registerTaxonomy(
+            'genres',
+            'movies',
+            [
+                'label' => trans('mymo::app.genres'),
+                'menu_position' => 6,
+                'supports' => [
+                    'thumbnail'
+                ],
+            ]
+        );
 
-        HookAction::registerTaxonomy('countries', 'movies', [
-            'label' => trans('mymo::app.countries'),
-            'menu_position' => 7,
-            'supports' => [
-                'thumbnail'
-            ],
-        ]);
+        HookAction::registerTaxonomy(
+            'countries',
+            'movies',
+            [
+                'label' => trans('mymo::app.countries'),
+                'menu_position' => 7,
+                'supports' => [
+                    'thumbnail'
+                ],
+            ]
+        );
 
-        HookAction::registerTaxonomy('actors', 'movies', [
-            'label' => trans('mymo::app.actors'),
-            'menu_box' => false,
-            'menu_position' => 7,
-            'supports' => [
-                'thumbnail'
-            ],
-        ]);
+        HookAction::registerTaxonomy(
+            'actors',
+            'movies',
+            [
+                'label' => trans('mymo::app.actors'),
+                'menu_box' => false,
+                'menu_position' => 7,
+                'supports' => [
+                    'thumbnail'
+                ],
+            ]
+        );
 
-        HookAction::registerTaxonomy('directors', 'movies', [
-            'label' => trans('mymo::app.directors'),
-            'menu_position' => 7,
-            'menu_box' => false,
-            'supports' => [
-                'thumbnail'
-            ],
-        ]);
+        HookAction::registerTaxonomy(
+            'directors',
+            'movies',
+            [
+                'label' => trans('mymo::app.directors'),
+                'menu_position' => 7,
+                'menu_box' => false,
+                'supports' => [
+                    'thumbnail'
+                ],
+            ]
+        );
 
-        HookAction::registerTaxonomy('writers', 'movies', [
-            'label' => trans('mymo::app.writers'),
-            'menu_position' => 7,
-            'menu_box' => false,
-            'supports' => [
-                'thumbnail'
-            ],
-        ]);
+        HookAction::registerTaxonomy(
+            'writers',
+            'movies',
+            [
+                'label' => trans('mymo::app.writers'),
+                'menu_position' => 7,
+                'menu_box' => false,
+                'supports' => [
+                    'thumbnail'
+                ],
+            ]
+        );
 
-        HookAction::registerTaxonomy('years', 'movies', [
-            'label' => trans('mymo::app.years'),
-            'menu_position' => 8,
-            'show_in_menu' => false,
-            'supports' => [],
-        ]);
+        HookAction::registerTaxonomy(
+            'years',
+            'movies',
+            [
+                'label' => trans('mymo::app.years'),
+                'menu_position' => 8,
+                'show_in_menu' => false,
+                'supports' => [],
+            ]
+        );
     }
 
     public function addSettingForm()
@@ -201,76 +228,103 @@ class MovieAction extends Action
 
     public function addAjaxTheme()
     {
-        HookAction::registerFrontendAjax('movie-download', [
-            'callback' => [app(AjaxController::class), 'download']
-        ]);
+        HookAction::registerFrontendAjax(
+            'movie-download',
+            [
+                'callback' => [app(AjaxController::class), 'download']
+            ]
+        );
 
-        HookAction::registerFrontendAjax('get-player', [
-            'callback' => [app(AjaxController::class), 'getPlayer']
-        ]);
+        HookAction::registerFrontendAjax(
+            'get-player',
+            [
+                'callback' => [app(AjaxController::class), 'getPlayer']
+            ]
+        );
 
-        HookAction::registerFrontendAjax('popular-movies', [
-            'callback' => [app(AjaxController::class), 'getPopularMovies']
-        ]);
+        HookAction::registerFrontendAjax(
+            'popular-movies',
+            [
+                'callback' => [app(AjaxController::class), 'getPopularMovies']
+            ]
+        );
 
-        HookAction::registerFrontendAjax('movies-genre', [
-            'callback' => [app(AjaxController::class), 'getMoviesByGenre']
-        ]);
+        HookAction::registerFrontendAjax(
+            'movies-genre',
+            [
+                'callback' => [app(AjaxController::class), 'getMoviesByGenre']
+            ]
+        );
 
-        HookAction::registerFrontendAjax('mymo_filter_form', [
-            'callback' => [app(AjaxController::class), 'getFilterForm'],
-        ]);
+        HookAction::registerFrontendAjax(
+            'mymo_filter_form',
+            [
+                'callback' => [app(AjaxController::class), 'getFilterForm'],
+            ]
+        );
     }
 
     public function registerResources()
     {
-        HookAction::registerResource('servers', 'movies', [
-            'label' => trans('mymo::app.servers'),
-            'label_action' => trans('mymo::app.upload'),
-            'menu' => [
-                'icon' => 'fa fa-server',
-            ],
-        ]);
-
-        HookAction::registerResource('download', 'movies', [
-            'label' => trans('mymo::app.download'),
-            'label_action' => trans('mymo::app.download'),
-            'menu' => [
-                'icon' => 'fa fa-download',
-            ],
-            'metas' => [
-                'url' => [
-                    'label' => trans('mymo::app.url'),
+        HookAction::registerResource(
+            'servers',
+            'movies',
+            [
+                'label' => trans('mymo::app.servers'),
+                'label_action' => trans('mymo::app.upload'),
+                'menu' => [
+                    'icon' => 'fa fa-server',
                 ],
             ]
-        ]);
+        );
 
-        HookAction::registerResource('files', null, [
-            'label' => trans('mymo::app.upload_videos'),
-            'label_action' => trans('mymo::app.upload_videos'),
-            'parent' => 'servers',
-            'metas' => [
-                'source' => [
-                    'label' => trans('mymo::app.source'),
-                    'type' => 'select',
-                    'data' => [
-                        'options' => [
-                            'mp4' => 'MP4 From URL',
-                            'youtube' => 'Youtube',
-                            'vimeo' => 'Vimeo',
-                            'gdrive' => 'Google Drive',
-                            'mkv' => 'MKV From URL',
-                            'webm' => 'WEBM From URL',
-                            'm3u8' => 'M3U8 From URL',
-                            'embed' => 'Embed URL',
+        HookAction::registerResource(
+            'download',
+            'movies',
+            [
+                'label' => trans('mymo::app.download'),
+                'label_action' => trans('mymo::app.download'),
+                'menu' => [
+                    'icon' => 'fa fa-download',
+                ],
+                'metas' => [
+                    'url' => [
+                        'label' => trans('mymo::app.url'),
+                    ],
+                ]
+            ]
+        );
+
+        HookAction::registerResource(
+            'files',
+            null,
+            [
+                'label' => trans('mymo::app.upload_videos'),
+                'label_action' => trans('mymo::app.upload_videos'),
+                'parent' => 'servers',
+                'metas' => [
+                    'source' => [
+                        'label' => trans('mymo::app.source'),
+                        'type' => 'select',
+                        'data' => [
+                            'options' => [
+                                'mp4' => 'MP4 From URL',
+                                'youtube' => 'Youtube',
+                                'vimeo' => 'Vimeo',
+                                'gdrive' => 'Google Drive',
+                                'mkv' => 'MKV From URL',
+                                'webm' => 'WEBM From URL',
+                                'm3u8' => 'M3U8 From URL',
+                                'embed' => 'Embed URL',
+                            ]
                         ]
-                    ]
+                    ],
+                    'url' => [
+                        'label' => trans('mymo::app.url'),
+                    ],
                 ],
-                'url' => [
-                    'label' => trans('mymo::app.url'),
-                ],
-            ],
-        ]);
+            ]
+        );
     }
 
     public function addImportButton()
@@ -288,9 +342,12 @@ class MovieAction extends Action
 
     public function addAjaxAdmin()
     {
-        HookAction::registerAdminAjax('tmdb-add_movie', [
-            'callback' => [TmdbController::class, 'addMovie'],
-            'method' => 'post'
-        ]);
+        HookAction::registerAdminAjax(
+            'tmdb-add_movie',
+            [
+                'callback' => [TmdbController::class, 'addMovie'],
+                'method' => 'post'
+            ]
+        );
     }
 }
