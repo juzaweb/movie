@@ -24,7 +24,6 @@ jobs:
 
       - name: Install composer
         run: composer create-project juzaweb/juzacms cms "${{ matrix.cms }}"
-        working-directory: cms
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
         working-directory: cms
@@ -33,11 +32,17 @@ jobs:
           mkdir -p database
           touch database/database.sqlite
         working-directory: cms
+      - name: Clone plugin
+        run: |
+          cd plugins
+          git clone https://github.com/juzaweb/movie.git movie
+        working-directory: cms
       - name: Config database
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
         run: |
-          php artisan plugin:install juzaweb/movie
+          php artisan juzacms:install
           php artisan plugin:enable juzaweb/movie
+          php artisan test
         working-directory: cms
