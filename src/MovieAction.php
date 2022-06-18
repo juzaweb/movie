@@ -104,6 +104,15 @@ class MovieAction extends Action
                 ],
             ]
         );
+
+        HookAction::registerPostType(
+            'lives',
+            [
+                'label' => 'Live TVs',
+                'menu_position' => 12,
+                'menu_icon' => 'fa fa-film',
+            ]
+        );
     }
 
     public function registerTaxonomies()
