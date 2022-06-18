@@ -105,7 +105,7 @@ class MovieAction extends Action
             ]
         );
 
-        HookAction::registerPostType(
+        /*HookAction::registerPostType(
             'lives',
             [
                 'label' => 'Live TVs',
@@ -113,7 +113,7 @@ class MovieAction extends Action
                 'menu_icon' => 'fa fa-film',
                 'supports' => ['tag'],
             ]
-        );
+        );*/
     }
 
     public function registerTaxonomies()
