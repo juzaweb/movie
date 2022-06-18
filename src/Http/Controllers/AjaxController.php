@@ -38,11 +38,14 @@ class AjaxController extends Controller
         $years = Taxonomy::where('taxonomy', '=', 'years')
             ->get();
 
-        return Twig::render('theme::components.filter_form', [
-            'genres' => TaxonomyResource::collection($genres)->toArray($request),
-            'countries' => TaxonomyResource::collection($countries)->toArray($request),
-            'years' => TaxonomyResource::collection($years)->toArray($request),
-        ]);
+        return Twig::render(
+            'theme::components.filter_form',
+            [
+                'genres' => TaxonomyResource::collection($genres)->toArray($request),
+                'countries' => TaxonomyResource::collection($countries)->toArray($request),
+                'years' => TaxonomyResource::collection($years)->toArray($request),
+            ]
+        );
     }
 
     public function getMoviesByGenre(Request $request)
@@ -82,9 +85,11 @@ class AjaxController extends Controller
             $item->year = $item->getMeta('year');
         }
 
-        return response()->json([
-            'items' => $items
-        ]);
+        return response()->json(
+            [
+                'items' => $items
+            ]
+        );
     }
 
     public function getPlayer(Request $request)
@@ -95,6 +100,7 @@ class AjaxController extends Controller
         $movie = Post::createFrontendBuilder()
             ->where('slug', '=', $slug)
             ->firstOrFail();
+        $tracks = [];
 
         if (get_config('only_member_view') == 1) {
             if (!Auth::check()) {
@@ -102,19 +108,22 @@ class AjaxController extends Controller
                 $file->source = 'embed';
                 $files[] = (object) ['file' => route('watch.no-view')];
 
-                return response()->json([
-                    'data' => [
-                        'status' => true,
-                        'sources' => Twig::render(
-                            'theme::components.player_script',
-                            [
-                                'movie' => $movie,
-                                'file' => $file,
-                                'files' => $files,
-                            ]
-                        ),
+                return response()->json(
+                    [
+                        'data' => [
+                            'status' => true,
+                            'sources' => Twig::render(
+                                'theme::components.player_script',
+                                [
+                                    'movie' => $movie,
+                                    'file' => $file,
+                                    'files' => $files,
+                                    'tracks' => $tracks,
+                                ]
+                            ),
+                        ]
                     ]
-                ]);
+                );
             }
         }
 
@@ -123,29 +132,48 @@ class AjaxController extends Controller
         if ($video) {
             $files = (new VideoFile())->getFiles($video);
             $ads_exists = false;// VideoAds::where('status', 1)->exists();
+            $tracks = Resource::where('type', '=', 'subtitles')
+                ->where('parent_id', '=', $video->id)
+                ->wherePublish()
+                ->get()
+                ->map(
+                    function ($item) {
+                        return [
+                            'kind' => 'captions',
+                            'file' => $item->getMeta('url'),
+                            'label' => $item->name,
+                        ];
+                    }
+                )
+                ->toArray();
             $video = (new ResourceResource($video))->toArray($request);
 
-            return response()->json([
-                'data' => [
-                    'status' => true,
-                    'sources' => Twig::render(
-                        'theme::components.player_script',
-                        compact(
-                            'video',
-                            'files',
-                            'ads_exists',
-                            'movie'
-                        )
-                    ),
+            return response()->json(
+                [
+                    'data' => [
+                        'status' => true,
+                        'sources' => Twig::render(
+                            'theme::components.player_script',
+                            compact(
+                                'video',
+                                'files',
+                                'ads_exists',
+                                'movie',
+                                'tracks'
+                            )
+                        ),
+                    ]
                 ]
-            ]);
+            );
         }
 
-        return response()->json([
-            'data' => [
-                'status' => false,
+        return response()->json(
+            [
+                'data' => [
+                    'status' => false,
+                ]
             ]
-        ]);
+        );
     }
 
     public function download(Request $request)

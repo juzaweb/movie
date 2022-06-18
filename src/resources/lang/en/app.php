@@ -141,4 +141,5 @@ return [
     'player_watermark' => 'Player watermark',
     'player_watermark_logo' => 'Player watermark logo',
     'import' => 'Import',
+    'subtitles' => 'Subtitles',
 ];

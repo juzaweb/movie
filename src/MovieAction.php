@@ -111,6 +111,7 @@ class MovieAction extends Action
                 'label' => 'Live TVs',
                 'menu_position' => 12,
                 'menu_icon' => 'fa fa-film',
+                'supports' => ['tag'],
             ]
         );
     }
@@ -328,6 +329,21 @@ class MovieAction extends Action
                             ]
                         ]
                     ],
+                    'url' => [
+                        'label' => trans('mymo::app.url'),
+                    ],
+                ],
+            ]
+        );
+
+        HookAction::registerResource(
+            'subtitles',
+            null,
+            [
+                'label' => trans('mymo::app.subtitles'),
+                'label_action' => trans('mymo::app.subtitles'),
+                'parent' => 'files',
+                'metas' => [
                     'url' => [
                         'label' => trans('mymo::app.url'),
                     ],
