@@ -241,35 +241,35 @@ class MovieAction extends Action
         HookAction::registerFrontendAjax(
             'movie-download',
             [
-                'callback' => [app(AjaxController::class), 'download']
+                'callback' => [AjaxController::class, 'download']
             ]
         );
 
         HookAction::registerFrontendAjax(
             'get-player',
             [
-                'callback' => [app(AjaxController::class), 'getPlayer']
+                'callback' => [AjaxController::class, 'getPlayer']
             ]
         );
 
         HookAction::registerFrontendAjax(
             'popular-movies',
             [
-                'callback' => [app(AjaxController::class), 'getPopularMovies']
+                'callback' => [AjaxController::class, 'getPopularMovies']
             ]
         );
 
         HookAction::registerFrontendAjax(
             'movies-genre',
             [
-                'callback' => [app(AjaxController::class), 'getMoviesByGenre']
+                'callback' => [AjaxController::class, 'getMoviesByGenre']
             ]
         );
 
         HookAction::registerFrontendAjax(
-            'mymo_filter_form',
+            'mymo-filter-form',
             [
-                'callback' => [app(AjaxController::class), 'getFilterForm'],
+                'callback' => [AjaxController::class, 'getFilterForm'],
             ]
         );
     }
