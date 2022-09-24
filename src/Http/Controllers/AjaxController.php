@@ -25,7 +25,7 @@ use TwigBridge\Facade\Twig;
 
 class AjaxController extends Controller
 {
-    public function getFilterForm(Request $request)
+    public function getFilterForm(Request $request): string
     {
         $genres = Taxonomy::where(
             'taxonomy',
