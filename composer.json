@@ -14,7 +14,7 @@
             "name": "Movie plugin",
             "domain": "mymo",
             "cms_min": "3.0",
-            "version": "1.0.3"
+            "version": "1.0.4"
         }
     },
     "autoload": {
