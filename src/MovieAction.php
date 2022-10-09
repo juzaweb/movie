@@ -331,6 +331,7 @@ class MovieAction extends Action
                     ],
                     'url' => [
                         'label' => trans('mymo::app.url'),
+                        'type' => 'upload_url'
                     ],
                 ],
             ]

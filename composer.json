@@ -13,8 +13,8 @@
             ],
             "name": "Movie plugin",
             "domain": "mymo",
-            "cms_min": "3.0",
-            "version": "1.0.4"
+            "cms_min": "3.2.7",
+            "version": "1.0.5"
         }
     },
     "autoload": {
