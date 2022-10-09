@@ -3,7 +3,8 @@
 namespace Juzaweb\Movie\Providers;
 
 use Juzaweb\CMS\Facades\ActionRegister;
-use Juzaweb\Movie\Commands\GenerateDemoCommand;
+use Juzaweb\Movie\Commands\GenerateDemoMovieCommand;
+use Juzaweb\Movie\Commands\GenerateDemoVideoCommand;
 use Juzaweb\Movie\MovieAction;
 use Juzaweb\CMS\Support\ServiceProvider;
 
@@ -18,7 +19,12 @@ class MovieServiceProvider extends ServiceProvider
     {
         ActionRegister::register(MovieAction::class);
 
-        $this->commands([GenerateDemoCommand::class]);
+        $this->commands(
+            [
+                GenerateDemoMovieCommand::class,
+                GenerateDemoVideoCommand::class
+            ]
+        );
     }
 
     /**

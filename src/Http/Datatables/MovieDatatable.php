@@ -23,7 +23,7 @@ class MovieDatatable extends PostTypeDataTable
      *
      * @return array
      */
-    public function columns()
+    public function columns(): array
     {
         return [
             'thumbnail' => [

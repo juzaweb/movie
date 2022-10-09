@@ -10,6 +10,9 @@
 
 namespace Juzaweb\Movie\Helpers;
 
+use Illuminate\Support\Arr;
+use Juzaweb\Backend\Models\Post;
+
 class TmdbImport
 {
     public static function make(): static
@@ -17,7 +20,7 @@ class TmdbImport
         return app(static::class);
     }
 
-    public function import(string $tmdbId, int $type)
+    public function import(string $tmdbId, int $type): bool|Post
     {
         if (empty(get_config('tmdb_api_key'))) {
             throw new \Exception(trans('mymo::app.tmdb_api_key_not_found'));
@@ -28,6 +31,8 @@ class TmdbImport
         if (empty($data)) {
             throw new \Exception(trans('mymo::app.movie_not_found'));
         }
+
+        $data['tmdb_id'] = $tmdbId;
 
         $import = new ImportMovie($data);
 
@@ -101,6 +106,7 @@ class TmdbImport
         $writers = $data['credits']['crew'];
         $countries = $data['production_countries'] ?? [];
         $genres = $data['genres'] ?? [];
+        $runtime = Arr::get($data, 'episode_run_time.0');
 
         return [
             'title' => $data['original_name'],
@@ -110,7 +116,9 @@ class TmdbImport
             'poster' => 'https://image.tmdb.org/t/p/w780/'.$data['backdrop_path'],
             'rating' => $data['vote_average'],
             'release' => $data['first_air_date'],
-            'runtime' => @$data['episode_run_time'][0].' '.trans('mymo::app.min'),
+            'runtime' => $runtime ? $runtime.' '.trans('mymo::app.min') : null,
+            'max_episode' => Arr::get($data, 'number_of_episodes', 1),
+            'current_episode' => Arr::get($data, 'last_episode_to_air.episode_number', 1),
             'actors' => $actors,
             'directors' => $directors,
             'writers' => $writers,

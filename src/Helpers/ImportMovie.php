@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class ImportMovie
 {
-    public $data;
-    public $errors = [];
+    public array $data;
+
+    public array $errors = [];
 
     public function __construct(array $data)
     {
@@ -73,80 +74,79 @@ class ImportMovie
             return false;
         }
 
-        DB::beginTransaction();
-
-        try {
-            $model = Post::create(
-                array_merge(
-                    $this->data,
-                    [
-                        'thumbnail' => FileManager::addFile($this->data['thumbnail'])->path,
-                        'status' => Post::STATUS_PUBLISH,
-                        'type' => 'movies'
-                    ]
-                )
-            );
-
-            $year = explode('-', $this->data['release'] ?? '')[0];
-
-            $model->syncMetas(
+        $model = Post::create(
+            array_merge(
+                $this->data,
                 [
-                    'tv_series' => $this->data['tv_series'] ? 1 : 0,
-                    'video_quality' => $this->data['video_quality'] ?? 'HD',
-                    'release' => $this->data['release'] ?? null,
-                    'year' => $year,
-                    'trailer_link' => Arr::get($this->data, 'trailer_link'),
-                    'poster' => FileManager::addFile($this->data['poster'])->path,
+                    'thumbnail' => FileManager::addFile($this->data['thumbnail'])->path,
+                    'status' => Post::STATUS_PUBLISH,
+                    'type' => 'movies'
                 ]
-            );
+            )
+        );
 
-            $model->syncTaxonomies(
-                [
-                    'genres' => $this->getTaxonomyIds(
-                        $this->data['genres'],
-                        'genres'
-                    ),
-                    'countries' => $this->getTaxonomyIds(
-                        $this->data['countries'],
-                        'countries'
-                    ),
-                    'actors' => $this->getTaxonomyIds(
-                        $this->data['actors'],
-                        'actors'
-                    ),
-                    'writers' => $this->getTaxonomyIds(
-                        $this->data['writers'],
-                        'writers'
-                    ),
-                    'directors' => $this->getTaxonomyIds(
-                        $this->data['directors'],
-                        'directors'
-                    ),
-                    'tags' => $this->getTaxonomyIds(
-                        $this->data['tags'],
-                        'tags'
-                    ),
-                    'years' => $this->getTaxonomyIds(
-                        [
-                            [
-                                'name' => $year
-                            ]
-                        ],
-                        'years'
-                    )
-                ]
-            );
+        $year = explode('-', $this->data['release'] ?? '')[0];
 
-            DB::commit();
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            throw $e;
+        $model->syncMetas(
+            [
+                'tv_series' => $this->data['tv_series'] ? 1 : 0,
+                'video_quality' => $this->data['video_quality'] ?? 'HD',
+                'release' => $this->data['release'] ?? null,
+                'year' => $year,
+                'trailer_link' => Arr::get($this->data, 'trailer_link'),
+                'poster' => FileManager::addFile($this->data['poster'])->path,
+                'tmdb_id' => $this->data['tmdb_id'],
+                'runtime' => $this->data['runtime'],
+                'rating' => $this->data['rating'],
+            ]
+        );
+
+        if ($this->data['tv_series']) {
+            $model->setMeta('current_episode', $this->data['current_episode']);
+            $model->setMeta('max_episode', $this->data['max_episode']);
         }
+
+        $model->syncTaxonomies(
+            [
+                'genres' => $this->getTaxonomyIds(
+                    $this->data['genres'],
+                    'genres'
+                ),
+                'countries' => $this->getTaxonomyIds(
+                    $this->data['countries'],
+                    'countries'
+                ),
+                'actors' => $this->getTaxonomyIds(
+                    $this->data['actors'],
+                    'actors'
+                ),
+                'writers' => $this->getTaxonomyIds(
+                    $this->data['writers'],
+                    'writers'
+                ),
+                'directors' => $this->getTaxonomyIds(
+                    $this->data['directors'],
+                    'directors'
+                ),
+                'tags' => $this->getTaxonomyIds(
+                    $this->data['tags'],
+                    'tags'
+                ),
+                'years' => $this->getTaxonomyIds(
+                    [
+                        [
+                            'name' => $year
+                        ]
+                    ],
+                    'years'
+                )
+            ]
+        );
 
         return $model;
     }
 
-    public function validate()
+    public function validate(): bool
     {
         if (empty($this->data['title'])) {
             $this->errors[] = 'Title is required.';
@@ -175,7 +175,7 @@ class ImportMovie
         return true;
     }
 
-    protected function getTaxonomyIds($genres, $type)
+    protected function getTaxonomyIds($genres, $type): array|string
     {
         if (is_string($genres)) {
             return $genres;

@@ -5,7 +5,7 @@
         <div class="col-md-8">
             <h5>Imdb</h5>
 
-            @component('cms::components.form_input', [
+            @component('cms::components.form_security', [
                 'name' => 'tmdb_api_key',
                 'value' => get_config('tmdb_api_key'),
                 'label' => trans('mymo::app.tmdb_api_key'),
