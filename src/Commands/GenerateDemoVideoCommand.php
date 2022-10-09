@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Juzaweb\Backend\Models\Post;
+use Symfony\Component\Console\Input\InputOption;
 
 class GenerateDemoVideoCommand extends Command
 {
@@ -13,6 +14,8 @@ class GenerateDemoVideoCommand extends Command
 
     public function handle()
     {
+        $limit = $this->option('limit');
+
         $movies = Post::with(
             [
                 'resources' => function ($q) {
@@ -39,7 +42,7 @@ class GenerateDemoVideoCommand extends Command
                 }
             )
             ->orderBy('id', 'DESC')
-        ->limit(1)
+        ->limit($limit)
         ->get();
 
         foreach ($movies as $movie) {
@@ -167,6 +170,13 @@ class GenerateDemoVideoCommand extends Command
                 'source' => 'youtube',
                 'url' => 'https://www.youtube.com/watch?v=kErrg42WLcg'
             ]
+        ];
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            ['limit', null, InputOption::VALUE_OPTIONAL, 'The limit posts generate.', 5],
         ];
     }
 }
