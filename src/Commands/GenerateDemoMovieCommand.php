@@ -38,6 +38,7 @@ class GenerateDemoMovieCommand extends Command
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
+                report($e);
                 $this->error($e->getMessage());
             }
 
@@ -64,6 +65,7 @@ class GenerateDemoMovieCommand extends Command
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
+                report($e);
                 $this->error($e->getMessage());
             }
 

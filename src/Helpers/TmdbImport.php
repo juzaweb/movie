@@ -12,6 +12,7 @@ namespace Juzaweb\Movie\Helpers;
 
 use Illuminate\Support\Arr;
 use Juzaweb\Backend\Models\Post;
+use Juzaweb\CMS\Models\User;
 
 class TmdbImport
 {
@@ -40,7 +41,9 @@ class TmdbImport
             throw new \Exception($import->errors[0]);
         }
 
-        return $import->save();
+        $user = User::whereIsAdmin(1)->first();
+
+        return $import->save($user);
     }
 
     protected function getMovieById($tmdb_id, $type): bool|array

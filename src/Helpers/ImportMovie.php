@@ -5,8 +5,8 @@ namespace Juzaweb\Movie\Helpers;
 use Illuminate\Support\Arr;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\Backend\Models\Taxonomy;
+use Juzaweb\CMS\Models\User;
 use Juzaweb\CMS\Support\FileManager;
-use Illuminate\Support\Facades\DB;
 
 class ImportMovie
 {
@@ -68,7 +68,7 @@ class ImportMovie
      * @return Post|false
      * @throws \Throwable
      */
-    public function save()
+    public function save(User $user)
     {
         if (!$this->validate()) {
             return false;
@@ -78,7 +78,12 @@ class ImportMovie
             array_merge(
                 $this->data,
                 [
-                    'thumbnail' => FileManager::addFile($this->data['thumbnail'])->path,
+                    'thumbnail' => FileManager::addFile(
+                        $this->data['thumbnail'],
+                        'image',
+                        null,
+                        $user->id
+                    )->path,
                     'status' => Post::STATUS_PUBLISH,
                     'type' => 'movies'
                 ]
@@ -94,7 +99,12 @@ class ImportMovie
                 'release' => $this->data['release'] ?? null,
                 'year' => $year,
                 'trailer_link' => Arr::get($this->data, 'trailer_link'),
-                'poster' => FileManager::addFile($this->data['poster'])->path,
+                'poster' => FileManager::addFile(
+                    $this->data['poster'],
+                    'image',
+                    null,
+                    $user->id
+                )->path,
                 'tmdb_id' => $this->data['tmdb_id'],
                 'runtime' => $this->data['runtime'],
                 'rating' => $this->data['rating'],
