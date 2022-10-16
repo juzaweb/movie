@@ -111,6 +111,11 @@ class TmdbImport
         $genres = $data['genres'] ?? [];
         $runtime = Arr::get($data, 'episode_run_time.0');
 
+        $trailer = $data['trailers']['youtube'][0]['source'] ?? '';
+        if ($trailer) {
+            $trailer = 'https://www.youtube.com/watch?v=' . $trailer;
+        }
+
         return [
             'title' => $data['original_name'],
             'tv_series' => 1,
@@ -127,6 +132,7 @@ class TmdbImport
             'writers' => $writers,
             'countries' => $countries,
             'genres' => $genres,
+            'trailer_link' => $trailer,
         ];
     }
 }

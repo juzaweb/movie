@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Juzaweb\Backend\Models\PostMeta;
 use Juzaweb\Movie\Helpers\TmdbApi;
 use Juzaweb\Movie\Helpers\TmdbImport;
+use Symfony\Component\Console\Input\InputOption;
 
 class GenerateDemoMovieCommand extends Command
 {
@@ -17,8 +18,9 @@ class GenerateDemoMovieCommand extends Command
     {
         $api = new TmdbApi();
         $api->setAPIKey(get_config('tmdb_api_key'));
+        $page = $this->option('page');
 
-        $movies = $api->getPopularMovies();
+        $movies = $api->getPopularMovies($page);
         foreach ($movies as $movie) {
             $id = Arr::get($movie, 'id');
 
@@ -45,7 +47,7 @@ class GenerateDemoMovieCommand extends Command
             sleep(1);
         }
 
-        $tvshows = $api->getPopularTVShows();
+        $tvshows = $api->getPopularTVShows($page);
         foreach ($tvshows as $movie) {
             $id = Arr::get($movie, 'id');
 
@@ -73,5 +75,12 @@ class GenerateDemoMovieCommand extends Command
         }
 
         return self::SUCCESS;
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            ['page', null, InputOption::VALUE_OPTIONAL, 'The page movie craw.', 1],
+        ];
     }
 }

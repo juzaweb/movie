@@ -176,7 +176,7 @@ class GenerateDemoVideoCommand extends Command
     protected function getOptions(): array
     {
         return [
-            ['limit', null, InputOption::VALUE_OPTIONAL, 'The limit posts generate.', 5],
+            ['limit', null, InputOption::VALUE_OPTIONAL, 'The limit posts generate.', 20],
         ];
     }
 }
