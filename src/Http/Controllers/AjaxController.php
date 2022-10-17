@@ -11,15 +11,15 @@
 namespace Juzaweb\Movie\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
-use Juzaweb\CMS\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Juzaweb\Backend\Http\Resources\PostResource;
 use Juzaweb\Backend\Http\Resources\ResourceResource;
 use Juzaweb\Backend\Http\Resources\TaxonomyResource;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\Backend\Models\Resource;
 use Juzaweb\Backend\Models\Taxonomy;
+use Juzaweb\CMS\Http\Controllers\Controller;
 use Juzaweb\Movie\Helpers\VideoFile;
 use TwigBridge\Facade\Twig;
 
@@ -140,7 +140,7 @@ class AjaxController extends Controller
                     function ($item) {
                         return [
                             'kind' => 'captions',
-                            'file' => $item->getMeta('url'),
+                            'file' => upload_url($item->getMeta('url')),
                             'label' => $item->name,
                         ];
                     }
@@ -194,7 +194,7 @@ class AjaxController extends Controller
             ->first();
 
         if (empty($video_ads)) {
-            $factory = new \Sokil\Vast\Factory();
+            $factory = new \Juzaweb\AdsManager\Support\Vast\Factory();
             $document = $factory->create('2.0');
             $document->toDomDocument();
             return $document;
@@ -205,7 +205,7 @@ class AjaxController extends Controller
 
     protected function getAds(VideoAds $video_ads)
     {
-        $factory = new \Sokil\Vast\Factory();
+        $factory = new \Juzaweb\AdsManager\Support\Vast\Factory();
         $document = $factory->create('2.0');
 
         $ad1 = $document

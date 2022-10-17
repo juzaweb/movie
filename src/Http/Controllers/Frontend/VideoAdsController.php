@@ -11,28 +11,28 @@ class VideoAdsController extends FrontendController
         $video_ads = VideoAds::where('status', '=', 1)
             ->inRandomOrder()
             ->first();
-    
+
         if (empty($video_ads)) {
-            $factory = new \Sokil\Vast\Factory();
+            $factory = new \Juzaweb\AdsManager\Support\Vast\Factory();
             $document = $factory->create('2.0');
             $document->toDomDocument();
             return $document;
         }
-        
+
         return $this->_getAds($video_ads);
     }
-    
+
     private function _getAds(VideoAds $video_ads) {
-        $factory = new \Sokil\Vast\Factory();
+        $factory = new \Juzaweb\AdsManager\Support\Vast\Factory();
         $document = $factory->create('2.0');
-    
+
         $ad1 = $document
             ->createInLineAdSection()
             ->setId('ad1')
             ->setAdSystem($video_ads->name)
             ->setAdTitle($video_ads->title)
             ->addImpression('http://ad.server.com/impression', 'imp1');
-    
+
         $linearCreative = $ad1
             ->createLinearCreative()
             ->setDuration(1)
@@ -43,13 +43,13 @@ class VideoAdsController extends FrontendController
             ->addVideoClicksCustomClick('http://ad.server.com/videoclicks/customclick')
             ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
             ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
-    
+
         $linearCreative
             ->createClosedCaptionFile()
             ->setLanguage('en-US')
             ->setType('text/srt')
             ->setUrl('http://server.com/cc.srt');
-    
+
         $linearCreative
             ->createMediaFile()
             ->setProgressiveDelivery()
@@ -58,7 +58,7 @@ class VideoAdsController extends FrontendController
             ->setWidth(100)
             ->setBitrate(2500)
             ->setUrl(upload_url($video_ads->getVideoUrl()));
-    
+
         $document->toDomDocument();
         return $document;
     }

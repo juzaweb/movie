@@ -10,7 +10,6 @@
 
 namespace Juzaweb\Movie\Helpers;
 
-
 use Juzaweb\Backend\Models\Resource;
 
 class VideoFile
@@ -26,33 +25,26 @@ class VideoFile
         return false;
     }
 
-    public function getFiles(Resource $video) {
+    public function getFiles(Resource $video): array
+    {
         $url = $video->getMeta('url');
-        switch ($video->getMeta('source')) {
-            case 'youtube';
-                return $this->getVideoYoutube($url);
-            case 'vimeo':
-                return $this->getVideoVimeo($url);
-            case 'upload':
-                return $this->getVideoUpload();
-            case 'gdrive':
-                return $this->getVideoGoogleDrive();
-            case 'mp4';
-                return $this->getVideoUrl('mp4', $url);
-            case 'mkv';
-                return $this->getVideoUrl('mkv', $url);
-            case 'webm':
-                return $this->getVideoUrl('webm', $url);
-            case 'm3u8':
-                return $this->getVideoUrl('m3u8', $url);
-            case 'embed':
-                return $this->getVideoUrl('embed', $url);
-        }
 
-        return [];
+        return match ($video->getMeta('source')) {
+            'youtube' => $this->getVideoYoutube($url),
+            'vimeo' => $this->getVideoVimeo($url),
+            'upload' => $this->getVideoUpload(),
+            'gdrive' => $this->getVideoGoogleDrive(),
+            'mp4' => $this->getVideoUrl('mp4', $url),
+            'mkv' => $this->getVideoUrl('mkv', $url),
+            'webm' => $this->getVideoUrl('webm', $url),
+            'm3u8' => $this->getVideoUrl('m3u8', $url),
+            'embed' => $this->getVideoUrl('embed', $url),
+            default => [],
+        };
     }
 
-    protected function getVideoYoutube($url) {
+    protected function getVideoYoutube($url)
+    {
         return [
             (object) [
                 'file' => 'https://www.youtube.com/embed/' . get_youtube_id($url),
@@ -71,11 +63,11 @@ class VideoFile
         ];
     }
 
-    protected function getVideoUrl($type, $url) {
-
-        if (!is_url($url)) {
+    protected function getVideoUrl($type, $url)
+    {
+        /*if (!is_url($url)) {
             return $this->getVideoUpload();
-        }
+        }*/
 
         /*$tracks = $this->subtitles()
             ->where('status', '=', 1)
@@ -98,13 +90,14 @@ class VideoFile
 
         return [
             (object) [
-                'file' => $url,
+                'file' => upload_url($url),
                 'type' => $type,
             ]
         ];
     }
 
-    protected function getVideoUpload() {
+    protected function getVideoUpload()
+    {
         if ($this->converted == 1) {
             $files = [];
             if ($this->video_240p) {
@@ -186,7 +179,6 @@ class VideoFile
 
         $gdrive = GoogleDrive::link_stream(get_google_drive_id($this->url));
         if ($gdrive) {
-
             $files = [];
             foreach ($gdrive->qualities as $quality) {
                 $file = [
@@ -198,10 +190,13 @@ class VideoFile
 
                 $files[] = (object)[
                     'label' => $quality,
-                    'file' => route('stream.service', [
-                        $token, $quality,
-                        $quality . '.mp4'
-                    ]),
+                    'file' => route(
+                        'stream.service',
+                        [
+                            $token, $quality,
+                            $quality . '.mp4'
+                        ]
+                    ),
                     'type' => 'mp4'
                 ];
             }
@@ -212,7 +207,8 @@ class VideoFile
         return [];
     }
 
-    protected function getVideoGoogleDriveEmbed() {
+    protected function getVideoGoogleDriveEmbed()
+    {
         $files[] = (object) [
             'file' => 'https://drive.google.com/file/d/'. get_google_drive_id($this->url) .'/preview',
             'type' => 'mp4',
@@ -221,22 +217,21 @@ class VideoFile
         return $files;
     }
 
-    protected function generateStreamUrl($path) {
+    protected function generateStreamUrl($path)
+    {
         $token = generate_token(basename($path));
-        $file = json_encode([
-            'path' => $path,
-        ]);
-
+        $file = json_encode(['path' => $path]);
         $file = \Crypt::encryptString($file);
-
         return $this->getStreamLink($token, $file, basename($path));
     }
 
-    protected function getStreamLink($token, $file, $name) {
+    protected function getStreamLink($token, $file, $name)
+    {
         return route('stream.video', [$token, base64_encode($file), $name]);
     }
 
-    protected function getExtension() {
+    protected function getExtension()
+    {
         $file_name = basename($this->url);
         return explode('.', $file_name)[count(explode('.', $file_name)) - 1];
     }
