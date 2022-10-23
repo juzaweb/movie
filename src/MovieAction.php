@@ -43,6 +43,10 @@ class MovieAction extends Action
             Action::INIT_ACTION,
             [$this, 'addAjaxAdmin']
         );
+        $this->addAction(
+            Action::INIT_ACTION,
+            [$this, 'addVideoAdsType']
+        );
     }
 
     public function registerMovie()
@@ -213,29 +217,6 @@ class MovieAction extends Action
         );
     }
 
-    public function addAdminMenus()
-    {
-        HookAction::addAdminMenu(
-            trans('mymo::app.banner_ads'),
-            'banner-ads',
-            [
-                'icon' => 'fa fa-file',
-                'position' => 30,
-                'parent' => 'setting',
-            ]
-        );
-
-        HookAction::addAdminMenu(
-            trans('mymo::app.video_ads'),
-            'video-ads',
-            [
-                'icon' => 'fa fa-video-camera',
-                'position' => 31,
-                'parent' => 'setting',
-            ]
-        );
-    }
-
     public function addAjaxTheme()
     {
         HookAction::registerFrontendAjax(
@@ -375,5 +356,16 @@ class MovieAction extends Action
                 'method' => 'post'
             ]
         );
+    }
+
+    public function addVideoAdsType()
+    {
+        if (\Juzaweb\CMS\Support\HookAction::hasMacro('registerAdsPosition')) {
+            $this->hookAction->registerAdsPosition(
+                'movie',
+                'video',
+                ['name' => 'Movie Video Ads']
+            );
+        }
     }
 }

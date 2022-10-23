@@ -11,14 +11,19 @@
 namespace Juzaweb\Movie\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Juzaweb\AdsManager\Models\VideoAds;
 use Juzaweb\Backend\Http\Resources\PostResource;
 use Juzaweb\Backend\Http\Resources\ResourceResource;
 use Juzaweb\Backend\Http\Resources\TaxonomyResource;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\Backend\Models\Resource;
 use Juzaweb\Backend\Models\Taxonomy;
+use Juzaweb\CMS\Facades\Plugin;
 use Juzaweb\CMS\Http\Controllers\Controller;
 use Juzaweb\Movie\Helpers\VideoFile;
 use TwigBridge\Facade\Twig;
@@ -48,7 +53,7 @@ class AjaxController extends Controller
         );
     }
 
-    public function getMoviesByGenre(Request $request)
+    public function getMoviesByGenre(Request $request): string
     {
         $genre = $request->get('cat_id');
         $showpost = $request->get('showpost', 12);
@@ -72,7 +77,7 @@ class AjaxController extends Controller
         );
     }
 
-    public function getPopularMovies(Request $request)
+    public function getPopularMovies(Request $request): JsonResponse
     {
         $type = $request->get('type');
         $items = $this->getPopular($type);
@@ -92,7 +97,7 @@ class AjaxController extends Controller
         );
     }
 
-    public function getPlayer(Request $request)
+    public function getPlayer(Request $request): JsonResponse
     {
         $slug = $request->post('slug');
         $vid = $request->post('vid');
@@ -104,7 +109,7 @@ class AjaxController extends Controller
 
         if (get_config('only_member_view') == 1) {
             if (!Auth::check()) {
-                $file = new VideoFile();
+                $file = new \stdClass();
                 $file->source = 'embed';
                 $files[] = (object) ['file' => route('watch.no-view')];
 
@@ -131,7 +136,25 @@ class AjaxController extends Controller
 
         if ($video) {
             $files = (new VideoFile())->getFiles($video);
-            $ads_exists = false;// VideoAds::where('status', 1)->exists();
+            $ads = false;
+
+            if (Plugin::isEnabled('juzaweb/ads-manager')) {
+                $ads = VideoAds::where(['position' => 'movie'])->get()
+                    ->unique('offset')
+                    ->mapWithKeys(
+                        function ($item, $index) {
+                            return [
+                                "ad{$index}" => [
+                                    'offset' => $item->offset,
+                                    'skipoffset' => $item->options['skipoffset'] ?? 5,
+                                    'tag' => route('ajax', ['video-ads']) ."/?position=movie&id={$item->id}",
+                                ]
+                            ];
+                        }
+                    )
+                ->toArray();
+            }
+
             $tracks = Resource::where('type', '=', 'subtitles')
                 ->where('parent_id', '=', $video->id)
                 ->wherePublish()
@@ -157,7 +180,7 @@ class AjaxController extends Controller
                             compact(
                                 'video',
                                 'files',
-                                'ads_exists',
+                                'ads',
                                 'movie',
                                 'tracks'
                             )
@@ -176,92 +199,31 @@ class AjaxController extends Controller
         );
     }
 
-    public function download(Request $request)
+    public function download(Request $request): RedirectResponse
     {
         $link = $request->input('link');
-        $download = DownloadLink::find($link);
+        $download = Resource::find($link);
         if (empty($download) || $download->status != 1) {
-            return abort(404);
+            abort(404);
         }
 
-        return redirect()->to($download->url);
-    }
-
-    public function ads()
-    {
-        $video_ads = VideoAds::where('status', '=', 1)
-            ->inRandomOrder()
-            ->first();
-
-        if (empty($video_ads)) {
-            $factory = new \Juzaweb\AdsManager\Support\Vast\Factory();
-            $document = $factory->create('2.0');
-            $document->toDomDocument();
-            return $document;
+        if (!$url = $download->getMeta('url')) {
+            abort(404);
         }
 
-        return $this->getAds($video_ads);
+        return redirect()->to($url);
     }
 
-    protected function getAds(VideoAds $video_ads)
-    {
-        $factory = new \Juzaweb\AdsManager\Support\Vast\Factory();
-        $document = $factory->create('2.0');
-
-        $ad1 = $document
-            ->createInLineAdSection()
-            ->setId('ad1')
-            ->setAdSystem($video_ads->name)
-            ->setAdTitle($video_ads->title)
-            ->addImpression('http://ad.server.com/impression', 'imp1');
-
-        $linearCreative = $ad1
-            ->createLinearCreative()
-            ->setDuration(1)
-            ->setId('013d876d-14fc-49a2-aefd-744fce68365b')
-            ->setAdId('pre')
-            ->setVideoClicksClickThrough('http://entertainmentserver.com/landing')
-            ->addVideoClicksClickTracking('http://ad.server.com/videoclicks/clicktracking')
-            ->addVideoClicksCustomClick('http://ad.server.com/videoclicks/customclick')
-            ->addTrackingEvent('start', 'http://ad.server.com/trackingevent/start')
-            ->addTrackingEvent('pause', 'http://ad.server.com/trackingevent/stop');
-
-        $linearCreative
-            ->createClosedCaptionFile()
-            ->setLanguage('en-US')
-            ->setType('text/srt')
-            ->setUrl('http://server.com/cc.srt');
-
-        $linearCreative
-            ->createMediaFile()
-            ->setProgressiveDelivery()
-            ->setType('video/mp4')
-            ->setHeight(100)
-            ->setWidth(100)
-            ->setBitrate(2500)
-            ->setUrl(upload_url($video_ads->getVideoUrl()));
-
-        $document->toDomDocument();
-        return $document;
-    }
-
-    protected function getPopular($type)
+    protected function getPopular($type): Collection
     {
         $query = Post::selectFrontendBuilder();
-        $query->where('type', '=', 'movies');
+        $query->where(['type' => 'movies']);
 
         if ($type == 'day' || $type == 'month') {
-            switch ($type) {
-                case 'day':
-                    $date = date('Y-m-d');
-                    break;
-                case 'month':
-                    $date = date('Y-m');
-                    break;
-                default:
-                    $date = date('Y-m-d');
-                    break;
-            }
+            $date = match ($type) {
+                'month' => date('Y-m'),
+                default => date('Y-m-d'),
+            };
 
             $query->whereHas(
                 'postViews',
@@ -288,6 +250,7 @@ class AjaxController extends Controller
         }
 
         $query->orderBy('views', 'DESC');
+
         $query->limit(10);
 
         return $query->get();
