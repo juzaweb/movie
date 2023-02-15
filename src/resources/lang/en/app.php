@@ -142,4 +142,5 @@ return [
     'player_watermark_logo' => 'Player watermark logo',
     'import' => 'Import',
     'subtitles' => 'Subtitles',
+    'movie_reports' => 'Reports',
 ];

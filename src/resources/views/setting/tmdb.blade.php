@@ -12,6 +12,19 @@
             ])
             @endcomponent
 
+            <h5>Report</h5>
+            {{ Field::select(
+                trans('Allow to report movie'),
+                 'mymo_movie_report',
+                 [
+                     'value' => get_config('mymo_movie_report', 1),
+                     'options' => [
+                         '0' => trans('cms::app.disabled'),
+                         '1' => trans('cms::app.enabled'),
+                     ]
+                 ]
+            ) }}
+
             <h5>Player</h5>
 
             @component('cms::components.form_input', [

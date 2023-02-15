@@ -17,19 +17,31 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Juzaweb\AdsManager\Models\VideoAds;
-use Juzaweb\Backend\Http\Resources\PostResource;
+use Juzaweb\Backend\Http\Resources\PostResourceCollection;
 use Juzaweb\Backend\Http\Resources\ResourceResource;
 use Juzaweb\Backend\Http\Resources\TaxonomyResource;
 use Juzaweb\Backend\Models\Post;
 use Juzaweb\Backend\Models\Resource;
 use Juzaweb\Backend\Models\Taxonomy;
+use Juzaweb\Backend\Repositories\PostRepository;
+use Juzaweb\Backend\Repositories\ResourceRepository;
 use Juzaweb\CMS\Facades\Plugin;
 use Juzaweb\CMS\Http\Controllers\Controller;
+use Juzaweb\CMS\Traits\ResponseMessage;
 use Juzaweb\Movie\Helpers\VideoFile;
+use Juzaweb\Movie\Http\Requests\ReportRequest;
 use TwigBridge\Facade\Twig;
 
 class AjaxController extends Controller
 {
+    use ResponseMessage;
+
+    public function __construct(
+        protected ResourceRepository $resourceRepository,
+        protected PostRepository $postRepository
+    ) {
+    }
+
     public function getFilterForm(Request $request): string
     {
         $genres = Taxonomy::where(
@@ -66,7 +78,7 @@ class AjaxController extends Controller
         $query->whereTaxonomy($genre);
         $query->limit($showpost);
 
-        $posts = PostResource::collection($query->get())
+        $posts = PostResourceCollection::make($query->get())
             ->toArray($request);
 
         return Twig::render(
@@ -203,7 +215,7 @@ class AjaxController extends Controller
     {
         $link = $request->input('link');
         $download = Resource::find($link);
-        if (empty($download) || $download->status != 1) {
+        if (empty($download) || $download->status != 'publish') {
             abort(404);
         }
 
@@ -212,6 +224,19 @@ class AjaxController extends Controller
         }
 
         return redirect()->to($url);
+    }
+
+    public function report(ReportRequest $request): JsonResponse
+    {
+        $post = $this->postRepository->find($request->input('post_id'));
+
+        $data = $request->only(['description', 'type', 'post_id']);
+        $data['type'] = 'movie-reports';
+        $data['name'] = 'Report movie '. $post->title;
+
+        $this->resourceRepository->create($data);
+
+        return $this->success('Send Report success');
     }
 
     protected function getPopular($type): Collection

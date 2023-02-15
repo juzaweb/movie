@@ -204,6 +204,7 @@ class MovieAction extends Action
                 "tmdb_api_key",
                 "player_watermark",
                 "player_watermark_logo",
+                "mymo_movie_report",
             ]
         );
 
@@ -212,7 +213,7 @@ class MovieAction extends Action
             [
                 'name' => trans('mymo::app.mymo_setting'),
                 'view' => view('mymo::setting.tmdb'),
-                'priority' => 20
+                'priority' => 20,
             ]
         );
     }
@@ -253,6 +254,14 @@ class MovieAction extends Action
                 'callback' => [AjaxController::class, 'getFilterForm'],
             ]
         );
+
+        HookAction::registerFrontendAjax(
+            'movie-report',
+            [
+                'callback' => [AjaxController::class, 'report'],
+                'method' => 'post',
+            ]
+        );
     }
 
     public function registerResources()
@@ -288,7 +297,7 @@ class MovieAction extends Action
 
         HookAction::registerResource(
             'files',
-            null,
+            'movies',
             [
                 'label' => trans('mymo::app.upload_videos'),
                 'label_action' => trans('mymo::app.upload_videos'),
@@ -320,7 +329,7 @@ class MovieAction extends Action
 
         HookAction::registerResource(
             'subtitles',
-            null,
+            'movies',
             [
                 'label' => trans('mymo::app.subtitles'),
                 'label_action' => trans('mymo::app.subtitles'),
@@ -330,6 +339,33 @@ class MovieAction extends Action
                         'label' => trans('mymo::app.url'),
                     ],
                 ],
+            ]
+        );
+
+        HookAction::registerResource(
+            'movie-reports',
+            null,
+            [
+                'label' => trans('mymo::app.movie_reports'),
+                'has_display_order' => false,
+                'menu' => [
+                    'icon' => 'fa fa-bug',
+                    'parent' => 'setting',
+                    'priority' => 99,
+                ],
+                'metas' => [
+                    'type' => [
+                        'type' => 'select',
+                        'data' => [
+                            'disabled' => true,
+                            'options' => [
+                                'die_link' => 'Link is dead',
+                                'bug' => 'Bug',
+                                'other' => 'Other',
+                            ],
+                        ],
+                    ]
+                ]
             ]
         );
     }
