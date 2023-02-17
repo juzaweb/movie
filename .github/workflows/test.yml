@@ -44,5 +44,11 @@ jobs:
         run: |
           php artisan test modules/Tests/InstallTest.php
           php artisan plugin:enable juzaweb/movie
+        working-directory: cms
+      - name: Config database & Execute tests Install
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: |
           php artisan test
         working-directory: cms
