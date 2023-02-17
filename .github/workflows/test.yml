@@ -43,9 +43,10 @@ jobs:
           DB_DATABASE: database/database.sqlite
         run: |
           php artisan test modules/Tests/InstallTest.php
+          composer dump-autoload
           php artisan plugin:enable juzaweb/movie
         working-directory: cms
-      - name: Config database & Execute tests Install
+      - name: Run Tests
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
