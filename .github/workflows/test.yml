@@ -3,6 +3,15 @@ name: Run phpunit test suite
 jobs:
   phpunit-test-suite:
     runs-on: ${{ matrix.os }}
+    services:
+      mysql:
+        image: mysql:8.0.21
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: cms_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       fail-fast: true
       matrix:
@@ -21,7 +30,6 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
-
       - name: Install composer
         run: composer create-project juzaweb/juzacms cms "${{ matrix.cms }}"
       - name: Directory Permissions
@@ -38,18 +46,11 @@ jobs:
           git clone https://github.com/juzaweb/movie.git movie
         working-directory: cms
       - name: Config database & Execute tests Install
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
         run: |
           php artisan test modules/Tests/InstallTest.php
           composer dump-autoload
           php artisan plugin:enable juzaweb/movie
         working-directory: cms
       - name: Run Tests
-        env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: database/database.sqlite
-        run: |
-          php artisan test
+        run: php artisan test
         working-directory: cms
