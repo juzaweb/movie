@@ -32,6 +32,8 @@ jobs:
           coverage: none
       - name: Install composer
         run: composer create-project juzaweb/juzacms cms "${{ matrix.cms }}"
+      - name: Copy .env
+        run: php -r "copy('.env.testing.example', '.env');"
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
         working-directory: cms
