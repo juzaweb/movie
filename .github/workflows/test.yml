@@ -8,7 +8,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: [8.0, 8.1]
-        cms: [3.*]
+        cms: [3.3.*]
     name: PHP ${{ matrix.php }} - CMS ${{ matrix.cms }} - ${{ matrix.os }}
 
     steps:
@@ -37,12 +37,14 @@ jobs:
           cd plugins
           git clone https://github.com/juzaweb/movie.git movie
         working-directory: cms
-      - name: Config database
+      - name: Config database & Execute tests Install
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
+        run: php artisan test modules/Tests/InstallTest.php
+        working-directory: cms
+      - name: Enable plugin
         run: |
-          php artisan juzacms:install
           php artisan plugin:enable juzaweb/movie
           php artisan test
         working-directory: cms
