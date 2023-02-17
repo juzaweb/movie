@@ -41,10 +41,8 @@ jobs:
         env:
           DB_CONNECTION: sqlite
           DB_DATABASE: database/database.sqlite
-        run: php artisan test modules/Tests/InstallTest.php
-        working-directory: cms
-      - name: Enable plugin
         run: |
+          php artisan test modules/Tests/InstallTest.php
           php artisan plugin:enable juzaweb/movie
           php artisan test
         working-directory: cms
