@@ -10,7 +10,7 @@ The Movie plugin compliments your content by adding information about the movies
 - **Mymo theme for plugin: [https://juzaweb.com/product/mymo-theme](https://juzaweb.com/product/mymo-theme)**
 
 ## Documentation
-[https://juzaweb.com/plugin/movie/docs](https://juzaweb.com/plugin/movie/docs)
+[https://juzaweb.com/product/movie](https://juzaweb.com/product/movie)
 
 ## Features
 - [x] Movie/ TV-Series management
