@@ -60,7 +60,7 @@ class MovieAction extends Action
                 'supports' => ['tag'],
                 'metas' => [
                     'origin_title' => [
-                        'label' => trans('mymo::app.other_name')
+                        'label' => trans('mymo::app.other_name'),
                     ],
                     'tv_series' => [
                         'label' => trans('mymo::app.type'),
@@ -70,6 +70,17 @@ class MovieAction extends Action
                             'options' => [
                                 '0' => trans('mymo::app.movie'),
                                 '1' => trans('mymo::app.tv_series'),
+                            ]
+                        ],
+                    ],
+                    'is_paid' => [
+                        'label' => trans('mymo::app.is_paid'),
+                        'type' => 'select',
+                        'sidebar' => true,
+                        'data' => [
+                            'options' => [
+                                '0' => trans('mymo::app.disabled'),
+                                '1' => trans('mymo::app.enabled'),
                             ]
                         ],
                     ],

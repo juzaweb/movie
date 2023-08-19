@@ -31,7 +31,7 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
       - name: Install composer
-        run: composer create-project juzaweb/juzacms cms "${{ matrix.cms }}"
+        run: composer create-project juzaweb/cms cms "${{ matrix.cms }}"
       - name: Copy .env
         run: php -r "copy('.env.testing.example', '.env');"
         working-directory: cms
