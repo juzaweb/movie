@@ -1,5 +1,6 @@
 {
     "name": "juzaweb/movie",
+    "type": "juzaweb-plugin",
     "license": "MIT",
     "keywords": [
         "juzaweb cms",
@@ -14,7 +15,6 @@
             ],
             "name": "Movie plugin",
             "domain": "mymo",
-            "cms_min": "3.2.7",
             "version": "1.0.8"
         }
     },
