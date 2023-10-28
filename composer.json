@@ -14,8 +14,7 @@
                 "Juzaweb\\Movie\\Providers\\MovieServiceProvider"
             ],
             "name": "Movie plugin",
-            "domain": "mymo",
-            "version": "1.0.8"
+            "domain": "mymo"
         }
     },
     "autoload": {
