@@ -1,5 +1,9 @@
-on: push
 name: Run phpunit test suite v4
+on:
+  push:
+    branches:
+  schedule:
+    - cron:  '0 * * * *'
 jobs:
   phpunit-test-suite:
     runs-on: ${{ matrix.os }}
