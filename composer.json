@@ -10,14 +10,11 @@
     "description": "Movie Juzaweb Plugin help you easily create movie website. It is a powerful, flexible and User friendly movie & Video Steaming Theme with advance video contents management system. It’s easy to use & install. It has been created to provide unique experience to movie lover & movie site owner. To observe of ISP needed we have made MYMO to use as multipurpose video website. It was created to run with MyMo Theme.",
     "extra": {
         "juzaweb": {
-            "providers": [
-                "Juzaweb\\Movie\\Providers\\MovieServiceProvider"
-            ],
             "name": "Movie Plugin - Easily create movie website",
             "domain": "mymo",
-            "require_plugins": {
-                "juzaweb/subscription": "^1.0"
-            }
+            "providers": [
+                "Juzaweb\\Movie\\Providers\\MovieServiceProvider"
+            ]
         }
     },
     "autoload": {
@@ -27,5 +24,12 @@
         "files": [
             "src/Helpers/helpers.php"
         ]
+    },
+    "require": {
+        "juzaweb/subscription": "@dev|^1.0"
+    },
+    "require-dev": {
+        "juzaweb/modules": "^1.0",
+        "juzaweb/dev-tool": "^1.0"
     }
 }
