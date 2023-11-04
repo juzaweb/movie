@@ -30,14 +30,10 @@ class ReportRequest extends FormRequest
             ],
             'post_id' => [
                 'required',
-                Rule::modelExists(
-                    Post::class,
-                    'id',
-                    fn($q) => $q->where('type', 'movies')
-                ),
+                Rule::modelExists(Post::class),
             ],
             'video_id' => [
-                'required',
+                'nullable',
                 Rule::modelExists(
                     Resource::class,
                     'id',
