@@ -14,7 +14,7 @@ use Juzaweb\Backend\Models\Resource;
 
 class VideoFile
 {
-    public static function isSourceEmbed($source)
+    public static function isSourceEmbed($source): bool
     {
         $embed_source = ['embed', 'youtube', 'vimeo'];
 
@@ -29,7 +29,12 @@ class VideoFile
     {
         $url = $video->getMeta('url');
 
-        return match ($video->getMeta('source')) {
+        return $this->getFilesBySourceAndUrl($video->getMeta('source'), $url);
+    }
+
+    public function getFilesBySourceAndUrl(string $source, string $url): array
+    {
+        return match ($source) {
             'youtube' => $this->getVideoYoutube($url),
             'vimeo' => $this->getVideoVimeo($url),
             'upload' => $this->getVideoUpload(),
@@ -43,17 +48,29 @@ class VideoFile
         };
     }
 
-    protected function getVideoYoutube($url)
+    public function getSourceByUrl(string $url): string
+    {
+        $domain = get_domain_by_url($url, true);
+
+        return match ($domain) {
+            'youtube.com' => 'youtube',
+            'vimeo.com' => 'vimeo',
+            'drive.google.com' => 'gdrive',
+            default => 'mp4',
+        };
+    }
+
+    protected function getVideoYoutube($url): array
     {
         return [
             (object) [
                 'file' => 'https://www.youtube.com/embed/' . get_youtube_id($url),
-                'type' => 'mp4',
+                'type' => 'youtube',
             ]
         ];
     }
 
-    protected function getVideoVimeo($url)
+    protected function getVideoVimeo($url): array
     {
         return [
             (object) [
@@ -63,7 +80,7 @@ class VideoFile
         ];
     }
 
-    protected function getVideoUrl($type, $url)
+    protected function getVideoUrl($type, $url): array
     {
         /*if (!is_url($url)) {
             return $this->getVideoUpload();
@@ -96,7 +113,7 @@ class VideoFile
         ];
     }
 
-    protected function getVideoUpload()
+    protected function getVideoUpload(): array
     {
         if ($this->converted == 1) {
             $files = [];
@@ -169,7 +186,7 @@ class VideoFile
         ];
     }
 
-    protected function getVideoGoogleDrive()
+    protected function getVideoGoogleDrive(): array
     {
         $use_stream = get_config('use_stream', 1);
 
@@ -207,7 +224,7 @@ class VideoFile
         return [];
     }
 
-    protected function getVideoGoogleDriveEmbed()
+    protected function getVideoGoogleDriveEmbed(): array
     {
         $files[] = (object) [
             'file' => 'https://drive.google.com/file/d/'. get_google_drive_id($this->url) .'/preview',
@@ -217,7 +234,7 @@ class VideoFile
         return $files;
     }
 
-    protected function generateStreamUrl($path)
+    protected function generateStreamUrl($path): string
     {
         $token = generate_token(basename($path));
         $file = json_encode(['path' => $path]);
@@ -225,14 +242,15 @@ class VideoFile
         return $this->getStreamLink($token, $file, basename($path));
     }
 
-    protected function getStreamLink($token, $file, $name)
+    protected function getStreamLink($token, $file, $name): string
     {
         return route('stream.video', [$token, base64_encode($file), $name]);
     }
 
-    protected function getExtension()
+    protected function getExtension(): string
     {
         $file_name = basename($this->url);
+
         return explode('.', $file_name)[count(explode('.', $file_name)) - 1];
     }
 }
