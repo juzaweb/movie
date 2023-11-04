@@ -83,10 +83,12 @@ return [
     'you_must_be_logged_in_to_comment' => 'You must be logged in to comment',
     'click_to_play' => 'Click to Play',
     'show_only_once' => 'Show only once',
-    'to_continue_watching_click_reload_player_button' => 'To continue watching, please click \\"Reload Player\\" button',
+    'to_continue_watching_click_reload_player_button' => 'To continue watching'.
+        ', please click \\"Reload Player\\" button',
     'replay_from_begin' => 'Replay from begin?',
     'automatically_replay_the_movie' => 'Automatically replay movie from the moment you most recently watched at',
-    'thank_you_for_submitting_error_message' => 'Thank you for submitting error message. We will fix errors as soon as possible',
+    'thank_you_for_submitting_error_message' => 'Thank you for submitting error message.'
+        .' We will fix errors as soon as possible',
     'or_click_on_buttons_listed_below' => 'or click on buttons listed below',
     'adult_content_warning' => 'Adult Content Warning!',
     'movies_banner' => 'Movies page banner',
@@ -143,4 +145,5 @@ return [
     'import' => 'Import',
     'subtitles' => 'Subtitles',
     'movie_reports' => 'Reports',
+    'is_paid' => 'Is Paid',
 ];

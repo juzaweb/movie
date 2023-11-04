@@ -4,12 +4,11 @@ namespace Juzaweb\Movie;
 
 use Juzaweb\CMS\Abstracts\Action;
 use Juzaweb\CMS\Facades\HookAction;
-use Juzaweb\Movie\Http\Controllers\AjaxController;
 use Juzaweb\Movie\Http\Controllers\Backend\TmdbController;
 
 class MovieAction extends Action
 {
-    public function handle()
+    public function handle(): void
     {
         $this->addAction(
             Action::INIT_ACTION,
@@ -26,10 +25,6 @@ class MovieAction extends Action
         $this->addAction(
             Action::INIT_ACTION,
             [$this, 'registerResources']
-        );
-        $this->addAction(
-            Action::FRONTEND_CALL_ACTION,
-            [$this, 'addAjaxTheme']
         );
         $this->addAction(
             'post_type.movies.btn_group',
@@ -49,7 +44,7 @@ class MovieAction extends Action
         );
     }
 
-    public function registerMovie()
+    public function registerMovie(): void
     {
         HookAction::registerPostType(
             'movies',
@@ -60,7 +55,7 @@ class MovieAction extends Action
                 'supports' => ['tag'],
                 'metas' => [
                     'origin_title' => [
-                        'label' => trans('mymo::app.other_name')
+                        'label' => trans('mymo::app.other_name'),
                     ],
                     'tv_series' => [
                         'label' => trans('mymo::app.type'),
@@ -70,6 +65,17 @@ class MovieAction extends Action
                             'options' => [
                                 '0' => trans('mymo::app.movie'),
                                 '1' => trans('mymo::app.tv_series'),
+                            ]
+                        ],
+                    ],
+                    'is_paid' => [
+                        'label' => trans('mymo::app.is_paid'),
+                        'type' => 'select',
+                        'sidebar' => true,
+                        'data' => [
+                            'options' => [
+                                '0' => trans('mymo::app.disabled'),
+                                '1' => trans('mymo::app.enabled'),
                             ]
                         ],
                     ],
@@ -120,7 +126,7 @@ class MovieAction extends Action
         );*/
     }
 
-    public function registerTaxonomies()
+    public function registerTaxonomies(): void
     {
         HookAction::registerTaxonomy(
             'genres',
@@ -197,7 +203,7 @@ class MovieAction extends Action
         );
     }
 
-    public function addSettingForm()
+    public function addSettingForm(): void
     {
         HookAction::registerConfig(
             [
@@ -218,53 +224,7 @@ class MovieAction extends Action
         );
     }
 
-    public function addAjaxTheme()
-    {
-        HookAction::registerFrontendAjax(
-            'movie-download',
-            [
-                'callback' => [AjaxController::class, 'download']
-            ]
-        );
-
-        HookAction::registerFrontendAjax(
-            'get-player',
-            [
-                'callback' => [AjaxController::class, 'getPlayer']
-            ]
-        );
-
-        HookAction::registerFrontendAjax(
-            'popular-movies',
-            [
-                'callback' => [AjaxController::class, 'getPopularMovies']
-            ]
-        );
-
-        HookAction::registerFrontendAjax(
-            'movies-genre',
-            [
-                'callback' => [AjaxController::class, 'getMoviesByGenre']
-            ]
-        );
-
-        HookAction::registerFrontendAjax(
-            'mymo-filter-form',
-            [
-                'callback' => [AjaxController::class, 'getFilterForm'],
-            ]
-        );
-
-        HookAction::registerFrontendAjax(
-            'movie-report',
-            [
-                'callback' => [AjaxController::class, 'report'],
-                'method' => 'post',
-            ]
-        );
-    }
-
-    public function registerResources()
+    public function registerResources(): void
     {
         HookAction::registerResource(
             'servers',
@@ -370,20 +330,19 @@ class MovieAction extends Action
         );
     }
 
-    public function addImportButton()
+    public function addImportButton(): void
     {
         echo '<a href="javascript:void(0)" class="btn btn-primary" data-toggle="modal" data-target="#tmdb-modal">
         <i class="fa fa-download"></i> '. trans('mymo::app.add_from_tmdb') .'
         </a>';
     }
 
-    public function addModalImport()
+    public function addModalImport(): void
     {
-        echo view('mymo::tmdb_import')
-            ->render();
+        echo view('mymo::tmdb_import')->render();
     }
 
-    public function addAjaxAdmin()
+    public function addAjaxAdmin(): void
     {
         HookAction::registerAdminAjax(
             'tmdb-add_movie',

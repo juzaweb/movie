@@ -2,7 +2,7 @@
 /**
  * JUZAWEB CMS - The Best CMS for Laravel Project
  *
- * @package    juzaweb/juzacms
+ * @package    juzaweb/cms
  * @author     Juzaweb Team <admin@juzaweb.com>
  * @link       https://juzaweb.com
  * @license    GNU General Public License v2.0
@@ -30,14 +30,10 @@ class ReportRequest extends FormRequest
             ],
             'post_id' => [
                 'required',
-                Rule::modelExists(
-                    Post::class,
-                    'id',
-                    fn($q) => $q->where('type', 'movies')
-                ),
+                Rule::modelExists(Post::class),
             ],
             'video_id' => [
-                'required',
+                'nullable',
                 Rule::modelExists(
                     Resource::class,
                     'id',

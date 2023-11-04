@@ -2,6 +2,7 @@
 
 namespace Juzaweb\Movie\Http\Controllers\Backend;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Juzaweb\Movie\Http\Datatables\SubtitleDatatable;
 use Juzaweb\CMS\Http\Controllers\BackendController;
@@ -71,11 +72,11 @@ class SubtitleController extends BackendController
         return trans('mymo::app.subtitle');
     }
 
-    protected function getDataForForm($model, $page_type, $file_id)
+    protected function getDataForForm(Model $model, ...$params, $file_id)
     {
-        $data = $this->DataForForm($model, $page_type, $file_id);
+        $data = $this->DataForForm($model, $params, $file_id);
         $file = VideoFile::findOrFail($file_id);
-        $data['page_type'] = $page_type;
+        $data['page_type'] = $params;
         $data['file_id'] = $file_id;
         $data['file'] = $file;
         return $data;
