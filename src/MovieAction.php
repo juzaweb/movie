@@ -115,15 +115,21 @@ class MovieAction extends Action
             ]
         );
 
-        /*HookAction::registerPostType(
-            'lives',
+        HookAction::registerPostType(
+            'live-tvs',
             [
                 'label' => 'Live TVs',
                 'menu_position' => 12,
                 'menu_icon' => 'fa fa-film',
                 'supports' => ['tag'],
+                'metas' => [
+                    'source_url' => [
+                        'type' => 'text',
+                        'label' => trans('Source URL'),
+                    ]
+                ]
             ]
-        );*/
+        );
     }
 
     public function registerTaxonomies(): void
@@ -213,6 +219,17 @@ class MovieAction extends Action
                 "mymo_movie_report",
             ]
         );
+
+        // $this->hookAction->registerSettingPage(
+        //     'mymo',
+        //     [
+        //         'label' => trans('MyMo Setting'),
+        //         'menu' => [
+        //             'icon' => 'fa fa-cogs',
+        //             'parent' => 'setting',
+        //         ]
+        //     ]
+        // );
 
         HookAction::addSettingForm(
             'mymo',
@@ -353,7 +370,7 @@ class MovieAction extends Action
         );
     }
 
-    public function addVideoAdsType()
+    public function addVideoAdsType(): void
     {
         if (\Juzaweb\CMS\Support\HookAction::hasMacro('registerAdsPosition')) {
             $this->hookAction->registerAdsPosition(
