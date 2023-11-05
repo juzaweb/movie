@@ -68,17 +68,6 @@ class MovieAction extends Action
                             ]
                         ],
                     ],
-                    'is_paid' => [
-                        'label' => trans('mymo::app.is_paid'),
-                        'type' => 'select',
-                        'sidebar' => true,
-                        'data' => [
-                            'options' => [
-                                '0' => trans('mymo::app.disabled'),
-                                '1' => trans('mymo::app.enabled'),
-                            ]
-                        ],
-                    ],
                     'poster' => [
                         'label' => trans('mymo::app.poster'),
                         'type' => 'image',
