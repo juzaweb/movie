@@ -17,7 +17,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         php: [8.0, 8.1]
-        cms: [dev-v4-beta]
+        cms: [dev-develop]
+        version: [dev-master]
     name: PHP ${{ matrix.php }} - CMS ${{ matrix.cms }} - ${{ matrix.os }}
 
     steps:
@@ -37,14 +38,16 @@ jobs:
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
         working-directory: cms
-      - name: Clone plugin
-        run: composer require juzaweb/movie
+      - name: Install plugin
+        run: composer require juzaweb/movie:${{ matrix.version }}
         working-directory: cms
       - name: Config database & Execute tests Install
         run: |
           php artisan test vendor/juzaweb/modules/modules/Tests/InstallTest.php
           composer dump-autoload
-          php artisan plugin:enable juzaweb/movie
+        working-directory: cms
+      - name: Active plugin
+        run: php artisan plugin:enable juzaweb/movie
         working-directory: cms
       - name: Run Tests
         run: php artisan test
