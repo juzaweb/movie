@@ -67,6 +67,7 @@ class GenerateDemoVideoCommand extends Command
 
     private function updateForMovies(Post $movie): void
     {
+        /** @var Resource $server */
         if (!$server = $movie->resources->where('type', 'servers')->first()) {
             $server = $movie->resources()->create(
                 [
@@ -110,6 +111,7 @@ class GenerateDemoVideoCommand extends Command
 
     private function updateForTvSeries(Post $movie): void
     {
+        /** @var Resource $server */
         if (!$server = $movie->resources->where('type', 'servers')->first()) {
             $server = $movie->resources()->create(
                 [
