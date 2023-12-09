@@ -14,7 +14,8 @@
             "domain": "mymo",
             "providers": [
                 "Juzaweb\\Movie\\Providers\\MovieServiceProvider"
-            ]
+            ],
+            "networkable": true
         }
     },
     "autoload": {

@@ -6,13 +6,14 @@ use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Juzaweb\Backend\Models\Post;
+use Juzaweb\Backend\Models\Resource;
 use Symfony\Component\Console\Input\InputOption;
 
 class GenerateDemoVideoCommand extends Command
 {
     protected $name = 'movie:generate-demo-video';
 
-    public function handle()
+    public function handle(): void
     {
         $limit = $this->option('limit');
 
@@ -42,8 +43,8 @@ class GenerateDemoVideoCommand extends Command
                 }
             )
             ->orderBy('id', 'DESC')
-        ->limit($limit)
-        ->get();
+            ->when($limit > 0, fn ($q) => $q->limit($limit))
+            ->get();
 
         foreach ($movies as $movie) {
             $this->info("Generate movie {$movie->title}");
@@ -64,7 +65,7 @@ class GenerateDemoVideoCommand extends Command
         }
     }
 
-    private function updateForMovies(Post $movie)
+    private function updateForMovies(Post $movie): void
     {
         if (!$server = $movie->resources->where('type', 'servers')->first()) {
             $server = $movie->resources()->create(
@@ -90,6 +91,7 @@ class GenerateDemoVideoCommand extends Command
                 continue;
             }
 
+            /** @var Resource $file */
             $file = $movie->resources()->create(
                 [
                     'name' => $video['name'],
@@ -106,7 +108,7 @@ class GenerateDemoVideoCommand extends Command
         }
     }
 
-    private function updateForTvSeries(Post $movie)
+    private function updateForTvSeries(Post $movie): void
     {
         if (!$server = $movie->resources->where('type', 'servers')->first()) {
             $server = $movie->resources()->create(
@@ -133,6 +135,7 @@ class GenerateDemoVideoCommand extends Command
                 continue;
             }
 
+            /** @var Resource $file */
             $file = $movie->resources()->create(
                 [
                     'name' => $displayOrder,
@@ -176,7 +179,7 @@ class GenerateDemoVideoCommand extends Command
     protected function getOptions(): array
     {
         return [
-            ['limit', null, InputOption::VALUE_OPTIONAL, 'The limit posts generate.', 20],
+            ['limit', null, InputOption::VALUE_OPTIONAL, 'The limit posts generate.', -1],
         ];
     }
 }

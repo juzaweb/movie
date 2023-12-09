@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class GenerateDemoMovieCommand extends Command
 {
-    protected $signature = 'movie:generate-demo-movie';
+    protected $name = 'movie:generate-demo-movie';
 
     public function handle(): int
     {
