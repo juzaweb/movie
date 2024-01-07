@@ -20,7 +20,7 @@ class MovieAction extends Action
         );
         $this->addAction(
             Action::INIT_ACTION,
-            [$this, 'addSettingForm']
+            [$this, 'addSettingForms']
         );
         $this->addAction(
             Action::INIT_ACTION,
@@ -198,7 +198,7 @@ class MovieAction extends Action
         );
     }
 
-    public function addSettingForm(): void
+    public function addSettingForms(): void
     {
         HookAction::registerConfig(
             [
@@ -287,7 +287,7 @@ class MovieAction extends Action
                     ],
                     'url' => [
                         'label' => trans('mymo::app.url'),
-                        'type' => 'upload_url'
+                        'type' => 'upload_url',
                     ],
                 ],
             ]
