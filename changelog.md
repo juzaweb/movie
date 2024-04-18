@@ -1,3 +1,6 @@
+### v2.0.1 
+* :+1: Add changelog
+
 ### v2.0 
 * :bug: Fix action function
 * :+1: Generate demo contents
