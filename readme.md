@@ -19,3 +19,4 @@ The Movie plugin compliments your content by adding information about the movies
 - [x] Genres/ Countries/ Actors/ Directors/ Writers management
 - [x] Player Watermark
 - [x] Player Watermark Logo
+- [ ] Import movie with language
