@@ -1,6 +1,6 @@
 {
     "name": "juzaweb/movie",
-    "type": "juzaweb-plugin",
+    "type": "juzaweb-module",
     "license": "MIT",
     "keywords": [
         "juzaweb cms",
@@ -11,30 +11,13 @@
     "authors": [
         {
             "name": "Juzaweb Team",
-            "email": "support@juzaweb.com",
+            "email": "admin@juzaweb.com",
             "homepage": "https://juzaweb.com"
         }
     ],
-    "extra": {
-        "juzaweb": {
-            "name": "Movie Plugin - Easily create movie website",
-            "domain": "mymo",
-            "providers": [
-                "Juzaweb\\Movie\\Providers\\MovieServiceProvider"
-            ],
-            "networkable": true
-        }
-    },
     "autoload": {
         "psr-4": {
-            "Juzaweb\\Movie\\": "src/"
-        },
-        "files": [
-            "src/Helpers/helpers.php"
-        ]
-    },
-    "require-dev": {
-        "juzaweb/modules": "^1.0",
-        "juzaweb/dev-tool": "^1.0"
+            "Juzaweb\\Modules\\Movie\\": "src/"
+        }
     }
 }
