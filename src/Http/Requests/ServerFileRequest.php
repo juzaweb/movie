@@ -11,17 +11,14 @@ namespace Juzaweb\Modules\Movie\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ReportRequest extends FormRequest
+class ServerFileRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-			'report_type_id' => ['required'],
-			'reportable_id' => ['required'],
-			'reportable_type' => ['required'],
-			'meta' => ['required'],
-			'description' => ['required'],
-			'status' => ['required']
+            'name' => ['required', 'max:50'],
+            'path' => ['required'],
+            'source' => ['required'],
 		];
     }
 }

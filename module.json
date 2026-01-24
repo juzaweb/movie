@@ -1,0 +1,11 @@
+{
+    "name": "Movie",
+    "alias": "movie",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Juzaweb\\Modules\\Movie\\Providers\\MovieServiceProvider"
+    ],
+    "files": []
+}

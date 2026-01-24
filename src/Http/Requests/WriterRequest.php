@@ -1,0 +1,20 @@
+<?php
+
+namespace Juzaweb\Modules\Movie\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class WriterRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        $locale = $this->input('locale');
+
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable', 'string', 'max:255'],
+            'bio' => ['nullable', 'string'],
+            'thumbnail' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+}
