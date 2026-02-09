@@ -1,7 +1,8 @@
 {
     "name": "Movie",
     "alias": "movie",
-    "description": "",
+    "title": "Movie and TV Series management",
+    "description": "The Movie module compliments your content by adding information about the movies, the television shows and the people in the industry you choose.",
     "keywords": [],
     "priority": 0,
     "providers": [
