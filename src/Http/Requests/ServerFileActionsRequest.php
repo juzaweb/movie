@@ -11,7 +11,7 @@ namespace Juzaweb\Modules\Movie\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Rules\AllExist;
+use Juzaweb\Modules\Core\Rules\AllExist;
 
 class ServerFileActionsRequest extends FormRequest
 {
