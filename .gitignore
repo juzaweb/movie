@@ -3,4 +3,5 @@
 composer.lock
 /node_modules
 .vscode
-.idea.phpunit.result.cache
+.idea
+.phpunit.result.cache
