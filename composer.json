@@ -19,5 +19,13 @@
         "psr-4": {
             "Juzaweb\\Modules\\Movie\\": "src/"
         }
+    },
+    "require": {
+        "php": "^8.2",
+        "juzaweb/core": "^5.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0"
     }
 }
