@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"Juzaweb\\Modules\\Movie\\Tests\\Feature\\ExampleTest::test_example":0.098,"Juzaweb\\Modules\\Movie\\Tests\\Feature\\MovieTest::test_movie_service_provider_registered":0.046,"Juzaweb\\Modules\\Movie\\Tests\\Feature\\MovieTest::test_movie_admin_route_exists":0.068}}
