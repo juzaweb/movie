@@ -96,17 +96,12 @@ class MovieServerController extends AdminController
     public function update(ServerRequest $request, string $movieId, string $id)
     {
         $movie = Movie::findOrFail($movieId);
-        $model = Server::where('serverable_type', Movie::class)
-            ->where('serverable_id', $movieId)
+        $model = Server::where('movie_id', $movieId)
             ->findOrFail($id);
 
         $model = DB::transaction(
             function () use ($request, $model) {
                 $data = $request->validated();
-
-                if (empty($data['slug'])) {
-                    $data['slug'] = Str::slug($data['name']);
-                }
 
                 $model->update($data);
 
@@ -125,8 +120,7 @@ class MovieServerController extends AdminController
         $action = $request->input('action');
         $ids = $request->input('ids', []);
 
-        $models = Server::where('serverable_type', Movie::class)
-            ->where('serverable_id', $movieId)
+        $models = Server::where('movie_id', $movieId)
             ->whereIn('id', $ids)
             ->get();
 
