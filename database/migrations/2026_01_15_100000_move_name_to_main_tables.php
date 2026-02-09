@@ -29,55 +29,94 @@ return new class extends Migration
 
         // Copy name from translation tables to main tables
         // For actors
-        DB::statement("
-            UPDATE movie_actors ma
-            INNER JOIN (
-                SELECT movie_actor_id, name
-                FROM movie_actor_translations
-                WHERE locale = (
-                    SELECT locale
-                    FROM movie_actor_translations mat2
-                    WHERE mat2.movie_actor_id = movie_actor_translations.movie_actor_id
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement("
+                UPDATE movie_actors
+                SET name = (
+                    SELECT name
+                    FROM movie_actor_translations
+                    WHERE movie_actor_translations.movie_actor_id = movie_actors.id
                     ORDER BY locale ASC
                     LIMIT 1
                 )
-            ) mat ON ma.id = mat.movie_actor_id
-            SET ma.name = mat.name
-        ");
+            ");
+        } else {
+            DB::statement("
+                UPDATE movie_actors ma
+                INNER JOIN (
+                    SELECT movie_actor_id, name
+                    FROM movie_actor_translations
+                    WHERE locale = (
+                        SELECT locale
+                        FROM movie_actor_translations mat2
+                        WHERE mat2.movie_actor_id = movie_actor_translations.movie_actor_id
+                        ORDER BY locale ASC
+                        LIMIT 1
+                    )
+                ) mat ON ma.id = mat.movie_actor_id
+                SET ma.name = mat.name
+            ");
+        }
 
         // For directors
-        DB::statement("
-            UPDATE movie_directors md
-            INNER JOIN (
-                SELECT movie_director_id, name
-                FROM movie_director_translations
-                WHERE locale = (
-                    SELECT locale
-                    FROM movie_director_translations mdt2
-                    WHERE mdt2.movie_director_id = movie_director_translations.movie_director_id
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement("
+                UPDATE movie_directors
+                SET name = (
+                    SELECT name
+                    FROM movie_director_translations
+                    WHERE movie_director_translations.movie_director_id = movie_directors.id
                     ORDER BY locale ASC
                     LIMIT 1
                 )
-            ) mdt ON md.id = mdt.movie_director_id
-            SET md.name = mdt.name
-        ");
+            ");
+        } else {
+            DB::statement("
+                UPDATE movie_directors md
+                INNER JOIN (
+                    SELECT movie_director_id, name
+                    FROM movie_director_translations
+                    WHERE locale = (
+                        SELECT locale
+                        FROM movie_director_translations mdt2
+                        WHERE mdt2.movie_director_id = movie_director_translations.movie_director_id
+                        ORDER BY locale ASC
+                        LIMIT 1
+                    )
+                ) mdt ON md.id = mdt.movie_director_id
+                SET md.name = mdt.name
+            ");
+        }
 
         // For writers
-        DB::statement("
-            UPDATE movie_writers mw
-            INNER JOIN (
-                SELECT movie_writer_id, name
-                FROM movie_writer_translations
-                WHERE locale = (
-                    SELECT locale
-                    FROM movie_writer_translations mwt2
-                    WHERE mwt2.movie_writer_id = movie_writer_translations.movie_writer_id
+        if (DB::getDriverName() === 'sqlite') {
+            DB::statement("
+                UPDATE movie_writers
+                SET name = (
+                    SELECT name
+                    FROM movie_writer_translations
+                    WHERE movie_writer_translations.movie_writer_id = movie_writers.id
                     ORDER BY locale ASC
                     LIMIT 1
                 )
-            ) mwt ON mw.id = mwt.movie_writer_id
-            SET mw.name = mwt.name
-        ");
+            ");
+        } else {
+            DB::statement("
+                UPDATE movie_writers mw
+                INNER JOIN (
+                    SELECT movie_writer_id, name
+                    FROM movie_writer_translations
+                    WHERE locale = (
+                        SELECT locale
+                        FROM movie_writer_translations mwt2
+                        WHERE mwt2.movie_writer_id = movie_writer_translations.movie_writer_id
+                        ORDER BY locale ASC
+                        LIMIT 1
+                    )
+                ) mwt ON mw.id = mwt.movie_writer_id
+                SET mw.name = mwt.name
+            ");
+        }
 
         // Make name column NOT NULL after data migration
         Schema::table('movie_actors', function (Blueprint $table) {

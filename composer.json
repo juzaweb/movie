@@ -27,5 +27,10 @@
     "require-dev": {
         "orchestra/testbench": "^8.0|^9.0",
         "phpunit/phpunit": "^10.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Juzaweb\\Modules\\Movie\\Tests\\": "tests/"
+        }
     }
 }
