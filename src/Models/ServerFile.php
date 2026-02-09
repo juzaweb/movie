@@ -55,4 +55,9 @@ class ServerFile extends Model
     {
         return $this->source->getUrl($this->path);
     }
+
+    public function bulkActions(): array
+    {
+        return ['delete'];
+    }
 }
