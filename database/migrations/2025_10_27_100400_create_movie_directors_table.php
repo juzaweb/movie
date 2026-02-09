@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('movie_directors', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('name');
             $table->datetimes();
         });
 
@@ -24,7 +25,6 @@ return new class extends Migration
                 $table->id();
                 $table->uuid('movie_director_id')->index();
                 $table->string('locale', 5)->index();
-                $table->string('name');
                 $table->string('slug', 190)->index();
                 $table->text('bio')->nullable();
                 $table->unique(['movie_director_id', 'locale']);

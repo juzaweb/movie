@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('status', 50)->default('draft');
             $table->bigInteger('views')->default(0);
             $table->boolean('is_tv_series')->default(false);
+            $table->float('tmdb_rating')->nullable();
             $table->datetimes();
         });
 
@@ -37,6 +38,7 @@ return new class extends Migration
                 $table->uuid('movie_id')->index();
                 $table->string('locale', 5)->index();
                 $table->string('name');
+                $table->text('description')->nullable();
                 $table->text('content')->nullable();
                 $table->string('slug', 190)->index();
                 $table->unique(['movie_id', 'locale']);

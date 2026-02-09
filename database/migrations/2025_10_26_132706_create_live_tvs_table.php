@@ -28,6 +28,7 @@ return new class extends Migration
                 $table->string('locale', 5)->index();
                 $table->string('name');
                 $table->text('content')->nullable();
+                $table->text('description')->nullable();
                 $table->string('slug', 190)->index();
                 $table->unique(['live_tv_id', 'locale']);
                 $table->unique(['slug']);
