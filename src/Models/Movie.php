@@ -167,7 +167,7 @@ class Movie extends Model implements Viewable, TranslatableAlias
                     return $item;
                 }
 
-                $actor = Actor::whereTranslation('name', $item)->first();
+                $actor = Actor::where('name', $item)->first();
 
                 if (!$actor) {
                     $actor = Actor::create(['name' => $item]);
@@ -188,7 +188,7 @@ class Movie extends Model implements Viewable, TranslatableAlias
                     return $item;
                 }
 
-                $director = Director::whereTranslation('name', $item)->first();
+                $director = Director::where('name', $item)->first();
 
                 if (!$director) {
                     $director = Director::create(['name' => $item]);
@@ -209,7 +209,7 @@ class Movie extends Model implements Viewable, TranslatableAlias
                     return $item;
                 }
 
-                $writer = Writer::whereTranslation('name', $item)->first();
+                $writer = Writer::where('name', $item)->first();
 
                 if (!$writer) {
                     $writer = Writer::create(['name' => $item]);
