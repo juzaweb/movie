@@ -1,4 +1,4 @@
-# Movie JuzaCMS Plugin
+# Movie Juzacms Module
 
 ## About
 The Movie plugin compliments your content by adding information about the movies, the television shows and the people in the industry you choose.
@@ -17,6 +17,7 @@ The Movie plugin compliments your content by adding information about the movies
 - [x] Import movie from TMDB
 - [x] Server and upload management
 - [x] Genres/ Countries/ Actors/ Directors/ Writers management
-- [x] Player Watermark
-- [x] Player Watermark Logo
+- [x] Live TV management
+- [ ] Player Watermark
+- [ ] Player Watermark Logo
 - [ ] Import movie with language
