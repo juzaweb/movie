@@ -1,7 +1,7 @@
 {
     "name": "juzaweb/movie",
     "type": "juzaweb-module",
-    "license": "MIT",
+    "license": "GPL-2.0",
     "keywords": [
         "juzaweb cms",
         "juzaweb.com",
